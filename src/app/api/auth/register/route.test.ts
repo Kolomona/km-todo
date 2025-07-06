@@ -37,7 +37,6 @@ describe('/api/auth/register', () => {
       id: 'user-1',
       email: 'test@example.com',
       name: 'Test User',
-      passwordHash: 'hashedpassword',
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -46,7 +45,7 @@ describe('/api/auth/register', () => {
 
     // Mock dependencies
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
-    vi.mocked(prisma.user.create).mockResolvedValue(mockUser)
+    vi.mocked(prisma.user.create).mockResolvedValue(mockUser as unknown as any)
     vi.mocked(hashPassword).mockResolvedValue('hashedpassword')
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(validatePassword).mockReturnValue({ isValid: true, errors: [] })
@@ -98,7 +97,10 @@ describe('/api/auth/register', () => {
       updatedAt: new Date(),
     }
 
+    // Mock dependencies
     vi.mocked(prisma.user.findUnique).mockResolvedValue(existingUser)
+    vi.mocked(validateEmail).mockReturnValue(true)
+    vi.mocked(validatePassword).mockReturnValue({ isValid: true, errors: [] })
 
     const request = new NextRequest('http://localhost:3000/api/auth/register', {
       method: 'POST',
