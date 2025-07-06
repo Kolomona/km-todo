@@ -1,6 +1,6 @@
 # ProjectStatusBoard.md
 
-## 2024-12-20 - CRUD ACTIONS IMPLEMENTED FOR PROJECT LIST VIEWS, ISSUE #121 RESOLVED
+## 2024-12-20 - LOGIN ISSUE RESOLVED, COOKIE CONFIGURATION FIXED
 
 ### Project Manager Summary
 - ✅ **Backend Authentication System**: Fully implemented and functional - ALL TESTS PASSING
@@ -10,6 +10,7 @@
 - ✅ **Database Schema**: All tables implemented with Prisma
 - ✅ **Testing Framework**: Vitest configured with unit tests for both backend and frontend
 - ✅ **Total Unit Tests**: 247/247 tests passing (100% success rate)
+- ✅ **Login Issue Resolved**: Cookie configuration fixed for localhost development
 - ⏸️ **E2E Testing**: Deferred to backlog - not in current sprint focus
 - **Next Priority**: Analytics and UX improvements
 - ⚠️ **Note**: Some ESLint errors remain but do not block the build. These will be addressed in a future sprint.
@@ -17,7 +18,7 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #119 | 2024-12-20 | Frontend  | Main content starts below sidebar (vertical misalignment) | Open     | Frontend  | High     | Main content area is not vertically aligned with sidebar; see screenshots and AIPM notes |
+| #122 | 2024-12-20 | Frontend  | '+ Add Todo' button does not work in project todos view | Open     | Frontend  | High     | Button does not open modal or form; users cannot add todos from project view. See AIPM notes below. |
 | *No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
@@ -31,20 +32,17 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **OPENED**: '+ Add Todo' button does not work in project todos view (#122) - Frontend team to investigate and fix. Button should open modal/form and allow adding todos directly from project view. See AIPM notes below for details and next steps.
+- [2024-12-20] **RESOLVED**: Login issue after database seeding - Fixed cookie configuration in src/lib/auth.ts. Changed SameSite from 'none' to 'lax' for localhost development to resolve 401 Unauthorized errors in browser. Login now works correctly with admin@example.com / loKonoma!!!!!11111.
 - [2024-12-20] **ENHANCED**: Database seeding script improved - Backend team updated prisma/seed.ts to ensure comprehensive database cleanup before seeding. Now deletes all data in proper order to respect foreign key constraints, ensuring clean slate for development and testing.
 - [2024-12-20] **RESOLVED**: Missing edit/delete actions in project list views (#121) - Frontend team implemented comprehensive CRUD actions for todos, members, and messages in project detail page. All list views now have consistent edit/delete functionality with proper modals and confirmation dialogs.
 - [2024-12-20] **TEST COVERAGE**: Added/updated unit test in AuthenticatedLayout.test.tsx to robustly verify root flex layout, sidebar, and main content alignment using test IDs. All layout alignment is now covered by automated tests.
 - [2024-12-20] **RESOLVED**: Next.js 15 params Promise build error (#120) - Backend team updated src/app/api/projects/[id]/members/route.ts to await params Promise and match Next.js 15 requirements. Build now succeeds except for unrelated ESLint errors, which do not block deployment.
 - [2024-12-20] **RESOLVED**: Main content/sidebar vertical misalignment (#119) - Refactored AuthenticatedLayout to use flex row at root, sidebar and main content now top-aligned and responsive across all pages.
-- [2024-12-19] **DEFERRED**: E2E testing moved to backlog - not in current sprint focus
-- [2024-12-19] **RESOLVED**: LoginForm test validation error message mismatch (#116) - Frontend team fixed test expectation to match actual component behavior
-- [2024-12-19] **RESOLVED**: Prisma transaction mock issue (#117) - Backend team fixed project creation tests by adding proper $transaction mock
-- [2024-12-19] **CRITICAL**: E2E tests configured but not executing properly (#118) - Moved to deferred/backlog
-- [2024-12-20] **OPENED**: Main content starts below sidebar (vertical misalignment) (#119) - Documented for frontend team to address
-- [2024-12-20] **OPENED**: Missing edit/delete actions in project list views (todos, members, messages) (#121) - Frontend team to audit and address UX gaps
 
 ## Archive
 ### 2024-12-20
+- [RESOLVED] Login issue after database seeding - Fixed cookie configuration in src/lib/auth.ts. Changed SameSite from 'none' to 'lax' for localhost development. This resolved 401 Unauthorized errors in browser and allows successful login with admin@example.com / loKonoma!!!!!11111.
 - [RESOLVED] #121 Missing edit/delete actions in project list views - Implemented comprehensive CRUD actions for todos, members, and messages in project detail page. Added edit/delete buttons with proper modals and confirmation dialogs. All list views now have consistent UX patterns.
 - [RESOLVED] #120 Next.js 15 params Promise build error - Fixed by awaiting params Promise in API route for Next.js 15 compatibility
 - [RESOLVED] #119 Main content/sidebar vertical misalignment - Fixed by refactoring AuthenticatedLayout to use flex row at root. Sidebar and main content are now flush to the top, responsive, and accessible.
@@ -200,23 +198,22 @@
 **Last Updated**: 2024-12-20
 **Next Review**: 2024-12-21
 
-### AIPM Notes on Issue #121
+### AIPM Notes on Issue #122
 
-#### Problem
-- Edit and delete actions are inconsistently available across project list views:
-  - **Todos (Project View):** No edit button/modal for todos in the project's Todos tab (users cannot edit todos from this view)
-  - **Members:** No edit option for project members (e.g., to change role/permissions)
-  - **Messages:** No edit or delete option for project messages
-- This leads to a fragmented and confusing user experience.
+### Problem
+- The '+ Add Todo' button in the project detail page (Todos tab) does not work. Clicking the button does not open the modal or form to add a new todo. Users are unable to add todos directly from the project view.
 
-#### Expected
-- All list views (todos, members, messages) should provide edit and delete actions where appropriate, consistent with the global Todos page and project edit modal.
-- Users should be able to edit todos, update member roles, and (optionally) edit/delete messages directly from the relevant project tabs.
+### Impact
+- High: Users cannot add todos to a project from the project view, disrupting workflow and project management.
 
-#### Action Required
-- Frontend team to audit all project list views for missing CRUD actions
-- Implement consistent edit/delete options for todos, members, and messages
-- Update @ProjectStatusBoard.md with progress and mark this issue resolved when complete
+### Expected
+- Clicking '+ Add Todo' should open a modal or form to add a new todo, pre-filling the project context if needed. The new todo should appear in the list after submission.
+
+### Action Required
+- Frontend team to investigate and fix the button/modal logic in the project todos view.
+- Ensure the modal opens, the form submits, and the new todo appears in the list.
+- Add/verify tests for this workflow (see @TestingStrategy.md for examples).
+- Update @ProjectStatusBoard.md and @FrontEndStatus.md after resolution.
 
 #### Resolution Summary
 - ✅ **Todos Tab**: Added edit/delete buttons with EditTodoModal and confirmation dialogs
