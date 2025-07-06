@@ -16,6 +16,7 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
+| #114 | 2024-12-19 | Frontend  | Sidebar menu overlap bug           | Open     | Frontend  | High     | User profile overlaps with menu; impacts usability and accessibility |
 | #107 | 2024-12-19 | Backend   | Todo management system             | Open     | Backend   | High     | Todo CRUD endpoints   |
 | #109 | 2024-12-19 | Both      | E2E testing setup                  | Open     | Both      | Medium   | Playwright config     |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Open     | Frontend  | High     | Todo CRUD interfaces  |
@@ -23,6 +24,7 @@
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
+- [2024-12-19] **IDENTIFIED**: Sidebar menu overlap bug (#114) - User profile overlaps with navigation links in sidebar. Impacts usability and accessibility. Fix required before or alongside next major feature.
 - [2024-12-19] **RESOLVED**: Login route test mock issue (#113) - Added validateEmail to auth mock and fixed error message expectations. All backend auth tests now pass.
 - [2024-12-19] **VERIFIED**: Database seeding working perfectly - admin user, 3 projects, 10 todos, memberships, messages, time logs, and recurring todo all created successfully
 - [2024-12-19] **VERIFIED**: Frontend Project Management UI - All components implemented with 36/36 tests passing
