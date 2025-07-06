@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/lib/auth'
 // GET /api/todos/[id]/time - Get time logs for a todo
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser()
@@ -21,9 +21,10 @@ export async function GET(
       )
     }
 
+    const { id } = await params
     // Check if todo exists and user has access
     const todo = await prisma.todo.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         projects: {
           include: {
@@ -71,7 +72,7 @@ export async function GET(
 
     // Get time logs with user information
     const timeLogs = await prisma.todoTime.findMany({
-      where: { todoId: params.id },
+      where: { todoId: id },
       include: {
         user: {
           select: {
@@ -121,7 +122,7 @@ export async function GET(
 // POST /api/todos/[id]/time - Add a time log to a todo
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser()
@@ -137,6 +138,7 @@ export async function POST(
       )
     }
 
+    const { id } = await params
     const body = await request.json()
     const { timeSpent, date, notes } = body
 
@@ -182,7 +184,7 @@ export async function POST(
 
     // Check if todo exists and user has access
     const todo = await prisma.todo.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         projects: {
           include: {
@@ -231,7 +233,7 @@ export async function POST(
     // Create time log
     const timeLog = await prisma.todoTime.create({
       data: {
-        todoId: params.id,
+        todoId: id,
         userId: user.id,
         timeSpent,
         date: dateObj,

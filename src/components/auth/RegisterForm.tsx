@@ -67,7 +67,7 @@ export default function RegisterForm({ onSuccess, onError }: RegisterFormProps) 
   };
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit} role="form">
+    <form className="mt-8 space-y-6" onSubmit={handleSubmit} role="form" aria-label="Registration form">
       {errors.form && (
         <div className="rounded-md bg-red-50 p-4">
           <div className="text-sm text-red-700">{errors.form}</div>
@@ -83,6 +83,7 @@ export default function RegisterForm({ onSuccess, onError }: RegisterFormProps) 
             name="name"
             type="text"
             autoComplete="name"
+            data-testid="name-input"
             className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Enter your full name"
             value={formData.name}
@@ -99,6 +100,7 @@ export default function RegisterForm({ onSuccess, onError }: RegisterFormProps) 
             name="email"
             type="email"
             autoComplete="email"
+            data-testid="email-input"
             className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Enter your email"
             value={formData.email}
@@ -115,6 +117,7 @@ export default function RegisterForm({ onSuccess, onError }: RegisterFormProps) 
             name="password"
             type="password"
             autoComplete="new-password"
+            data-testid="password-input"
             className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Create a password (min 8 characters)"
             value={formData.password}
@@ -127,6 +130,7 @@ export default function RegisterForm({ onSuccess, onError }: RegisterFormProps) 
         <button
           type="submit"
           disabled={isLoading}
+          data-testid="register-button"
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (

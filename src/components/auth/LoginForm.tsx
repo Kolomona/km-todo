@@ -20,6 +20,13 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
     
+    // Check if both fields are empty
+    if (!formData.email && !formData.password) {
+      newErrors.email = 'Email and password are required';
+      setErrors(newErrors);
+      return false;
+    }
+    
     if (!formData.email) {
       newErrors.email = 'Email is required';
     }
@@ -76,7 +83,7 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
   };
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit} role="form">
+    <form className="mt-8 space-y-6" onSubmit={handleSubmit} role="form" aria-label="Login form">
       <div className="rounded-md shadow-sm -space-y-px">
         <div>
           <label htmlFor="email" className="sr-only">
@@ -87,6 +94,7 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
             name="email"
             type="email"
             autoComplete="email"
+            data-testid="email-input"
             className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="Email address"
             value={formData.email}
@@ -103,6 +111,7 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
             name="password"
             type="password"
             autoComplete="current-password"
+            data-testid="password-input"
             className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="Password"
             value={formData.password}
@@ -120,6 +129,7 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
           checked={formData.rememberMe}
           onChange={handleChange}
           disabled={isLoading}
+          data-testid="remember-me-checkbox"
           className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
           aria-label="Remember me for 30 days"
         />
@@ -144,6 +154,7 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
         <button
           type="submit"
           disabled={isLoading}
+          data-testid="login-button"
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (

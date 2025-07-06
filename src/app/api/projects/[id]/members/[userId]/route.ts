@@ -41,7 +41,7 @@ async function checkProjectOwnership(projectId: string, userId: string) {
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string; userId: string } }
+  { params }: { params: Promise<{ id: string; userId: string }> }
 ) {
   try {
     // Get current user
@@ -58,7 +58,7 @@ export async function PUT(
       )
     }
 
-    const { id: projectId, userId: targetUserId } = params
+    const { id: projectId, userId: targetUserId } = await params
     const body = await request.json()
     const { role, permissions } = body
 
@@ -235,7 +235,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; userId: string } }
+  { params }: { params: Promise<{ id: string; userId: string }> }
 ) {
   try {
     // Get current user
@@ -252,7 +252,7 @@ export async function DELETE(
       )
     }
 
-    const { id: projectId, userId: targetUserId } = params
+    const { id: projectId, userId: targetUserId } = await params
 
     // Validate project ID
     if (!projectId || typeof projectId !== 'string') {

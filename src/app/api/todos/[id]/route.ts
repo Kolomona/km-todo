@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/lib/auth'
 // GET /api/todos/[id] - Get a specific todo
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser()
@@ -21,8 +21,9 @@ export async function GET(
       )
     }
 
+    const { id } = await params
     const todo = await prisma.todo.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         creator: {
           select: {
@@ -90,7 +91,7 @@ export async function GET(
       todo.createdBy === user.id ||
       todo.assignedTo === user.id ||
       todo.projects.some((tp) => 
-        tp.project.members?.some((member) => member.userId === user.id)
+        tp.project.members?.some((member: any) => member.userId === user.id)
       )
 
     if (!hasAccess) {
@@ -164,7 +165,7 @@ export async function GET(
 // PUT /api/todos/[id] - Update a todo
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser()
@@ -180,6 +181,7 @@ export async function PUT(
       )
     }
 
+    const { id } = await params
     const body = await request.json()
     const {
       title,
@@ -194,7 +196,7 @@ export async function PUT(
 
     // Find the todo and check access
     const existingTodo = await prisma.todo.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         projects: {
           include: {
@@ -460,7 +462,7 @@ export async function PUT(
 // DELETE /api/todos/[id] - Delete a todo
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser()
@@ -476,9 +478,10 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
     // Find the todo and check access
     const existingTodo = await prisma.todo.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         projects: {
           include: {

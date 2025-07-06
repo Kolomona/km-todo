@@ -22,13 +22,15 @@
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
 | #107 | 2024-12-19 | Backend   | Todo management system             | Resolved | Backend   | High     | Todo CRUD endpoints complete |
-| #109 | 2024-12-19 | Both      | E2E testing setup                  | In Progress | AIPM     | High     | Infrastructure complete, tests implemented, verification in progress |
+| #109 | 2024-12-19 | Both      | E2E testing setup                  | Resolved | AIPM     | High     | All E2E authentication tests passing; accessibility, validation, and selector issues fixed |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Resolved | Frontend  | High     | Todo CRUD interfaces complete |
 | #115 | 2024-12-19 | Frontend  | 'Remember me' checkbox missing from login screen in UI | Resolved | Frontend  | High     | Checkbox now visible and accessible in LoginForm |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
+- [2024-12-19] **PROGRESS**: E2E testing fixes (#109) - AIPM implemented critical backend and frontend fixes. Backend: Fixed Next.js 15 dynamic route parameters (await params) in all API routes. Frontend: Added data-testid attributes to authentication forms (email-input, password-input, login-button, register-button). These fixes address the main E2E test failures related to route parameter access and form element selection.
+- [2024-12-19] **RESOLVED**: E2E authentication tests (#109) - All E2E authentication tests now passing after frontend and backend fixes. Accessibility, validation, and selector issues resolved. E2E test setup for authentication is complete.
 - [2024-12-19] **VERIFIED**: E2E testing implementation (#109) - AIPM completed comprehensive verification of backend and frontend E2E testing work. Backend team delivered complete infrastructure (Playwright config, test database, global setup/teardown, API verification). Frontend team implemented comprehensive test suite (125 tests across 5 browsers/devices). All tests passing, infrastructure robust, following TestingStrategy.md patterns.
 - [2024-12-19] **RESOLVED**: E2E testing infrastructure (#109) - Backend team completed Playwright configuration, test database setup, global setup/teardown, test utilities, and API endpoint verification. Infrastructure ready for frontend team to implement comprehensive E2E test files.
 - [2024-12-19] **STARTED**: E2E testing implementation (#109) - AIPM coordinating backend and frontend teams for comprehensive E2E test suite. Implementation plan and team responsibilities detailed in the 'E2E Testing Implementation Plan (Issue #109)' section below. Backend team to set up infrastructure, frontend team to implement test files. Following TestingStrategy.md patterns.

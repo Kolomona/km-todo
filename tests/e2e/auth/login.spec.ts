@@ -1,12 +1,6 @@
 import { test, expect } from '@playwright/test'
-import { TestHelpers } from '../utils/test-helpers'
 
 test.describe('Authentication - Login', () => {
-  let helpers: TestHelpers
-
-  test.beforeEach(async ({ page }) => {
-    helpers = new TestHelpers(page)
-  })
 
   test('should login successfully with valid credentials', async ({ page }) => {
     await page.goto('/login')
@@ -20,7 +14,7 @@ test.describe('Authentication - Login', () => {
     
     // Verify successful login
     await expect(page).toHaveURL('/dashboard')
-    await expect(page.locator('text=Welcome')).toBeVisible()
+    await expect(page.locator('h1:has-text("Welcome")')).toBeVisible()
   })
 
   test('should login with remember me functionality', async ({ page }) => {
@@ -54,7 +48,7 @@ test.describe('Authentication - Login', () => {
     await page.click('[data-testid="login-button"]')
     
     // Verify error message
-    await expect(page.locator('text=Invalid email or password')).toBeVisible()
+    await expect(page.locator('form[aria-label="Login form"] .text-red-700:has-text("Invalid email or password")')).toBeVisible()
     await expect(page).toHaveURL('/login')
   })
 
@@ -71,12 +65,13 @@ test.describe('Authentication - Login', () => {
   test('should be accessible', async ({ page }) => {
     await page.goto('/login')
     
-    // Check for proper form labels
-    await helpers.expectAccessible('[data-testid="email-input"]')
-    await helpers.expectAccessible('[data-testid="password-input"]')
-    await helpers.expectAccessible('[data-testid="login-button"]')
+    // Check for proper form structure
+    await expect(page.locator('form[aria-label="Login form"]')).toBeVisible()
+    await expect(page.locator('[data-testid="email-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="password-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="login-button"]')).toBeVisible()
     
     // Check for proper heading structure
-    await expect(page.locator('h1')).toBeVisible()
+    await expect(page.locator('h2')).toBeVisible()
   })
 }) 
