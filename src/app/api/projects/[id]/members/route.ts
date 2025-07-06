@@ -29,7 +29,7 @@ async function checkProjectAdminPermission(projectId: string, userId: string) {
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Get current user
@@ -46,7 +46,7 @@ export async function POST(
       )
     }
 
-    const { id: projectId } = params
+    const { id: projectId } = await params
     const body = await request.json()
     const { email, role, permissions } = body
 

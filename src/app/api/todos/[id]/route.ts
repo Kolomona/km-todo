@@ -47,6 +47,15 @@ export async function GET(
                 name: true,
                 description: true,
               },
+              include: {
+                members: {
+                  select: {
+                    id: true,
+                    userId: true,
+                    role: true,
+                  },
+                },
+              },
             },
           },
         },
@@ -91,7 +100,7 @@ export async function GET(
       todo.createdBy === user.id ||
       todo.assignedTo === user.id ||
       todo.projects.some((tp) => 
-        tp.project.members?.some((member: any) => member.userId === user.id)
+        tp.project.members?.some((member) => member.userId === user.id)
       )
 
     if (!hasAccess) {
@@ -300,9 +309,9 @@ export async function PUT(
     }
 
     // Update todo with transaction
-    const updatedTodo = await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx) => {
       // Update the todo
-      const todo = await tx.todo.update({
+      await tx.todo.update({
         where: { id },
         data: {
           ...(title && { title }),
@@ -312,22 +321,6 @@ export async function PUT(
           ...(status && { status }),
           ...(estimatedTime !== undefined && { estimatedTime }),
           ...(assignedTo !== undefined && { assignedTo }),
-        },
-        include: {
-          creator: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-          assignee: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
         },
       })
 
@@ -346,8 +339,6 @@ export async function PUT(
           })),
         })
       }
-
-      return todo
     })
 
     // Fetch the complete updated todo

@@ -69,12 +69,12 @@ export default function TodoModal({
     title: '',
     description: '',
     dueDate: '',
-    priority: 'medium' as const,
+    priority: 'medium' as 'low' | 'medium' | 'high' | 'urgent',
     estimatedTime: '',
     assignedTo: '',
     projectIds: [] as string[],
     recurringPattern: {
-      patternType: 'daily' as const,
+      patternType: 'daily' as 'daily' | 'weekly' | 'monthly' | 'custom',
       patternData: {
         interval: 1,
         dayOfWeek: [] as number[],
