@@ -16,7 +16,8 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| *No open issues in current sprint* | | | | | | | |
+| #119 | 2024-12-20 | Frontend  | Main content starts below sidebar (vertical misalignment) | Open     | Frontend  | High     | Main content area is not vertically aligned with sidebar; see screenshots and AIPM notes |
+| *No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -32,6 +33,7 @@
 - [2024-12-19] **RESOLVED**: LoginForm test validation error message mismatch (#116) - Frontend team fixed test expectation to match actual component behavior
 - [2024-12-19] **RESOLVED**: Prisma transaction mock issue (#117) - Backend team fixed project creation tests by adding proper $transaction mock
 - [2024-12-19] **CRITICAL**: E2E tests configured but not executing properly (#118) - Moved to deferred/backlog
+- [2024-12-20] **OPENED**: Main content starts below sidebar (vertical misalignment) (#119) - Documented for frontend team to address
 
 ## Archive
 ### 2024-12-19
