@@ -1,6 +1,6 @@
 # ProjectStatusBoard.md
 
-## 2024-12-20 - SIDEBAR/MAIN CONTENT ALIGNMENT FIXED, BACKEND BUILD BUG OPENED
+## 2024-12-20 - SIDEBAR/MAIN CONTENT ALIGNMENT FIXED, BACKEND BUILD BUG RESOLVED
 
 ### Project Manager Summary
 - ✅ **Backend Authentication System**: Fully implemented and functional - ALL TESTS PASSING
@@ -12,11 +12,12 @@
 - ✅ **Total Unit Tests**: 246/246 tests passing (100% success rate)
 - ⏸️ **E2E Testing**: Deferred to backlog - not in current sprint focus
 - **Next Priority**: Analytics and UX improvements
+- ⚠️ **Note**: Some ESLint errors remain but do not block the build. These will be addressed in a future sprint.
 
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #120 | 2024-12-20 | Backend   | Next.js build fails: invalid POST export type in projects/[id]/members/route.ts | Open     | Backend   | High     | Type error blocks build. See build logs. Backend team to review and fix export signature. |
+| #119 | 2024-12-20 | Frontend  | Main content starts below sidebar (vertical misalignment) | Open     | Frontend  | High     | Main content area is not vertically aligned with sidebar; see screenshots and AIPM notes |
 | *No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
@@ -25,19 +26,22 @@
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
 | #118 | 2024-12-19 | Both      | E2E tests configured but not executing properly | Deferred | Both      | High     | Playwright configuration issues preventing test execution. Review after analytics sprint. |
+| #120 | 2024-12-20 | Backend   | Next.js 15 build error: params Promise not awaited in API route | Resolved | Backend   | High     | Fixed: Awaited params Promise in src/app/api/projects/[id]/members/route.ts for Next.js 15 compatibility |
 
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **RESOLVED**: Next.js 15 params Promise build error (#120) - Backend team updated src/app/api/projects/[id]/members/route.ts to await params Promise and match Next.js 15 requirements. Build now succeeds except for unrelated ESLint errors, which do not block deployment.
 - [2024-12-20] **RESOLVED**: Main content/sidebar vertical misalignment (#119) - Refactored AuthenticatedLayout to use flex row at root, sidebar and main content now top-aligned and responsive across all pages.
-- [2024-12-20] **OPENED**: Next.js build fails due to invalid POST export type in projects/[id]/members/route.ts (#120) - Assigned to backend team for urgent fix.
 - [2024-12-19] **DEFERRED**: E2E testing moved to backlog - not in current sprint focus
 - [2024-12-19] **RESOLVED**: LoginForm test validation error message mismatch (#116) - Frontend team fixed test expectation to match actual component behavior
 - [2024-12-19] **RESOLVED**: Prisma transaction mock issue (#117) - Backend team fixed project creation tests by adding proper $transaction mock
 - [2024-12-19] **CRITICAL**: E2E tests configured but not executing properly (#118) - Moved to deferred/backlog
+- [2024-12-20] **OPENED**: Main content starts below sidebar (vertical misalignment) (#119) - Documented for frontend team to address
 
 ## Archive
 ### 2024-12-20
+- [RESOLVED] #120 Next.js 15 params Promise build error - Fixed by awaiting params Promise in API route for Next.js 15 compatibility
 - [RESOLVED] #119 Main content/sidebar vertical misalignment - Fixed by refactoring AuthenticatedLayout to use flex row at root. Sidebar and main content are now flush to the top, responsive, and accessible.
 
 ### 2024-12-19
