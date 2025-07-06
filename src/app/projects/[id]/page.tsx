@@ -80,6 +80,17 @@ export default function ProjectDetailPage() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
+  
+  // New state for CRUD actions
+  const [showEditTodo, setShowEditTodo] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [showDeleteTodoConfirm, setShowDeleteTodoConfirm] = useState(false);
+  const [showEditMember, setShowEditMember] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<ProjectMember | null>(null);
+  const [showDeleteMemberConfirm, setShowDeleteMemberConfirm] = useState(false);
+  const [showEditMessage, setShowEditMessage] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<ProjectMessage | null>(null);
+  const [showDeleteMessageConfirm, setShowDeleteMessageConfirm] = useState(false);
 
   useEffect(() => {
     if (projectId) {
@@ -156,6 +167,100 @@ export default function ProjectDetailPage() {
       case 'cancelled': return 'bg-red-100 text-red-800';
       case 'pending': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // New handlers for CRUD actions
+  const handleEditTodo = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setShowEditTodo(true);
+  };
+
+  const handleDeleteTodo = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setShowDeleteTodoConfirm(true);
+  };
+
+  const handleConfirmDeleteTodo = async () => {
+    if (!selectedTodo) return;
+    
+    try {
+      const response = await fetch(`/api/todos/${selectedTodo.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete todo');
+      }
+
+      setTodos(todos.filter(t => t.id !== selectedTodo.id));
+      setShowDeleteTodoConfirm(false);
+      setSelectedTodo(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete todo');
+    }
+  };
+
+  const handleEditMember = (member: ProjectMember) => {
+    setSelectedMember(member);
+    setShowEditMember(true);
+  };
+
+  const handleDeleteMember = (member: ProjectMember) => {
+    setSelectedMember(member);
+    setShowDeleteMemberConfirm(true);
+  };
+
+  const handleConfirmDeleteMember = async () => {
+    if (!selectedMember) return;
+    
+    try {
+      const response = await fetch(`/api/projects/${projectId}/members/${selectedMember.userId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to remove member');
+      }
+
+      setProject(prev => prev ? {
+        ...prev,
+        members: prev.members.filter(m => m.id !== selectedMember.id)
+      } : null);
+      setShowDeleteMemberConfirm(false);
+      setSelectedMember(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to remove member');
+    }
+  };
+
+  const handleEditMessage = (message: ProjectMessage) => {
+    setSelectedMessage(message);
+    setShowEditMessage(true);
+  };
+
+  const handleDeleteMessage = (message: ProjectMessage) => {
+    setSelectedMessage(message);
+    setShowDeleteMessageConfirm(true);
+  };
+
+  const handleConfirmDeleteMessage = async () => {
+    if (!selectedMessage) return;
+    
+    try {
+      const response = await fetch(`/api/projects/${projectId}/messages/${selectedMessage.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete message');
+      }
+
+      setMessages(messages.filter(m => m.id !== selectedMessage.id));
+      setShowDeleteMessageConfirm(false);
+      setSelectedMessage(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete message');
     }
   };
 
@@ -340,6 +445,22 @@ export default function ProjectDetailPage() {
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(todo.status)}`}>
                               {todo.status.replace('_', ' ')}
                             </span>
+                            <div className="flex items-center space-x-1 ml-2">
+                              <button
+                                onClick={() => handleEditTodo(todo)}
+                                className="p-1 text-gray-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                                title="Edit todo"
+                              >
+                                <PencilIcon className="h-4 w-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteTodo(todo)}
+                                className="p-1 text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
+                                title="Delete todo"
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -387,6 +508,24 @@ export default function ProjectDetailPage() {
                         <span className="text-sm text-gray-500">
                           Joined {formatDate(member.joinedAt)}
                         </span>
+                        {member.role !== 'owner' && (
+                          <div className="flex items-center space-x-1 ml-2">
+                            <button
+                              onClick={() => handleEditMember(member)}
+                              className="p-1 text-gray-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                              title="Edit member role"
+                            >
+                              <PencilIcon className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteMember(member)}
+                              className="p-1 text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
+                              title="Remove member"
+                            >
+                              <TrashIcon className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -422,6 +561,22 @@ export default function ProjectDetailPage() {
                             </div>
                             <p className="mt-1 text-sm text-gray-700">{message.message}</p>
                           </div>
+                          <div className="flex items-center space-x-1">
+                            <button
+                              onClick={() => handleEditMessage(message)}
+                              className="p-1 text-gray-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                              title="Edit message"
+                            >
+                              <PencilIcon className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteMessage(message)}
+                              className="p-1 text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
+                              title="Delete message"
+                            >
+                              <TrashIcon className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -447,7 +602,8 @@ export default function ProjectDetailPage() {
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
           <DeleteConfirmModal
-            projectName={project.name}
+            title="Delete Project"
+            message={`Are you sure you want to delete "${project.name}"? This action cannot be undone.`}
             onClose={() => setShowDeleteConfirm(false)}
             onConfirm={handleDeleteProject}
           />
@@ -462,6 +618,91 @@ export default function ProjectDetailPage() {
               fetchProjectData();
               setShowAddMember(false);
             }}
+          />
+        )}
+
+        {/* New modals for CRUD actions */}
+        {showEditTodo && selectedTodo && (
+          <EditTodoModal
+            todo={selectedTodo}
+            onClose={() => {
+              setShowEditTodo(false);
+              setSelectedTodo(null);
+            }}
+            onSuccess={(updatedTodo) => {
+              setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
+              setShowEditTodo(false);
+              setSelectedTodo(null);
+            }}
+          />
+        )}
+
+        {showDeleteTodoConfirm && selectedTodo && (
+          <DeleteConfirmModal
+            title="Delete Todo"
+            message={`Are you sure you want to delete "${selectedTodo.title}"? This action cannot be undone.`}
+            onClose={() => {
+              setShowDeleteTodoConfirm(false);
+              setSelectedTodo(null);
+            }}
+            onConfirm={handleConfirmDeleteTodo}
+          />
+        )}
+
+        {showEditMember && selectedMember && (
+          <EditMemberModal
+            member={selectedMember}
+            onClose={() => {
+              setShowEditMember(false);
+              setSelectedMember(null);
+            }}
+            onSuccess={(updatedMember) => {
+              setProject(prev => prev ? {
+                ...prev,
+                members: prev.members.map(m => m.id === updatedMember.id ? updatedMember : m)
+              } : null);
+              setShowEditMember(false);
+              setSelectedMember(null);
+            }}
+          />
+        )}
+
+        {showDeleteMemberConfirm && selectedMember && (
+          <DeleteConfirmModal
+            title="Remove Member"
+            message={`Are you sure you want to remove ${selectedMember.user.name} from this project?`}
+            onClose={() => {
+              setShowDeleteMemberConfirm(false);
+              setSelectedMember(null);
+            }}
+            onConfirm={handleConfirmDeleteMember}
+          />
+        )}
+
+        {showEditMessage && selectedMessage && (
+          <EditMessageModal
+            message={selectedMessage}
+            onClose={() => {
+              setShowEditMessage(false);
+              setSelectedMessage(null);
+            }}
+            onSuccess={(updatedMessage) => {
+              setMessages(messages.map(m => m.id === updatedMessage.id ? updatedMessage : m));
+              setShowEditMessage(false);
+              setSelectedMessage(null);
+            }}
+          />
+        )}
+
+        {showDeleteMessageConfirm && selectedMessage && (
+          <DeleteConfirmModal
+            title="Delete Message"
+            message="Are you sure you want to delete this message? This action cannot be undone."
+            onClose={() => {
+              setShowDeleteMessageConfirm(false);
+              setSelectedMessage(null);
+            }}
+            onConfirm={handleConfirmDeleteMessage}
           />
         )}
       </div>
@@ -596,20 +837,19 @@ function EditProjectModal({ project, onClose, onSuccess }: EditProjectModalProps
 
 // Delete Confirmation Modal Component
 interface DeleteConfirmModalProps {
-  projectName: string;
+  title: string;
+  message: string;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-function DeleteConfirmModal({ projectName, onClose, onConfirm }: DeleteConfirmModalProps) {
+function DeleteConfirmModal({ title, message, onClose, onConfirm }: DeleteConfirmModalProps) {
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div className="mt-3">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Delete Project</h3>
-          <p className="text-sm text-gray-600 mb-6">
-            Are you sure you want to delete "{projectName}"? This action cannot be undone.
-          </p>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
+          <p className="text-sm text-gray-600 mb-6">{message}</p>
           
           <div className="flex justify-end space-x-3">
             <button
@@ -748,6 +988,434 @@ function AddMemberModal({ projectId, onClose, onSuccess }: AddMemberModalProps) 
                 className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
               >
                 {loading ? 'Adding...' : 'Add Member'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// New modal components for CRUD actions
+interface EditTodoModalProps {
+  todo: Todo;
+  onClose: () => void;
+  onSuccess: (todo: Todo) => void;
+}
+
+function EditTodoModal({ todo, onClose, onSuccess }: EditTodoModalProps) {
+  const [formData, setFormData] = useState({
+    title: todo.title,
+    description: todo.description || '',
+    dueDate: todo.dueDate ? todo.dueDate.split('T')[0] : '',
+    priority: todo.priority,
+    status: todo.status,
+    estimatedTime: todo.estimatedTime?.toString() || ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.title.trim()) {
+      setError('Todo title is required');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(`/api/todos/${todo.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: formData.title.trim(),
+          description: formData.description.trim() || undefined,
+          dueDate: formData.dueDate || undefined,
+          priority: formData.priority,
+          status: formData.status,
+          estimatedTime: formData.estimatedTime ? parseInt(formData.estimatedTime) : undefined
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to update todo');
+      }
+
+      const data = await response.json();
+      onSuccess(data.todo);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div className="mt-3">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Edit Todo</h3>
+          
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+            
+            <div className="mb-4">
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter todo title"
+                disabled={loading}
+              />
+            </div>
+            
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter description (optional)"
+                disabled={loading}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-1">
+                Due Date
+              </label>
+              <input
+                type="date"
+                id="dueDate"
+                name="dueDate"
+                value={formData.dueDate}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                disabled={loading}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="priority" className="block text-sm font-medium text-gray-700 mb-1">
+                  Priority
+                </label>
+                <select
+                  id="priority"
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  disabled={loading}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  disabled={loading}
+                >
+                  <option value="pending">Pending</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="estimatedTime" className="block text-sm font-medium text-gray-700 mb-1">
+                Estimated Time (minutes)
+              </label>
+              <input
+                type="number"
+                id="estimatedTime"
+                name="estimatedTime"
+                value={formData.estimatedTime}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter estimated time"
+                disabled={loading}
+              />
+            </div>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              >
+                {loading ? 'Updating...' : 'Update Todo'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface EditMemberModalProps {
+  member: ProjectMember;
+  onClose: () => void;
+  onSuccess: (member: ProjectMember) => void;
+}
+
+function EditMemberModal({ member, onClose, onSuccess }: EditMemberModalProps) {
+  const [formData, setFormData] = useState({
+    role: member.role
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(`/api/projects/${member.projectId}/members/${member.userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          role: formData.role
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to update member role');
+      }
+
+      const data = await response.json();
+      onSuccess(data.member);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div className="mt-3">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Edit Member Role</h3>
+          
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Member
+              </label>
+              <p className="text-sm text-gray-900">{member.user.name} ({member.user.email})</p>
+            </div>
+            
+            <div className="mb-6">
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                Role *
+              </label>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                disabled={loading}
+              >
+                <option value="viewer">Viewer</option>
+                <option value="editor">Editor</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              >
+                {loading ? 'Updating...' : 'Update Role'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface EditMessageModalProps {
+  message: ProjectMessage;
+  onClose: () => void;
+  onSuccess: (message: ProjectMessage) => void;
+}
+
+function EditMessageModal({ message, onClose, onSuccess }: EditMessageModalProps) {
+  const [formData, setFormData] = useState({
+    message: message.message
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.message.trim()) {
+      setError('Message content is required');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(`/api/projects/${message.projectId}/messages/${message.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: formData.message.trim()
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to update message');
+      }
+
+      const data = await response.json();
+      onSuccess(data.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div className="mt-3">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Edit Message</h3>
+          
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+            
+            <div className="mb-6">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={4}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter your message"
+                disabled={loading}
+              />
+            </div>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              >
+                {loading ? 'Updating...' : 'Update Message'}
               </button>
             </div>
           </form>

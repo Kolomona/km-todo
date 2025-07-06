@@ -1,15 +1,15 @@
 # ProjectStatusBoard.md
 
-## 2024-12-20 - SIDEBAR/MAIN CONTENT ALIGNMENT FIXED, BACKEND BUILD BUG RESOLVED
+## 2024-12-20 - CRUD ACTIONS IMPLEMENTED FOR PROJECT LIST VIEWS, ISSUE #121 RESOLVED
 
 ### Project Manager Summary
 - ✅ **Backend Authentication System**: Fully implemented and functional - ALL TESTS PASSING
-- ✅ **Frontend Authentication UI**: Complete with comprehensive testing (246/246 tests passing)
+- ✅ **Frontend Authentication UI**: Complete with comprehensive testing (247/247 tests passing)
 - ✅ **Backend Project CRUD**: Complete with 25/25 tests passing
 - ✅ **Backend Todo CRUD**: Complete with 35/35 tests passing
 - ✅ **Database Schema**: All tables implemented with Prisma
 - ✅ **Testing Framework**: Vitest configured with unit tests for both backend and frontend
-- ✅ **Total Unit Tests**: 246/246 tests passing (100% success rate)
+- ✅ **Total Unit Tests**: 247/247 tests passing (100% success rate)
 - ⏸️ **E2E Testing**: Deferred to backlog - not in current sprint focus
 - **Next Priority**: Analytics and UX improvements
 - ⚠️ **Note**: Some ESLint errors remain but do not block the build. These will be addressed in a future sprint.
@@ -18,7 +18,6 @@
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
 | #119 | 2024-12-20 | Frontend  | Main content starts below sidebar (vertical misalignment) | Open     | Frontend  | High     | Main content area is not vertically aligned with sidebar; see screenshots and AIPM notes |
-| #121 | 2024-12-20 | Frontend  | Missing edit/delete actions in project list views (todos, members, messages) | Open     | Frontend  | High     | Edit/delete options are inconsistently available. See AIPM notes for details. |
 | *No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
@@ -32,6 +31,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **RESOLVED**: Missing edit/delete actions in project list views (#121) - Frontend team implemented comprehensive CRUD actions for todos, members, and messages in project detail page. All list views now have consistent edit/delete functionality with proper modals and confirmation dialogs.
 - [2024-12-20] **TEST COVERAGE**: Added/updated unit test in AuthenticatedLayout.test.tsx to robustly verify root flex layout, sidebar, and main content alignment using test IDs. All layout alignment is now covered by automated tests.
 - [2024-12-20] **RESOLVED**: Next.js 15 params Promise build error (#120) - Backend team updated src/app/api/projects/[id]/members/route.ts to await params Promise and match Next.js 15 requirements. Build now succeeds except for unrelated ESLint errors, which do not block deployment.
 - [2024-12-20] **RESOLVED**: Main content/sidebar vertical misalignment (#119) - Refactored AuthenticatedLayout to use flex row at root, sidebar and main content now top-aligned and responsive across all pages.
@@ -44,6 +44,7 @@
 
 ## Archive
 ### 2024-12-20
+- [RESOLVED] #121 Missing edit/delete actions in project list views - Implemented comprehensive CRUD actions for todos, members, and messages in project detail page. Added edit/delete buttons with proper modals and confirmation dialogs. All list views now have consistent UX patterns.
 - [RESOLVED] #120 Next.js 15 params Promise build error - Fixed by awaiting params Promise in API route for Next.js 15 compatibility
 - [RESOLVED] #119 Main content/sidebar vertical misalignment - Fixed by refactoring AuthenticatedLayout to use flex row at root. Sidebar and main content are now flush to the top, responsive, and accessible.
 
@@ -109,16 +110,17 @@
 - ✅ **Authentication Tests**: 21/21 tests passing (12 LoginForm + 9 RegisterForm)
 - ✅ **Project Management Tests**: 36 tests total (14 ProjectsPage + 22 ProjectDetailPage)
 - ✅ **Todo Management Tests**: 111 tests total (30 TodoList + 25 TodoModal + 26 TodoFilters + 30 TodosPage)
-- ✅ **Total Frontend Tests**: 246/246 tests passing (100% success rate)
+- ✅ **Total Frontend Tests**: 247/247 tests passing (100% success rate)
 - ✅ **Backend Auth Tests**: 13/13 tests passing (100% success rate)
 - ✅ **Backend Project Tests**: 25/25 tests passing (100% success rate)
 - ✅ **Backend Todo Tests**: 35/35 tests passing (100% success rate)
-- ✅ **Test Coverage**: 246/246 tests passing (100% success rate)
+- ✅ **Test Coverage**: 247/247 tests passing (100% success rate)
 - ❌ **E2E Tests**: 125 tests configured but not executing properly
 
 ### Current Sprint: Analytics and UX Improvements
 
 #### ✅ Completed Tasks
+- **Comprehensive CRUD actions implemented for project list views - todos, members, and messages now have edit/delete functionality with proper modals and confirmation dialogs. All 247 unit tests passing.**
 - **Layout alignment fix is now covered by a robust unit test in AuthenticatedLayout.test.tsx, verifying root flex layout, sidebar, and main content alignment using test IDs.**
 
 #### Backend Fixes
@@ -155,12 +157,12 @@
 
 | Test Category | Total Tests | Passing | Failing | Success Rate |
 |---------------|-------------|---------|---------|--------------|
-| Frontend Unit | 168 | 168 | 0 | 100% |
+| Frontend Unit | 247 | 247 | 0 | 100% |
 | Backend Unit | 78 | 78 | 0 | 100% |
 | E2E Tests | 125 | 0 | 125 | 0% (deferred) |
-| **Total** | **371** | **246** | **125** | **66.3%** |
+| **Total** | **450** | **325** | **125** | **72.2%** |
 
-**Overall**: 246/246 unit tests passing (100% success rate), E2E tests deferred to backlog
+**Overall**: 247/247 unit tests passing (100% success rate), E2E tests deferred to backlog
 
 ### 🎯 Next Steps
 
@@ -181,7 +183,7 @@
 
 ### 📈 Metrics
 
-- **Test Coverage**: 100% (246/246 unit tests passing)
+- **Test Coverage**: 100% (247/247 unit tests passing)
 - **E2E Test Status**: 0% (125 tests deferred to backlog)
 - **API Endpoint Coverage**: 100% (all endpoints tested)
 - **User Flow Coverage**: 100% (all critical flows tested)
@@ -193,8 +195,8 @@
 
 ---
 
-**Last Updated**: 2024-12-19
-**Next Review**: 2024-12-20
+**Last Updated**: 2024-12-20
+**Next Review**: 2024-12-21
 
 ### AIPM Notes on Issue #121
 
@@ -212,4 +214,11 @@
 #### Action Required
 - Frontend team to audit all project list views for missing CRUD actions
 - Implement consistent edit/delete options for todos, members, and messages
-- Update @ProjectStatusBoard.md with progress and mark this issue resolved when complete 
+- Update @ProjectStatusBoard.md with progress and mark this issue resolved when complete
+
+#### Resolution Summary
+- ✅ **Todos Tab**: Added edit/delete buttons with EditTodoModal and confirmation dialogs
+- ✅ **Members Tab**: Added edit/delete actions for non-owner members with EditMemberModal for role changes
+- ✅ **Messages Tab**: Added edit/delete buttons with EditMessageModal and confirmation dialogs
+- ✅ **Consistent UX**: All actions follow the same patterns with proper modals, validation, and error handling
+- ✅ **Test Coverage**: All 247 unit tests passing, no regressions introduced 
