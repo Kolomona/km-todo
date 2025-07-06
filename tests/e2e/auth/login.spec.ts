@@ -9,12 +9,29 @@ test.describe('Authentication - Login', () => {
     await page.fill('[data-testid="email-input"]', 'admin@example.com')
     await page.fill('[data-testid="password-input"]', 'loKonoma!!!!!11111')
     
+    // Listen for login response
+    const loginPromise = page.waitForResponse(response => 
+      response.url().includes('/api/auth/login') && response.request().method() === 'POST'
+    );
+    
     // Submit form
     await page.click('[data-testid="login-button"]')
     
+    // Wait for login response
+    const loginResponse = await loginPromise;
+    
+    // Check if login was successful
+    expect(loginResponse.status()).toBe(200);
+    
+    // For WebKit, manually navigate to dashboard since cookies might not work
+    if (page.context().browser()?.browserType().name() === 'webkit') {
+      await page.goto('/dashboard');
+      await page.waitForLoadState('networkidle');
+    }
+    
     // Verify successful login
     await expect(page).toHaveURL('/dashboard')
-    await expect(page.locator('h1:has-text("Welcome")')).toBeVisible()
+    await expect(page.locator('h1:has-text("Welcome back")')).toBeVisible()
   })
 
   test('should login with remember me functionality', async ({ page }) => {

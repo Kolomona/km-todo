@@ -57,16 +57,22 @@ export async function deleteSession(sessionId: string): Promise<void> {
 export async function setSessionCookie(sessionId: string, persistent: boolean = false): Promise<void> {
   const cookieStore = await cookies()
   
+  // Use more permissive cookie settings for E2E tests and dev
+  const isE2E = process.env.PLAYWRIGHT_TEST === 'true' || process.env.NODE_ENV !== 'production'
+  const isNipIo = process.env.PLAYWRIGHT_TEST === 'true' // When using nip.io domain
+
   const cookieOptions: {
     httpOnly: boolean;
     secure: boolean;
-    sameSite: 'lax';
+    sameSite: 'lax' | 'none';
     path: string;
     maxAge?: number;
   } = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    // For nip.io E2E testing, use secure: true and SameSite: 'none'
+    // For local development, use secure: false
+    secure: isNipIo ? true : (isE2E ? false : process.env.NODE_ENV === 'production'),
+    sameSite: isNipIo ? 'none' : (isE2E ? 'none' : 'lax'),
     path: '/',
   }
   

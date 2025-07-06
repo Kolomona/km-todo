@@ -64,7 +64,11 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
         throw new Error(data.error?.message || 'Login failed');
       }
 
+      // Call onSuccess callback first
       onSuccess?.();
+      
+      // Use direct window.location for better cross-browser compatibility
+      window.location.href = '/dashboard';
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';
       setErrors({ email: errorMessage });
