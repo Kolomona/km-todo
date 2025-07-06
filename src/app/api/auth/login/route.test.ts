@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 import { POST } from './route'
 import { prisma } from '@/lib/prisma'
-import { verifyPassword, createSession, setSessionCookie } from '@/lib/auth'
+import { verifyPassword, createSession, setSessionCookie, validateEmail } from '@/lib/auth'
 
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
@@ -21,6 +21,7 @@ vi.mock('@/lib/auth', () => ({
   verifyPassword: vi.fn(),
   createSession: vi.fn(),
   setSessionCookie: vi.fn(),
+  validateEmail: vi.fn(),
 }))
 
 describe('/api/auth/login', () => {
@@ -46,6 +47,7 @@ describe('/api/auth/login', () => {
 
     // Mock dependencies
     vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
+    vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(verifyPassword).mockResolvedValue(true)
     vi.mocked(createSession).mockResolvedValue(mockSessionId)
     vi.mocked(setSessionCookie).mockResolvedValue()
@@ -81,6 +83,7 @@ describe('/api/auth/login', () => {
   })
 
   it('should return 400 for invalid credentials', async () => {
+    vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
 
     const request = new NextRequest('http://localhost:3000/api/auth/login', {
@@ -95,7 +98,7 @@ describe('/api/auth/login', () => {
     const data = await response.json()
 
     expect(response.status).toBe(400)
-    expect(data.error.message).toContain('Invalid credentials')
+    expect(data.error.message).toContain('Invalid email or password')
   })
 
   it('should return 400 for wrong password', async () => {
@@ -106,6 +109,7 @@ describe('/api/auth/login', () => {
       passwordHash: 'hashedpassword',
     }
 
+    vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
     vi.mocked(verifyPassword).mockResolvedValue(false)
 
@@ -121,6 +125,6 @@ describe('/api/auth/login', () => {
     const data = await response.json()
 
     expect(response.status).toBe(400)
-    expect(data.error.message).toContain('Invalid credentials')
+    expect(data.error.message).toContain('Invalid email or password')
   })
 }) 
