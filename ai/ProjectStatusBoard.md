@@ -18,7 +18,8 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-*No open issues in current sprint* | | | | | | | |
+| #123 | 2024-12-20 | Frontend  | Add Todo modal is not styled and missing submit button | Open     | Frontend  | High     | Modal appears broken: missing styles and no submit/confirmation button. See AIPM notes below. |
+*No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -31,6 +32,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **OPENED**: Add Todo modal is not styled and missing submit button (#123) - Frontend team to fix modal styling and ensure a visible submit/confirmation button is present. Modal must be fully functional and accessible. See AIPM notes below for details and next steps.
 - [2024-12-20] **RESOLVED**: '+ Add Todo' button does not work in project todos view (#122) - Frontend team implemented missing functionality. Button now opens TodoModal with project context pre-filled. Users can add todos directly from project view. Added comprehensive unit tests (24/24 passing). All 249 unit tests passing.
 - [2024-12-20] **RESOLVED**: Login issue after database seeding - Fixed cookie configuration in src/lib/auth.ts. Changed SameSite from 'none' to 'lax' for localhost development to resolve 401 Unauthorized errors in browser. Login now works correctly with admin@example.com / loKonoma!!!!!11111.
 - [2024-12-20] **ENHANCED**: Database seeding script improved - Backend team updated prisma/seed.ts to ensure comprehensive database cleanup before seeding. Now deletes all data in proper order to respect foreign key constraints, ensuring clean slate for development and testing.
@@ -199,20 +201,21 @@
 **Last Updated**: 2024-12-20
 **Next Review**: 2024-12-21
 
-### AIPM Notes on Issue #122
+### AIPM Notes on Issue #123
 
-### Problem
-- The '+ Add Todo' button in the project detail page (Todos tab) does not work. Clicking the button does not open the modal or form to add a new todo. Users are unable to add todos directly from the project view.
+#### Problem
+- The Add Todo modal, when opened, is not styled properly and is missing a visible submit/confirmation button. Users cannot add todos from the modal.
 
-### Impact
-- High: Users cannot add todos to a project from the project view, disrupting workflow and project management.
+#### Impact
+- High: Users are blocked from adding todos via the modal, breaking a core workflow.
 
-### Expected
-- Clicking '+ Add Todo' should open a modal or form to add a new todo, pre-filling the project context if needed. The new todo should appear in the list after submission.
+#### Expected
+- The modal should be fully styled, accessible, and include all required form fields and a visible submit/confirmation button.
+- The button should be enabled when required fields are filled and should trigger todo creation.
 
-### Action Required
-- Frontend team to investigate and fix the button/modal logic in the project todos view.
-- Ensure the modal opens, the form submits, and the new todo appears in the list.
+#### Action Required
+- Frontend team to fix modal styling and ensure a visible, accessible submit/confirmation button is present.
+- Ensure all form fields are visible and accessible.
 - Add/verify tests for this workflow (see @TestingStrategy.md for examples).
 - Update @ProjectStatusBoard.md and @FrontEndStatus.md after resolution.
 
