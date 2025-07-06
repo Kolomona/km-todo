@@ -19,10 +19,12 @@
 | #107 | 2024-12-19 | Backend   | Todo management system             | Open     | Backend   | High     | Todo CRUD endpoints   |
 | #109 | 2024-12-19 | Both      | E2E testing setup                  | Open     | Both      | Medium   | Playwright config     |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Open     | Frontend  | High     | Todo CRUD interfaces  |
+| #112 | 2024-12-19 | Backend   | Database seeding with sample data  | Open     | Backend   | Medium   | Create admin user and sample projects/todos |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
+- [2024-12-19] **NEW ISSUE**: Database seeding required (#112) - Create admin user (admin@example.com / loKonoma!!!!!11111) and sample projects/todos for testing
 - [2024-12-19] **COMPLETED**: Frontend Project Management UI - All components implemented with 36/36 tests passing
 - [2024-12-19] **COMPLETED**: Project CRUD operations - All endpoints implemented with 25/25 tests passing
 - [2024-12-19] **RESOLVED**: Backend registration endpoint test issues fixed - all 82 tests passing
@@ -55,8 +57,37 @@
 
 ### Next Milestones
 1. **Backend Priority**: Implement Todo CRUD operations (#107)
-2. **Frontend Priority**: Build todo management UI components (#111)
-3. **Integration**: Complete E2E testing setup (#109)
+2. **Backend Priority**: Database seeding with sample data (#112)
+3. **Frontend Priority**: Build todo management UI components (#111)
+4. **Integration**: Complete E2E testing setup (#109)
+
+### Database Seeding Requirements (#112)
+**Backend Team Task**: Create database seed script with sample data
+
+**Required Seed Data:**
+- **Admin User**: 
+  - Email: `admin@example.com`
+  - Password: `loKonoma!!!!!11111`
+  - Name: `Admin User`
+  - Role: Project owner
+- **Sample Projects**: 2-3 projects with different types (personal, work, team)
+- **Sample Todos**: 5-10 todos across projects with various priorities and statuses
+- **Sample Project Members**: Add admin user to all projects as owner
+- **Sample Messages**: 2-3 project messages for communication testing
+
+**Implementation Requirements:**
+- Create `prisma/seed.ts` script using Prisma Client
+- Use proper password hashing for admin user
+- Include realistic sample data for testing all features
+- Ensure data relationships are properly established
+- Add npm script: `"db:seed": "tsx prisma/seed.ts"`
+- Document seed data in README.md for development setup
+
+**Testing Requirements:**
+- Verify admin user can login with provided credentials
+- Confirm all sample data displays correctly in frontend
+- Test project and todo relationships work properly
+- Update BackEndStatus.md with seeding completion
 
 ### Communication Protocol
 - **Backend Team**: Update BackEndStatus.md with progress and blockers
