@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KM-TODO: Next.js + Docker + Postgres
 
-## Getting Started
+This project is a [Next.js](https://nextjs.org) app with a Dockerized Postgres database, ready for both local development and self-hosted production deployment (e.g., on a DigitalOcean VPS).
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Getting Started (Local Development)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Start the Postgres database (in Docker):**
+   ```bash
+   npm run db:up
+   ```
+   This uses Docker Compose to start a local Postgres container.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   This will:
+   - Ensure the database is running
+   - Wait for Postgres to be ready
+   - Start Next.js in development mode (with hot reload)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Open your browser:**
+   [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 🐳 Production Deployment (VPS, e.g., DigitalOcean)
+
+1. **Copy your project to your VPS.**
+2. **Set up your environment variables:**
+   - Use `.env.production` or set `DATABASE_URL` and `NODE_ENV` in your deployment environment.
+3. **Build and start everything with Docker Compose:**
+   ```bash
+   docker compose up --build -d
+   ```
+   This will:
+   - Build your Next.js app image
+   - Start both the app and Postgres containers
+   - Serve your app on port 3000 (and Postgres on 5432)
+
+---
+
+## ⚙️ Environment Variables
+
+- **Local development (`.env`):**
+  ```env
+  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
+  NODE_ENV=development
+  ```
+- **Production (`.env.production` or Docker Compose env):**
+  ```env
+  DATABASE_URL=postgres://postgres:postgres@db:5432/km_todo
+  NODE_ENV=production
+  ```
+
+---
+
+## 🛠️ Useful Commands
+
+- `npm run db:up`    – Start the Postgres container
+- `npm run db:down`  – Stop and remove containers
+- `npm run dev`      – Start dev server (with DB)
+
+---
+
+## 📦 Project Structure
+- `docker-compose.yml` – Defines both app and database services
+- `Dockerfile`         – Builds the Next.js app for production
+- `.env`, `.env.production` – Environment variables for dev and prod
+
+---
+
+## Prisma
+- The `DATABASE_URL` is used by Prisma for migrations and queries.
+- Use `npx prisma migrate dev` for local development.
+
+---
 
 ## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Docker Compose Docs](https://docs.docker.com/compose/)
