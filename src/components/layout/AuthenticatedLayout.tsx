@@ -65,21 +65,9 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 z-40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        >
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
-        </div>
-      )}
-
+    <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`w-64 flex-shrink-0 h-screen bg-white shadow-lg z-50 transition-transform duration-300 ease-in-out ${sidebarOpen ? '' : ''}`}>
         {/* Sidebar header */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 flex-shrink-0">
           <h1 className="text-xl font-semibold text-gray-900">KM Todo</h1>
@@ -92,7 +80,6 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
             </svg>
           </button>
         </div>
-
         {/* Sidebar content - flex container */}
         <div className="flex flex-col h-full">
           {/* Navigation section - scrollable */}
@@ -156,7 +143,6 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
               </Link>
             </div>
           </nav>
-
           {/* User profile section - fixed at bottom */}
           <div className="flex-shrink-0 p-4 border-t border-gray-200">
             <div className="flex items-center">
@@ -186,7 +172,7 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="flex-1 flex flex-col min-h-screen">
         {/* Top bar */}
         <div className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
@@ -198,17 +184,14 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            
             <div className="flex-1 lg:hidden"></div>
-            
             <div className="flex items-center space-x-4">
               <h2 className="text-lg font-medium text-gray-900">{title}</h2>
             </div>
           </div>
         </div>
-
         {/* Page content */}
-        <main className="py-6">
+        <main className="py-6 flex-1">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </div>

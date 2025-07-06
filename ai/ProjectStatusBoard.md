@@ -1,6 +1,6 @@
 # ProjectStatusBoard.md
 
-## 2024-12-19 - E2E TESTING DEFERRED - FOCUS ON ANALYTICS AND UX IMPROVEMENTS
+## 2024-12-20 - SIDEBAR/MAIN CONTENT ALIGNMENT FIXED, BACKEND BUILD BUG OPENED
 
 ### Project Manager Summary
 - ✅ **Backend Authentication System**: Fully implemented and functional - ALL TESTS PASSING
@@ -16,7 +16,7 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #119 | 2024-12-20 | Frontend  | Main content starts below sidebar (vertical misalignment) | Open     | Frontend  | High     | Main content area is not vertically aligned with sidebar; see screenshots and AIPM notes |
+| #120 | 2024-12-20 | Backend   | Next.js build fails: invalid POST export type in projects/[id]/members/route.ts | Open     | Backend   | High     | Type error blocks build. See build logs. Backend team to review and fix export signature. |
 | *No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
@@ -29,13 +29,17 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **RESOLVED**: Main content/sidebar vertical misalignment (#119) - Refactored AuthenticatedLayout to use flex row at root, sidebar and main content now top-aligned and responsive across all pages.
+- [2024-12-20] **OPENED**: Next.js build fails due to invalid POST export type in projects/[id]/members/route.ts (#120) - Assigned to backend team for urgent fix.
 - [2024-12-19] **DEFERRED**: E2E testing moved to backlog - not in current sprint focus
 - [2024-12-19] **RESOLVED**: LoginForm test validation error message mismatch (#116) - Frontend team fixed test expectation to match actual component behavior
 - [2024-12-19] **RESOLVED**: Prisma transaction mock issue (#117) - Backend team fixed project creation tests by adding proper $transaction mock
 - [2024-12-19] **CRITICAL**: E2E tests configured but not executing properly (#118) - Moved to deferred/backlog
-- [2024-12-20] **OPENED**: Main content starts below sidebar (vertical misalignment) (#119) - Documented for frontend team to address
 
 ## Archive
+### 2024-12-20
+- [RESOLVED] #119 Main content/sidebar vertical misalignment - Fixed by refactoring AuthenticatedLayout to use flex row at root. Sidebar and main content are now flush to the top, responsive, and accessible.
+
 ### 2024-12-19
 - [RESOLVED] #116 LoginForm test validation error message mismatch - Fixed test expectation to match component behavior
 - [RESOLVED] #117 Project creation test mock issues - Fixed with proper $transaction mock configuration
