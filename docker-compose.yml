@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: km_todo
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -19,7 +19,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: km_todo_e2e_test
     ports:
-      - "5433:5432"
+      - "${DB_E2E_PORT:-5433}:5432"
     volumes:
       - pgdata-e2e:/var/lib/postgresql/data
 
@@ -29,8 +29,9 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/km_todo
       NODE_ENV: production
+      PORT: ${PORT:-3000}
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:${PORT:-3000}"
     depends_on:
       - db
 

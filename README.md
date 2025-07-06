@@ -183,8 +183,11 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
    
    Update the production environment:
    ```env
-   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
    NODE_ENV=production
+   PORT=3000
+   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
+   DB_PORT=5432
+   DB_E2E_PORT=5433
    ```
 
 4. **Build and start the application:**
@@ -207,8 +210,8 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
        ServerAlias www.your-domain.com
        
        ProxyPreserveHost On
-       ProxyPass / http://localhost:3000/
-       ProxyPassReverse / http://localhost:3000/
+       ProxyPass / http://localhost:${PORT:-3000}/
+       ProxyPassReverse / http://localhost:${PORT:-3000}/
        
        ErrorLog ${APACHE_LOG_DIR}/km-todo_error.log
        CustomLog ${APACHE_LOG_DIR}/km-todo_access.log combined
@@ -264,7 +267,10 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
        cwd: '/home/kmtodo/km-todo',
        env: {
          NODE_ENV: 'production',
-         DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/km_todo'
+         PORT: '3000',
+         DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/km_todo',
+         DB_PORT: '5432',
+         DB_E2E_PORT: '5433'
        },
        instances: 1,
        autorestart: true,
@@ -383,16 +389,58 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
 
 ## ⚙️ Environment Variables
 
+### sample.env File
+A `sample.env` file is provided as a template for environment configuration. Copy or rename this file to `.env` (for development) or `.env.production` (for production) and update the values as needed:
+
+```bash
+cp sample.env .env
+# or for production
+cp sample.env .env.production
+```
+
+This ensures all required variables are set for your environment.
+
+### Port Configuration
+The application uses environment variables for all port configurations to avoid conflicts:
+
+- **`PORT`**: Application server port (default: 3000)
+- **`DB_PORT`**: Main database port (default: 5432)
+- **`DB_E2E_PORT`**: E2E test database port (default: 5433)
+
+### Environment Files
+
 - **Local development (`.env`):**
   ```env
-  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
   NODE_ENV=development
+  PORT=3000
+  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
+  DB_PORT=5432
+  DB_E2E_PORT=5433
   ```
+
 - **Production (`.env.production` or Docker Compose env):**
   ```env
-  DATABASE_URL=postgres://postgres:postgres@db:5432/km_todo
   NODE_ENV=production
+  PORT=3000
+  DATABASE_URL=postgres://postgres:postgres@db:5432/km_todo
+  DB_PORT=5432
+  DB_E2E_PORT=5433
   ```
+
+### Custom Port Configuration
+To use different ports, set the environment variables:
+
+```bash
+# Example: Use different ports
+export PORT=8080
+export DB_PORT=5434
+export DB_E2E_PORT=5435
+
+# Or create a .env file with custom ports
+echo "PORT=8080" > .env
+echo "DB_PORT=5434" >> .env
+echo "DB_E2E_PORT=5435" >> .env
+```
 
 ---
 

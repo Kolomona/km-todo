@@ -1,27 +1,23 @@
-# Install dependencies only when needed
-FROM node:20-alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+# Use the official Node.js runtime as the base image
+FROM node:20-alpine
 
-# Rebuild the source code only when needed
-FROM node:20-alpine AS builder
+# Set the working directory in the container
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy the rest of the application code
 COPY . .
+
+# Build the application
 RUN npm run build
 
-# Production image, copy all the files and run next
-FROM node:20-alpine AS runner
-WORKDIR /app
+# Expose the port the app runs on
+EXPOSE ${PORT:-3000}
 
-ENV NODE_ENV production
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-EXPOSE 3000
-
-CMD ["npm", "run", "start"] 
+# Start the application
+CMD ["npm", "start"] 

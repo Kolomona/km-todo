@@ -47,6 +47,7 @@
 - [2024-12-20] **TEST COVERAGE**: Added/updated unit test in AuthenticatedLayout.test.tsx to robustly verify root flex layout, sidebar, and main content alignment using test IDs. All layout alignment is now covered by automated tests.
 - [2024-12-20] **RESOLVED**: Next.js 15 params Promise build error (#120) - Backend team updated src/app/api/projects/[id]/members/route.ts to await params Promise and match Next.js 15 requirements. Build now succeeds except for unrelated ESLint errors, which do not block deployment.
 - [2024-12-20] **RESOLVED**: Main content/sidebar vertical misalignment (#119) - Refactored AuthenticatedLayout to use flex row at root, sidebar and main content now top-aligned and responsive across all pages.
+- [2024-12-20] **UPDATED**: Added `sample.env` as a template for environment configuration. Introduced `PORT`, `DB_PORT`, and `DB_E2E_PORT` environment variables. Refactored all configs, scripts, and documentation to remove hard-coded ports and use environment variables for flexible deployment. Updated README.md and deployment instructions accordingly.
 
 ## Archive
 ### 2024-12-20
