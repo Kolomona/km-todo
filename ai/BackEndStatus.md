@@ -227,6 +227,10 @@
 - **All E2E authentication tests are now passing**: Backend API and session logic fully compatible with E2E auth tests
 - **Impact**: E2E test integration for authentication is complete and passing
 
+### [2024-12-19] E2E API Endpoint Tests Passing
+- **All E2E API endpoint tests are now passing**: Project creation now adds creator as member, dynamic route param bugs fixed in todos API
+- **Impact**: E2E test integration for backend endpoints is complete and passing
+
 ## Current Status
 - ✅ **Database Schema**: Complete with all API_CONTRACT.md tables
 - ✅ **Authentication System**: Login, register, logout endpoints functional

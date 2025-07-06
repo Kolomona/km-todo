@@ -159,29 +159,51 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create project
-    const project = await prisma.project.create({
-      data: {
-        name: name.trim(),
-        description: description?.trim() || null,
-        ownerId: user.id,
-      },
-      include: {
-        members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
+    // Create project with transaction to ensure creator is added as member
+    const project = await prisma.$transaction(async (tx) => {
+      // Create the project
+      const newProject = await tx.project.create({
+        data: {
+          name: name.trim(),
+          description: description?.trim() || null,
+          ownerId: user.id,
+        },
+      })
+
+      // Add creator as a member with owner role
+      await tx.projectMember.create({
+        data: {
+          projectId: newProject.id,
+          userId: user.id,
+          role: 'owner',
+          permissions: ['read', 'write', 'delete', 'manage_members'],
+        },
+      })
+
+      // Return project with members
+      return await tx.project.findUnique({
+        where: { id: newProject.id },
+        include: {
+          members: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
               },
             },
           },
         },
-      },
+      })
     })
 
     // Transform to match API contract format
+    if (!project) {
+      throw new Error('Failed to create project')
+    }
+    
     const transformedProject = {
       id: project.id,
       name: project.name,

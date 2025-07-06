@@ -4,9 +4,12 @@ test.describe('API Endpoints Verification', () => {
 
   test.describe('Authentication Endpoints', () => {
     test('POST /api/auth/register - should register new user', async ({ request }) => {
+      // Generate unique email to avoid conflicts
+      const uniqueEmail = `test-${Date.now()}@example.com`
+      
       const response = await request.post('/api/auth/register', {
         data: {
-          email: 'test@example.com',
+          email: uniqueEmail,
           password: 'TestPassword123!',
           name: 'Test User'
         }
@@ -16,7 +19,7 @@ test.describe('API Endpoints Verification', () => {
       const data = await response.json()
       expect(data.user).toBeDefined()
       expect(data.session).toBeDefined()
-      expect(data.user.email).toBe('test@example.com')
+      expect(data.user.email).toBe(uniqueEmail)
     })
 
     test('POST /api/auth/login - should login with valid credentials', async ({ request }) => {
@@ -260,6 +263,9 @@ test.describe('API Endpoints Verification', () => {
       
       const projectData = await projectResponse.json()
       projectId = projectData.project.id
+      
+      // Ensure user is a member of the project (project creator is automatically a member)
+      // The project creation endpoint should handle this, but let's verify
     })
 
     test('GET /api/todos - should return todos list', async ({ request }) => {
@@ -416,6 +422,7 @@ test.describe('API Endpoints Verification', () => {
         },
         data: {
           timeSpent: 30,
+          date: new Date().toISOString(),
           notes: 'Test time log'
         }
       })

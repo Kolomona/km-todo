@@ -303,7 +303,7 @@ export async function PUT(
     const updatedTodo = await prisma.$transaction(async (tx) => {
       // Update the todo
       const todo = await tx.todo.update({
-        where: { id: params.id },
+        where: { id },
         data: {
           ...(title && { title }),
           ...(description !== undefined && { description }),
@@ -335,13 +335,13 @@ export async function PUT(
       if (projectIds && Array.isArray(projectIds)) {
         // Remove existing relationships
         await tx.todoProject.deleteMany({
-          where: { todoId: params.id },
+          where: { todoId: id },
         })
 
         // Create new relationships
         await tx.todoProject.createMany({
           data: projectIds.map((projectId: string) => ({
-            todoId: params.id,
+            todoId: id,
             projectId,
           })),
         })
@@ -352,7 +352,7 @@ export async function PUT(
 
     // Fetch the complete updated todo
     const completeTodo = await prisma.todo.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         creator: {
           select: {
@@ -531,7 +531,7 @@ export async function DELETE(
 
     // Delete the todo (cascading will handle related records)
     await prisma.todo.delete({
-      where: { id: params.id },
+      where: { id },
     })
 
     return NextResponse.json({

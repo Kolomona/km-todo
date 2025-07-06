@@ -22,7 +22,7 @@
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
 | #107 | 2024-12-19 | Backend   | Todo management system             | Resolved | Backend   | High     | Todo CRUD endpoints complete |
-| #109 | 2024-12-19 | Both      | E2E testing setup                  | Resolved | AIPM     | High     | All E2E authentication tests passing; accessibility, validation, and selector issues fixed |
+| #109 | 2024-12-19 | Both      | E2E testing setup                  | Resolved | AIPM     | High     | All E2E API endpoint tests passing; project creation adds creator as member; dynamic route param bugs fixed; E2E suite green |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Resolved | Frontend  | High     | Todo CRUD interfaces complete |
 | #115 | 2024-12-19 | Frontend  | 'Remember me' checkbox missing from login screen in UI | Resolved | Frontend  | High     | Checkbox now visible and accessible in LoginForm |
 
@@ -50,6 +50,7 @@
 - [2024-12-19] **VERIFIED**: Testing framework configured with Vitest for both backend and frontend
 - [2024-12-19] **RESOLVED**: Frontend Todo Management UI (#111) - Complete with comprehensive testing. 111/111 todo component tests passing. Full CRUD operations, time tracking, recurring patterns, and filtering supported.
 - [2024-12-19] **IDENTIFIED**: E2E testing setup needed (#109)
+- [2024-12-19] **PROGRESS**: E2E API endpoint fixes (#109) - Backend: Project creation now adds creator as member (fixes todo creation 403). All dynamic route param bugs fixed in todos API. Frontend: E2E test for time logging fixed (date param added). All E2E API endpoint tests now passing.
 
 ## Archive
 ### 2024-12-19
