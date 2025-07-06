@@ -180,6 +180,7 @@
 - **Member Management**: ✅ Endpoints implemented, tests to be expanded
 - **Database Operations**: ❌ Integration tests needed
 - **API Workflows**: ❌ E2E tests needed
+- **Performance**: ❌ Performance tests needed
 
 ---
 
