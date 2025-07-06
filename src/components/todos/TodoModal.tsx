@@ -510,9 +510,11 @@ export default function TodoModal({
                   </button>
                   <button
                     type="submit"
+                    data-testid="todo-modal-submit"
                     disabled={loading}
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
+                    {/* Always visible, accessible submit button */}
                     {loading ? 'Saving...' : (todo ? 'Update Todo' : 'Create Todo')}
                   </button>
                 </div>

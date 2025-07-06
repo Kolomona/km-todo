@@ -416,4 +416,16 @@ describe('TodoModal', () => {
       expect(screen.getByRole('button', { name: /create todo/i })).toBeInTheDocument()
     })
   })
+
+  describe('Accessibility and Button Presence', () => {
+    it('should render a visible, accessible submit button', () => {
+      render(<TodoModal {...defaultProps} />)
+      const submitBtn = screen.getByTestId('todo-modal-submit')
+      expect(submitBtn).toBeInTheDocument()
+      expect(submitBtn).toBeVisible()
+      expect(submitBtn).toHaveAttribute('type', 'submit')
+      // Should be disabled only if loading
+      expect(submitBtn).not.toBeDisabled()
+    })
+  })
 }) 
