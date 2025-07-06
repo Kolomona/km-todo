@@ -13,6 +13,7 @@ import {
   ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline';
 import AuthenticatedLayout from '@/components/layout/AuthenticatedLayout';
+import TodoModal from '@/components/todos/TodoModal';
 
 interface Project {
   id: string;
@@ -91,6 +92,9 @@ export default function ProjectDetailPage() {
   const [showEditMessage, setShowEditMessage] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<ProjectMessage | null>(null);
   const [showDeleteMessageConfirm, setShowDeleteMessageConfirm] = useState(false);
+  
+  // New state for Add Todo modal
+  const [showAddTodo, setShowAddTodo] = useState(false);
 
   useEffect(() => {
     if (projectId) {
@@ -198,6 +202,42 @@ export default function ProjectDetailPage() {
       setSelectedTodo(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete todo');
+    }
+  };
+
+  // New handler for Add Todo
+  const handleAddTodo = () => {
+    setShowAddTodo(true);
+  };
+
+  const handleAddTodoSubmit = async (data: any) => {
+    try {
+      // Pre-fill the project context
+      const todoData = {
+        ...data,
+        projectIds: [projectId] // Automatically assign to current project
+      };
+
+      const response = await fetch('/api/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(todoData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to create todo');
+      }
+
+      const result = await response.json();
+      
+      // Add the new todo to the list
+      setTodos(prev => [...prev, result.todo]);
+      setShowAddTodo(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create todo');
     }
   };
 
@@ -406,7 +446,10 @@ export default function ProjectDetailPage() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-medium text-gray-900">Todos</h2>
-                  <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <button 
+                    onClick={handleAddTodo}
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
                     <PlusIcon className="h-4 w-4 mr-1" />
                     Add Todo
                   </button>
@@ -703,6 +746,17 @@ export default function ProjectDetailPage() {
               setSelectedMessage(null);
             }}
             onConfirm={handleConfirmDeleteMessage}
+          />
+        )}
+
+        {/* Add Todo Modal */}
+        {showAddTodo && (
+          <TodoModal
+            isOpen={showAddTodo}
+            onClose={() => setShowAddTodo(false)}
+            onSubmit={handleAddTodoSubmit}
+            todo={null}
+            title="Add New Todo"
           />
         )}
       </div>

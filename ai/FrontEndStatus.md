@@ -8,8 +8,9 @@
 - **Project List Page**: Full CRUD functionality with responsive grid layout
 - **Project Detail Page**: Comprehensive project management with tabs (Overview, Todos, Members, Messages)
 - **Modal System**: Create, edit, delete, and member management modals
-- **Testing**: 246 comprehensive unit tests covering all user interactions and edge cases (100% passing)
+- **Testing**: 249 comprehensive unit tests covering all user interactions and edge cases (100% passing)
 - **Contract Compliance**: All endpoints and data models follow API_CONTRACT.md specifications
+- **NEW**: Issue #122 '+ Add Todo' button functionality implemented - Button now opens TodoModal with project context pre-filled
 - **NEW**: Sidebar menu overlap bug (#114) fixed - User profile no longer overlaps navigation links
 - **NEW**: Todo Management UI - Complete CRUD functionality with time tracking and recurring patterns
 - **NEW**: Todo Components - TodoList, TodoModal, TodoFilters with comprehensive testing (111 tests)
@@ -39,10 +40,11 @@
 - ✅ **NEW**: Todo Components - TodoList, TodoModal, TodoFilters with comprehensive testing (111 tests)
 - ✅ **NEW**: Todo Page - Full integration with backend APIs and responsive design
 - ✅ **NEW**: Remember Me Feature - LoginForm enhanced with checkbox for persistent login (5 additional tests)
-- ✅ **NEW**: LoginForm Test Fix (#116) - Validation error message mismatch resolved, all 246 frontend tests now passing
+- ✅ **NEW**: Issue #122 '+ Add Todo' button functionality implemented - Button now opens TodoModal with project context pre-filled, all 249 frontend tests now passing
+- ✅ **NEW**: LoginForm Test Fix (#116) - Validation error message mismatch resolved, all frontend tests now passing
 
 ### Current Blockers
-- [ ] No blockers - Todo Management UI complete and tested, all components working
+- [ ] No blockers - Todo Management UI complete and tested, all components working including Issue #122 resolution
 - [ ] E2E test configuration issues (#118) - Playwright tests not executing properly (separate from unit tests)
 
 ### Next Steps
@@ -51,7 +53,8 @@
 3. ~~Implement project management interfaces~~ ✅ COMPLETED
 4. ~~Fix sidebar menu overlap bug (#114)~~ ✅ COMPLETED
 5. ~~Implement todo management interfaces~~ ✅ COMPLETED
-6. **NEXT**: Build search and filtering components
+6. ~~Implement Issue #122 '+ Add Todo' button functionality~~ ✅ COMPLETED
+7. **NEXT**: Build search and filtering components
 7. Develop analytics dashboard
 
 ### Technical Stack Status
@@ -190,7 +193,7 @@ src/
 
 ## Current Status
 - ✅ **Authentication UI**: Login and register forms with proper test IDs
-- ✅ **Project Management UI**: Complete CRUD interface
+- ✅ **Project Management UI**: Complete CRUD interface with Issue #122 resolution
 - ✅ **Todo Management UI**: Complete CRUD interface with time tracking
 - ✅ **Responsive Design**: Mobile and desktop optimized
 - ✅ **Accessibility**: WCAG 2.1 AA compliant

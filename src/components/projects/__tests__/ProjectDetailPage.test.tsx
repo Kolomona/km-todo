@@ -30,6 +30,28 @@ vi.mock('@heroicons/react/24/outline', () => ({
   ChatBubbleLeftRightIcon: () => <span data-testid="chat-icon">💬</span>,
 }));
 
+// Mock the TodoModal component
+vi.mock('@/components/todos/TodoModal', () => ({
+  default: ({ isOpen, onClose, onSubmit, title }: { 
+    isOpen: boolean; 
+    onClose: () => void; 
+    onSubmit: (data: any) => void; 
+    title: string; 
+  }) => (
+    isOpen ? (
+      <div data-testid="todo-modal">
+        <div data-testid="todo-modal-title">{title}</div>
+        <button data-testid="todo-modal-submit" onClick={() => onSubmit({ title: 'New Todo', projectIds: ['test-project-id'] })}>
+          Submit
+        </button>
+        <button data-testid="todo-modal-close" onClick={onClose}>
+          Close
+        </button>
+      </div>
+    ) : null
+  ),
+}));
+
 describe('ProjectDetailPage', () => {
   const mockProject = {
     id: 'test-project-id',
@@ -738,6 +760,107 @@ describe('ProjectDetailPage', () => {
     await waitFor(() => {
       expect(screen.getByText('high')).toBeInTheDocument();
       expect(screen.getByText('completed')).toBeInTheDocument();
+    });
+  });
+
+  it('should open add todo modal when add todo button is clicked', async () => {
+    const mockResponse = {
+      ok: true,
+      json: () => Promise.resolve({
+        project: mockProject,
+        todos: mockTodos,
+        messages: mockMessages
+      })
+    };
+
+    global.fetch.mockResolvedValue(mockResponse);
+
+    render(<ProjectDetailPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Test Project')).toBeInTheDocument();
+    });
+
+    // Switch to todos tab
+    fireEvent.click(screen.getByText('Todos'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Add Todo')).toBeInTheDocument();
+    });
+
+    // Click the Add Todo button
+    fireEvent.click(screen.getByText('Add Todo'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('todo-modal')).toBeInTheDocument();
+      expect(screen.getByTestId('todo-modal-title')).toHaveTextContent('Add New Todo');
+    });
+  });
+
+  it('should create new todo successfully', async () => {
+    const mockResponse = {
+      ok: true,
+      json: () => Promise.resolve({
+        project: mockProject,
+        todos: mockTodos,
+        messages: mockMessages
+      })
+    };
+
+    const mockCreateResponse = {
+      ok: true,
+      json: () => Promise.resolve({
+        todo: {
+          id: 'new-todo-id',
+          title: 'New Todo',
+          description: 'New todo description',
+          priority: 'medium',
+          status: 'pending',
+          createdBy: 'user1',
+          createdAt: '2024-01-01T00:00:00Z',
+          updatedAt: '2024-01-01T00:00:00Z'
+        }
+      })
+    };
+
+    global.fetch
+      .mockResolvedValueOnce(mockResponse) // Initial project data
+      .mockResolvedValueOnce(mockCreateResponse); // Create todo response
+
+    render(<ProjectDetailPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Test Project')).toBeInTheDocument();
+    });
+
+    // Switch to todos tab
+    fireEvent.click(screen.getByText('Todos'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Add Todo')).toBeInTheDocument();
+    });
+
+    // Click the Add Todo button
+    fireEvent.click(screen.getByText('Add Todo'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('todo-modal')).toBeInTheDocument();
+    });
+
+    // Submit the todo
+    fireEvent.click(screen.getByTestId('todo-modal-submit'));
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: 'New Todo',
+          projectIds: ['test-project-id']
+        }),
+      });
     });
   });
 }); 
