@@ -1,6 +1,6 @@
 # ProjectStatusBoard.md
 
-## 2024-12-19 - AIPM Verification Complete - All Tests Passing
+## 2024-12-19 - SIDEBAR MENU OVERLAP BUG RESOLVED
 
 ### Project Manager Summary
 - ✅ **Backend Authentication System**: Fully implemented and functional - ALL TESTS PASSING
@@ -10,13 +10,13 @@
 - ✅ **Database Schema**: All tables implemented with Prisma
 - ✅ **Testing Framework**: Vitest configured with unit tests for both backend and frontend
 - ✅ **Total Tests**: 86/86 tests passing (100% success rate)
+- ✅ **NEW**: Sidebar menu overlap bug (#114) fixed - User profile no longer overlaps navigation links
 - ⏳ **E2E Testing**: Playwright installed but not yet configured
 - **Next Priority**: Todo CRUD operations
 
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #114 | 2024-12-19 | Frontend  | Sidebar menu overlap bug           | Open     | Frontend  | High     | User profile overlaps with menu; impacts usability and accessibility |
 | #107 | 2024-12-19 | Backend   | Todo management system             | Open     | Backend   | High     | Todo CRUD endpoints   |
 | #109 | 2024-12-19 | Both      | E2E testing setup                  | Open     | Both      | Medium   | Playwright config     |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Open     | Frontend  | High     | Todo CRUD interfaces  |
@@ -24,6 +24,7 @@
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
+- [2024-12-19] **RESOLVED**: Sidebar menu overlap bug (#114) - Fixed with proper flexbox layout, scrollable navigation section, and fixed user profile section. All layout tests passing.
 - [2024-12-19] **IDENTIFIED**: Sidebar menu overlap bug (#114) - User profile overlaps with navigation links in sidebar. Impacts usability and accessibility. Fix required before or alongside next major feature.
 - [2024-12-19] **RESOLVED**: Login route test mock issue (#113) - Added validateEmail to auth mock and fixed error message expectations. All backend auth tests now pass.
 - [2024-12-19] **VERIFIED**: Database seeding working perfectly - admin user, 3 projects, 10 todos, memberships, messages, time logs, and recurring todo all created successfully
@@ -37,6 +38,7 @@
 
 ## Archive
 ### 2024-12-19
+- [RESOLVED] #114 Sidebar menu overlap bug - Fixed with proper flexbox layout, scrollable navigation, and fixed user profile. All layout tests passing.
 - [RESOLVED] #113 Login route test mock missing validateEmail - All backend auth tests now pass
 - [RESOLVED] #110 Frontend Project Management UI - Complete with 36/36 tests passing
 - [RESOLVED] #105 Project CRUD operations - All endpoints implemented with 25/25 tests passing
