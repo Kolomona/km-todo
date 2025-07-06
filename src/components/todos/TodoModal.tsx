@@ -266,7 +266,7 @@ export default function TodoModal({
 
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
 
-        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6" data-testid="todo-modal">
+        <div className="fixed top-1/2 left-1/2 z-50 bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-y-auto shadow-xl transform -translate-x-1/2 -translate-y-1/2 sm:max-w-2xl w-full max-w-lg max-h-[90vh] min-h-[400px]" data-testid="todo-modal">
           <div className="absolute top-0 right-0 pt-4 pr-4">
             <button
               onClick={onClose}

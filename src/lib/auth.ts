@@ -70,9 +70,9 @@ export async function setSessionCookie(sessionId: string, persistent: boolean = 
   } = {
     httpOnly: true,
     // For nip.io E2E testing, use secure: true and SameSite: 'none'
-    // For local development, use secure: false
+    // For local development, use secure: false and SameSite: 'lax'
     secure: isNipIo ? true : (isE2E ? false : process.env.NODE_ENV === 'production'),
-    sameSite: isNipIo ? 'none' : (isE2E ? 'none' : 'lax'),
+    sameSite: isNipIo ? 'none' : 'lax',
     path: '/',
   }
   
