@@ -155,4 +155,29 @@ describe('AuthenticatedLayout', () => {
       expect(userProfileContainer).toHaveClass('flex-shrink-0');
     });
   });
+
+  it('should have root flex layout and sidebar/main content top-aligned', async () => {
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ user: mockUser }),
+    });
+
+    render(
+      <AuthenticatedLayout title="Test Page">
+        <div>Test content</div>
+      </AuthenticatedLayout>
+    );
+
+    await waitFor(() => {
+      // Root container should have flex and min-h-screen
+      const root = screen.getByTestId('layout-root');
+      expect(root).toHaveClass('flex', 'min-h-screen');
+      // Sidebar should be at the top (not offset)
+      const sidebar = screen.getByTestId('sidebar');
+      expect(sidebar).toHaveClass('w-64', 'flex-shrink-0', 'h-screen');
+      // Main content should be flex-1 and min-h-screen
+      const mainContent = screen.getByTestId('main-content');
+      expect(mainContent).toHaveClass('flex-1', 'flex', 'flex-col', 'min-h-screen');
+    });
+  });
 }); 

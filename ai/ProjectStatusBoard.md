@@ -31,6 +31,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **TEST COVERAGE**: Added/updated unit test in AuthenticatedLayout.test.tsx to robustly verify root flex layout, sidebar, and main content alignment using test IDs. All layout alignment is now covered by automated tests.
 - [2024-12-20] **RESOLVED**: Next.js 15 params Promise build error (#120) - Backend team updated src/app/api/projects/[id]/members/route.ts to await params Promise and match Next.js 15 requirements. Build now succeeds except for unrelated ESLint errors, which do not block deployment.
 - [2024-12-20] **RESOLVED**: Main content/sidebar vertical misalignment (#119) - Refactored AuthenticatedLayout to use flex row at root, sidebar and main content now top-aligned and responsive across all pages.
 - [2024-12-19] **DEFERRED**: E2E testing moved to backlog - not in current sprint focus
@@ -116,6 +117,7 @@
 ### Current Sprint: Analytics and UX Improvements
 
 #### ✅ Completed Tasks
+- **Layout alignment fix is now covered by a robust unit test in AuthenticatedLayout.test.tsx, verifying root flex layout, sidebar, and main content alignment using test IDs.**
 
 #### Backend Fixes
 - **Fixed Next.js 15 Dynamic Route Parameters**: Updated all API routes to properly await `params` in dynamic routes

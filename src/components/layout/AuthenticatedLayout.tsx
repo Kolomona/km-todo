@@ -65,9 +65,9 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100" data-testid="layout-root">
       {/* Sidebar */}
-      <div className={`w-64 flex-shrink-0 h-screen bg-white shadow-lg z-50 transition-transform duration-300 ease-in-out ${sidebarOpen ? '' : ''}`}>
+      <div className={`w-64 flex-shrink-0 h-screen bg-white shadow-lg z-50 transition-transform duration-300 ease-in-out ${sidebarOpen ? '' : ''}`} data-testid="sidebar">
         {/* Sidebar header */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 flex-shrink-0">
           <h1 className="text-xl font-semibold text-gray-900">KM Todo</h1>
@@ -172,7 +172,7 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen" data-testid="main-content">
         {/* Top bar */}
         <div className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
