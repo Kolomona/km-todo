@@ -5,7 +5,7 @@ import { verifyPassword, createSession, setSessionCookie, validateEmail } from '
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { email, password } = body
+    const { email, password, rememberMe } = body
 
     // Validate required fields
     if (!email || !password) {
@@ -65,11 +65,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create session
-    const sessionId = await createSession(user.id)
+    // Create session with rememberMe logic
+    const persistent = Boolean(rememberMe)
+    const sessionId = await createSession(user.id, persistent)
 
-    // Set session cookie
-    await setSessionCookie(sessionId)
+    // Set session cookie with appropriate expiration
+    await setSessionCookie(sessionId, persistent)
 
     // Return user and session data (excluding password hash)
     const userResponse = {
@@ -80,12 +81,18 @@ export async function POST(request: NextRequest) {
       updatedAt: user.updatedAt,
     }
 
+    // Calculate expiresAt based on persistent setting
+    const expiresAt = persistent 
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days
+      : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours for non-persistent
+
     return NextResponse.json({
       user: userResponse,
       session: {
         id: sessionId,
         userId: user.id,
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+        expiresAt,
+        persistent,
       },
     })
   } catch (error) {

@@ -14,9 +14,15 @@ export async function verifyPassword(password: string, hashedPassword: string): 
 }
 
 // Session management utilities
-export async function createSession(userId: string): Promise<string> {
+export async function createSession(userId: string, persistent: boolean = false): Promise<string> {
   const expiresAt = new Date()
-  expiresAt.setDate(expiresAt.getDate() + 30) // 30 days from now
+  
+  if (persistent) {
+    expiresAt.setDate(expiresAt.getDate() + 30) // 30 days from now
+  } else {
+    // Session expires when browser closes (no maxAge set)
+    expiresAt.setHours(expiresAt.getHours() + 24) // Fallback: 24 hours for non-persistent
+  }
 
   const session = await prisma.session.create({
     data: {
@@ -48,15 +54,28 @@ export async function deleteSession(sessionId: string): Promise<void> {
 }
 
 // Cookie management utilities
-export async function setSessionCookie(sessionId: string): Promise<void> {
+export async function setSessionCookie(sessionId: string, persistent: boolean = false): Promise<void> {
   const cookieStore = await cookies()
-  cookieStore.set('session', sessionId, {
+  
+  const cookieOptions: {
+    httpOnly: boolean;
+    secure: boolean;
+    sameSite: 'lax';
+    path: string;
+    maxAge?: number;
+  } = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
     path: '/',
-  })
+  }
+  
+  if (persistent) {
+    cookieOptions.maxAge = 30 * 24 * 60 * 60 // 30 days
+  }
+  // If not persistent, don't set maxAge - cookie will expire when browser closes
+  
+  cookieStore.set('session', sessionId, cookieOptions)
 }
 
 export async function getSessionCookie(): Promise<string | undefined> {

@@ -28,7 +28,7 @@
 - ✅ **PROJECT CRUD ENDPOINTS COMPLETE** - All endpoints (GET, POST, GET by id, PUT, DELETE, member management) implemented and tested
 - ✅ **TODO CRUD ENDPOINTS COMPLETE** - All endpoints (GET, POST, GET by id, PUT, DELETE, time tracking) implemented and tested
 - ✅ **DATABASE SEEDING COMPLETE** - `prisma/seed.ts` script creates admin user, 3 projects, 10 todos, memberships, messages, time logs, and a recurring todo. Admin login and sample data verified.
-- ✅ **ALL BACKEND TESTS PASSING** - 57/57 backend tests passing (auth: 9, projects: 13, todos: 35)
+- ✅ **ALL BACKEND TESTS PASSING** - 61/61 backend tests passing (auth: 13, projects: 13, todos: 35)
 
 ### Current Blockers
 - [ ] No blockers - all project CRUD, todo CRUD, seeding, and auth tests passing
@@ -103,7 +103,8 @@
   - GET /api/search
 
 ### Authentication System Status
-- **Session Management**: ✅ **IMPLEMENTED** - Database sessions with 30-day expiry
+- **Session Management**: ✅ **IMPLEMENTED** - Database sessions with configurable expiry (30 days for persistent, browser-close for non-persistent)
+- **Remember Me Feature**: ✅ **IMPLEMENTED** - Login endpoint accepts rememberMe parameter, creates persistent/non-persistent sessions accordingly
 - **Password Hashing**: ✅ **IMPLEMENTED** - bcryptjs with 12 salt rounds
 - **Cookie Handling**: ✅ **IMPLEMENTED** - HttpOnly, secure, sameSite
 - **Authorization Middleware**: ✅ **IMPLEMENTED** - getCurrentUser, requireAuth
@@ -180,7 +181,7 @@
 - **Development Data**: ✅ Seed data for testing (prisma/seed.ts)
 
 ### Testing Coverage
-- **Auth Endpoints**: ✅ Unit tests implemented (9 tests, 9 passing)
+- **Auth Endpoints**: ✅ Unit tests implemented (13 tests, 13 passing)
 - **Project Endpoints**: ✅ Unit tests implemented (13 tests, 13 passing)
 - **Todo Endpoints**: ✅ Unit tests implemented (35 tests, 35 passing)
 - **Member Management**: ✅ Endpoints implemented, tests to be expanded

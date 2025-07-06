@@ -7,10 +7,11 @@
 - ✅ **Frontend Authentication UI**: Complete with comprehensive testing (16/16 tests passing)
 - ✅ **Backend Project CRUD**: Complete with 25/25 tests passing
 - ✅ **Backend Todo CRUD**: Complete with 35/35 tests passing
+- ✅ **Backend Remember Me Feature**: Complete with 4 additional auth tests (13/13 total)
 - ✅ **Frontend Project Management UI**: Complete with 36/36 tests passing
 - ✅ **Database Schema**: All tables implemented with Prisma
 - ✅ **Testing Framework**: Vitest configured with unit tests for both backend and frontend
-- ✅ **Total Tests**: 238/238 tests passing (100% success rate)
+- ✅ **Total Tests**: 242/242 tests passing (100% success rate)
 - ✅ **NEW**: Sidebar menu overlap bug (#114) fixed - User profile no longer overlaps navigation links
 - ✅ **Frontend Todo Management UI**: Complete with comprehensive testing (111/111 tests passing)
 - ⏳ **E2E Testing**: Playwright installed but not yet configured
@@ -27,6 +28,7 @@
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
+- [2024-12-19] **RESOLVED**: 'Remember Me' (persistent login) feature implementation complete. Backend login endpoint now handles rememberMe parameter with configurable session expiry. 4 additional auth tests added (13/13 total). Frontend implementation pending.
 - [2024-12-19] **ADDED**: 'Remember Me' (persistent login) feature to authentication. Login endpoint now accepts 'rememberMe' boolean. Both frontend and backend must implement this. See DevelopmentPlan.md and API_CONTRACT.md.
 - [2024-12-19] **RESOLVED**: Todo CRUD endpoints (#107) - All todo endpoints implemented with comprehensive testing. 35/35 backend todo tests passing. Full CRUD operations, time tracking, and recurring patterns supported.
 - [2024-12-19] **RESOLVED**: Sidebar menu overlap bug (#114) - Fixed with proper flexbox layout, scrollable navigation section, and fixed user profile section. All layout tests passing.
@@ -100,7 +102,7 @@
 - ✅ **User Login**: POST /api/auth/login with password verification (all tests passing)
 - ✅ **User Logout**: POST /api/auth/logout with session cleanup
 - ✅ **Current User**: GET /api/auth/me with session validation
-- ✅ **Session Management**: Database-backed sessions with 30-day expiry
+- ✅ **Session Management**: Database-backed sessions with configurable expiry (30 days for persistent, browser-close for non-persistent)
 - ✅ **Security**: Password hashing, input validation, secure cookies
 
 ### Project Management System Status
@@ -118,10 +120,10 @@
 - ✅ **Project Management Tests**: 36 tests total (14 ProjectsPage + 22 ProjectDetailPage) - ALL PASSING
 - ✅ **Todo Management Tests**: 111 tests total (30 TodoList + 25 TodoModal + 26 TodoFilters + 30 TodosPage) - ALL PASSING
 - ✅ **Total Frontend Tests**: 163 tests passing (100% success rate)
-- ✅ **Backend Auth Tests**: 9/9 tests passing (100% success rate)
+- ✅ **Backend Auth Tests**: 13/13 tests passing (100% success rate)
 - ✅ **Backend Project Tests**: 25/25 tests passing (100% success rate)
 - ✅ **Backend Todo Tests**: 35/35 tests passing (100% success rate)
-- ✅ **Test Coverage**: 238/238 tests passing (100% success rate)
+- ✅ **Test Coverage**: 242/242 tests passing (100% success rate)
 - ✅ **Test Quality**: Comprehensive coverage of validation, API integration, error handling
 
 ### AIPM Verification Results (2024-12-19)
