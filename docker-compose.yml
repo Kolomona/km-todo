@@ -11,6 +11,18 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  db-e2e:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: km_todo_e2e_test
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata-e2e:/var/lib/postgresql/data
+
   app:
     build: .
     command: npm run start
@@ -23,4 +35,5 @@ services:
       - db
 
 volumes:
-  pgdata: 
+  pgdata:
+  pgdata-e2e: 

@@ -6,13 +6,19 @@
     "db:up": "docker compose up -d db",
     "db:down": "docker compose down",
     "db:seed": "tsx prisma/seed.ts",
+    "db:e2e:up": "docker compose up -d db-e2e",
+    "db:e2e:down": "docker compose stop db-e2e",
     "dev": "npm run db:up && npx wait-on tcp:5432 && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
     "test:unit": "vitest --config vitest.config.ts",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:install": "playwright install"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
