@@ -17,9 +17,7 @@
 - ⚠️ **Note**: Some ESLint errors remain but do not block the build. These will be addressed in a future sprint.
 
 ## Open Issues
-| ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
-|------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #124 | 2024-12-20 | Frontend  | Root path (/) redirects to login even when authenticated | Open     | Frontend  | High     | When logged in and navigating to /, users are redirected to login instead of dashboard. Root page should check auth status and redirect to dashboard if authenticated. |
+*No open issues at this time.*
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -32,6 +30,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **RESOLVED**: Root path redirect behavior (#124) - Frontend team implemented authentication check in src/app/page.tsx. Authenticated users now redirect to /dashboard, unauthenticated users redirect to /login. Added comprehensive unit tests (6/6 passing). All 256 frontend tests passing.
 - [2024-12-20] **NEW ISSUE**: Root path redirect behavior (#124) - When logged in and navigating to /, users are redirected to login instead of dashboard. Root page should check authentication status and redirect appropriately. Frontend team to implement auth check in src/app/page.tsx.
 - [2024-12-20] **RESOLVED**: Add Todo modal layout bug (#123) - Frontend team applied layout fixes. Modal is now fully visible and functional, all fields and buttons accessible. User confirmed resolution. All 26 TodoModal tests passing.
 - [2024-12-20] **RESOLVED**: '+ Add Todo' button does not work in project todos view (#122) - Frontend team implemented missing functionality. Button now opens TodoModal with project context pre-filled. Users can add todos directly from project view. Added comprehensive unit tests (24/24 passing). All 249 unit tests passing.
@@ -112,7 +111,7 @@
 - ✅ **Authentication Tests**: 21/21 tests passing (12 LoginForm + 9 RegisterForm)
 - ✅ **Project Management Tests**: 38 tests total (14 ProjectsPage + 24 ProjectDetailPage)
 - ✅ **Todo Management Tests**: 111 tests total (30 TodoList + 25 TodoModal + 26 TodoFilters + 30 TodosPage)
-- ✅ **Total Frontend Tests**: 250/250 tests passing (100% success rate)
+- ✅ **Total Frontend Tests**: 256/256 tests passing (100% success rate)
 - ✅ **Backend Auth Tests**: 13/13 tests passing (100% success rate)
 - ✅ **Backend Project Tests**: 25/25 tests passing (100% success rate)
 - ✅ **Backend Todo Tests**: 35/35 tests passing (100% success rate)

@@ -4,12 +4,13 @@
 
 ## 2024-12-19 - SIDEBAR MENU OVERLAP BUG FIXED
 
-### Current Phase: Todo Management UI ✅ COMPLETED + ISSUE #123 RESOLVED
+### Current Phase: Todo Management UI ✅ COMPLETED + ISSUE #124 RESOLVED
 - **Project List Page**: Full CRUD functionality with responsive grid layout
 - **Project Detail Page**: Comprehensive project management with tabs (Overview, Todos, Members, Messages)
 - **Modal System**: Create, edit, delete, and member management modals
-- **Testing**: 250 comprehensive unit tests covering all user interactions and edge cases (100% passing)
+- **Testing**: 256 comprehensive unit tests covering all user interactions and edge cases (100% passing)
 - **Contract Compliance**: All endpoints and data models follow API_CONTRACT.md specifications
+- **NEW**: Issue #124 RESOLVED - Root path redirect behavior fixed - Authenticated users now redirect to /dashboard, unauthenticated users redirect to /login
 - **NEW**: Issue #123 RESOLVED - Add Todo modal investigation confirmed working correctly with proper styling and visible submit button
 - **NEW**: Issue #122 '+ Add Todo' button functionality implemented - Button now opens TodoModal with project context pre-filled
 - **NEW**: Sidebar menu overlap bug (#114) fixed - User profile no longer overlaps navigation links
@@ -44,6 +45,7 @@
 - ✅ **NEW**: Remember Me Feature - LoginForm enhanced with checkbox for persistent login (5 additional tests)
 - ✅ **NEW**: Issue #122 '+ Add Todo' button functionality implemented - Button now opens TodoModal with project context pre-filled, all 250 frontend tests now passing
 - ✅ **NEW**: LoginForm Test Fix (#116) - Validation error message mismatch resolved, all frontend tests now passing
+- ✅ **NEW**: Root Path Redirect Fix (#124) - Implemented authentication check in root page with conditional redirect logic
 
 ### Current Blockers
 - [ ] No blockers - Todo Management UI complete and tested, all components working including Issue #122 and #123 resolution
