@@ -6,8 +6,10 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting database seeding...')
 
-  // Clean up existing data (optional - comment out if you want to preserve data)
+  // Clean up existing data - delete in proper order to respect foreign key constraints
   console.log('🧹 Cleaning up existing data...')
+  
+  // Delete in reverse order of dependencies to avoid foreign key constraint violations
   await prisma.todoTime.deleteMany()
   await prisma.todoProject.deleteMany()
   await prisma.recurringPattern.deleteMany()
@@ -17,6 +19,8 @@ async function main() {
   await prisma.project.deleteMany()
   await prisma.session.deleteMany()
   await prisma.user.deleteMany()
+  
+  console.log('✅ Database cleared successfully')
 
   // Create admin user
   console.log('👤 Creating admin user...')

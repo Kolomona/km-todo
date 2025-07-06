@@ -31,6 +31,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **ENHANCED**: Database seeding script improved - Backend team updated prisma/seed.ts to ensure comprehensive database cleanup before seeding. Now deletes all data in proper order to respect foreign key constraints, ensuring clean slate for development and testing.
 - [2024-12-20] **RESOLVED**: Missing edit/delete actions in project list views (#121) - Frontend team implemented comprehensive CRUD actions for todos, members, and messages in project detail page. All list views now have consistent edit/delete functionality with proper modals and confirmation dialogs.
 - [2024-12-20] **TEST COVERAGE**: Added/updated unit test in AuthenticatedLayout.test.tsx to robustly verify root flex layout, sidebar, and main content alignment using test IDs. All layout alignment is now covered by automated tests.
 - [2024-12-20] **RESOLVED**: Next.js 15 params Promise build error (#120) - Backend team updated src/app/api/projects/[id]/members/route.ts to await params Promise and match Next.js 15 requirements. Build now succeeds except for unrelated ESLint errors, which do not block deployment.
@@ -124,6 +125,7 @@
 - **Layout alignment fix is now covered by a robust unit test in AuthenticatedLayout.test.tsx, verifying root flex layout, sidebar, and main content alignment using test IDs.**
 
 #### Backend Fixes
+- **Enhanced Database Seeding**: Updated prisma/seed.ts to ensure comprehensive database cleanup before seeding. Now deletes all data in proper order to respect foreign key constraints, ensuring clean slate for development and testing.
 - **Fixed Next.js 15 Dynamic Route Parameters**: Updated all API routes to properly await `params` in dynamic routes
 - **Enhanced Session Cookie Configuration**: Updated `setSessionCookie` to handle E2E testing with nip.io domain
 - **Cross-Browser Cookie Support**: Configured cookies for better WebKit/Mobile Safari compatibility
