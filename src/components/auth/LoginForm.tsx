@@ -11,7 +11,8 @@ interface LoginFormProps {
 export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    rememberMe: false
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
@@ -67,9 +68,10 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -108,6 +110,22 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
             disabled={isLoading}
           />
         </div>
+      </div>
+
+      <div className="flex items-center">
+        <input
+          id="rememberMe"
+          name="rememberMe"
+          type="checkbox"
+          checked={formData.rememberMe}
+          onChange={handleChange}
+          disabled={isLoading}
+          className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          aria-label="Remember me for 30 days"
+        />
+        <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+          Remember me for 30 days
+        </label>
       </div>
 
       {errors.email && (

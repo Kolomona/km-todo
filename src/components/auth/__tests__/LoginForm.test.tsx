@@ -15,6 +15,7 @@ describe('LoginForm', () => {
     
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/remember me for 30 days/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
   });
 
@@ -169,5 +170,132 @@ describe('LoginForm', () => {
     await waitFor(() => {
       expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
     });
+  });
+
+  it('should have remember me checkbox unchecked by default', () => {
+    render(<LoginForm />);
+    
+    const rememberMeCheckbox = screen.getByLabelText(/remember me for 30 days/i) as HTMLInputElement;
+    expect(rememberMeCheckbox.checked).toBe(false);
+  });
+
+  it('should toggle remember me checkbox when clicked', () => {
+    render(<LoginForm />);
+    
+    const rememberMeCheckbox = screen.getByLabelText(/remember me for 30 days/i) as HTMLInputElement;
+    
+    // Initially unchecked
+    expect(rememberMeCheckbox.checked).toBe(false);
+    
+    // Click to check
+    fireEvent.click(rememberMeCheckbox);
+    expect(rememberMeCheckbox.checked).toBe(true);
+    
+    // Click to uncheck
+    fireEvent.click(rememberMeCheckbox);
+    expect(rememberMeCheckbox.checked).toBe(false);
+  });
+
+  it('should include rememberMe parameter in API call when checked', async () => {
+    const mockOnSuccess = vi.fn();
+    const mockResponse = {
+      ok: true,
+      json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
+    };
+    
+    (global.fetch as any).mockResolvedValue(mockResponse);
+    
+    render(<LoginForm onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' }
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' }
+    });
+    
+    // Check the remember me checkbox
+    const rememberMeCheckbox = screen.getByLabelText(/remember me for 30 days/i);
+    fireEvent.click(rememberMeCheckbox);
+    
+    const form = screen.getByRole('form');
+    fireEvent.submit(form);
+    
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'test@example.com',
+          password: 'password123',
+          rememberMe: true
+        }),
+      });
+      expect(mockOnSuccess).toHaveBeenCalled();
+    });
+  });
+
+  it('should include rememberMe: false in API call when unchecked', async () => {
+    const mockOnSuccess = vi.fn();
+    const mockResponse = {
+      ok: true,
+      json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
+    };
+    
+    (global.fetch as any).mockResolvedValue(mockResponse);
+    
+    render(<LoginForm onSuccess={mockOnSuccess} />);
+    
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' }
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' }
+    });
+    
+    const form = screen.getByRole('form');
+    fireEvent.submit(form);
+    
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'test@example.com',
+          password: 'password123',
+          rememberMe: false
+        }),
+      });
+      expect(mockOnSuccess).toHaveBeenCalled();
+    });
+  });
+
+  it('should disable remember me checkbox during form submission', async () => {
+    const mockResponse = {
+      ok: true,
+      json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
+    };
+    
+    (global.fetch as any).mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
+    
+    render(<LoginForm />);
+    
+    const rememberMeCheckbox = screen.getByLabelText(/remember me for 30 days/i) as HTMLInputElement;
+    
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' }
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' }
+    });
+    
+    const form = screen.getByRole('form');
+    fireEvent.submit(form);
+    
+    expect(rememberMeCheckbox).toBeDisabled();
   });
 }); 
