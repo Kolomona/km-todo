@@ -105,6 +105,248 @@ For more on this methodology, see [ai/AI_AGENT_FULLSTACK_GUIDE-v2.md](ai/AI_AGEN
    npm run deploy
    ```
 
+### DigitalOcean Droplet Deployment with Apache Reverse Proxy
+
+This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as a reverse proxy.
+
+#### Prerequisites
+- A DigitalOcean account
+- A droplet with Ubuntu 22.04 LTS
+- Domain name (optional but recommended)
+
+#### Step 1: Create and Configure Droplet
+
+1. **Create a new droplet:**
+   - Choose Ubuntu 22.04 LTS
+   - Select plan (minimum 1GB RAM, 1 vCPU)
+   - Choose datacenter region
+   - Add SSH key or create password
+   - Create droplet
+
+2. **Connect to your droplet:**
+   ```bash
+   ssh root@your-droplet-ip
+   ```
+
+3. **Create a non-root user:**
+   ```bash
+   adduser kmtodo
+   usermod -aG sudo kmtodo
+   su - kmtodo
+   ```
+
+#### Step 2: Install Dependencies
+
+1. **Update system and install Node.js:**
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+   ```
+
+2. **Install Docker and Docker Compose:**
+   ```bash
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sudo sh get-docker.sh
+   sudo usermod -aG docker $USER
+   sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+   sudo chmod +x /usr/local/bin/docker-compose
+   ```
+
+3. **Install Apache:**
+   ```bash
+   sudo apt install apache2 -y
+   sudo a2enmod proxy
+   sudo a2enmod proxy_http
+   sudo a2enmod ssl
+   sudo a2enmod rewrite
+   ```
+
+#### Step 3: Deploy the Application
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/km-todo.git
+   cd km-todo
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables:**
+   ```bash
+   cp .env.example .env.production
+   nano .env.production
+   ```
+   
+   Update the production environment:
+   ```env
+   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
+   NODE_ENV=production
+   ```
+
+4. **Build and start the application:**
+   ```bash
+   npm run build:prod
+   npm run start:prod
+   ```
+
+#### Step 4: Configure Apache Reverse Proxy
+
+1. **Create Apache virtual host configuration:**
+   ```bash
+   sudo nano /etc/apache2/sites-available/km-todo.conf
+   ```
+
+2. **Add the following configuration:**
+   ```apache
+   <VirtualHost *:80>
+       ServerName your-domain.com
+       ServerAlias www.your-domain.com
+       
+       ProxyPreserveHost On
+       ProxyPass / http://localhost:3000/
+       ProxyPassReverse / http://localhost:3000/
+       
+       ErrorLog ${APACHE_LOG_DIR}/km-todo_error.log
+       CustomLog ${APACHE_LOG_DIR}/km-todo_access.log combined
+   </VirtualHost>
+   ```
+
+3. **Enable the site and restart Apache:**
+   ```bash
+   sudo a2ensite km-todo.conf
+   sudo systemctl restart apache2
+   ```
+
+#### Step 5: Set Up SSL (Optional but Recommended)
+
+1. **Install Certbot:**
+   ```bash
+   sudo apt install certbot python3-certbot-apache -y
+   ```
+
+2. **Obtain SSL certificate:**
+   ```bash
+   sudo certbot --apache -d your-domain.com -d www.your-domain.com
+   ```
+
+3. **Set up auto-renewal:**
+   ```bash
+   sudo crontab -e
+   ```
+   Add this line:
+   ```
+   0 12 * * * /usr/bin/certbot renew --quiet
+   ```
+
+#### Step 6: Set Up Process Management
+
+1. **Install PM2 for process management:**
+   ```bash
+   sudo npm install -g pm2
+   ```
+
+2. **Create PM2 ecosystem file:**
+   ```bash
+   nano ecosystem.config.js
+   ```
+   
+   Add this configuration:
+   ```javascript
+   module.exports = {
+     apps: [{
+       name: 'km-todo',
+       script: 'npm',
+       args: 'start:prod',
+       cwd: '/home/kmtodo/km-todo',
+       env: {
+         NODE_ENV: 'production',
+         DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/km_todo'
+       },
+       instances: 1,
+       autorestart: true,
+       watch: false,
+       max_memory_restart: '1G'
+     }]
+   }
+   ```
+
+3. **Start the application with PM2:**
+   ```bash
+   pm2 start ecosystem.config.js
+   pm2 startup
+   pm2 save
+   ```
+
+#### Step 7: Configure Firewall
+
+1. **Set up UFW firewall:**
+   ```bash
+   sudo ufw allow ssh
+   sudo ufw allow 'Apache Full'
+   sudo ufw enable
+   ```
+
+#### Step 8: Database Setup
+
+1. **Start the database:**
+   ```bash
+   npm run db:up
+   ```
+
+2. **Seed the database:**
+   ```bash
+   npm run db:seed
+   ```
+
+#### Step 9: Final Configuration
+
+1. **Test the application:**
+   - Visit `http://your-domain.com` or `http://your-droplet-ip`
+   - Login with admin credentials: `admin@example.com` / `kmToDo1!1!`
+
+2. **Set up automatic updates:**
+   ```bash
+   sudo apt install unattended-upgrades
+   sudo dpkg-reconfigure -plow unattended-upgrades
+   ```
+
+#### Troubleshooting
+
+- **Check application logs:**
+  ```bash
+  pm2 logs km-todo
+  ```
+
+- **Check Apache logs:**
+  ```bash
+  sudo tail -f /var/log/apache2/km-todo_error.log
+  ```
+
+- **Restart services:**
+  ```bash
+  pm2 restart km-todo
+  sudo systemctl restart apache2
+  ```
+
+- **Check database status:**
+  ```bash
+  docker ps
+  docker logs km-todo-db-1
+  ```
+
+#### Security Considerations
+
+- Change default admin password after first login
+- Regularly update system packages
+- Monitor logs for suspicious activity
+- Consider setting up fail2ban for additional security
+- Use strong passwords for database and application
+- Keep SSL certificates up to date
+
 ---
 
 ## 📋 Available Scripts
