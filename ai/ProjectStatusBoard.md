@@ -31,6 +31,7 @@
 ## Recent Decisions
 - [2024-12-19] **RESOLVED**: E2E testing infrastructure (#109) - Backend team completed Playwright configuration, test database setup, global setup/teardown, test utilities, and API endpoint verification. Infrastructure ready for frontend team to implement comprehensive E2E test files.
 - [2024-12-19] **STARTED**: E2E testing implementation (#109) - AIPM coordinating backend and frontend teams for comprehensive E2E test suite. Implementation plan and team responsibilities detailed in the 'E2E Testing Implementation Plan (Issue #109)' section below. Backend team to set up infrastructure, frontend team to implement test files. Following TestingStrategy.md patterns.
+- [2024-12-19] **PROGRESS**: E2E testing implementation (#109) - Frontend team completed E2E test structure setup: created `tests/e2e/` directory with subdirectories for `auth/`, `projects/`, `todos/`, and `utils/`. Added E2E scripts to `package.json`. Initial test utility file created. Ready to begin test implementation.
 - [2024-12-19] **RESOLVED**: 'Remember Me' (persistent login) feature implementation complete. Backend login endpoint now handles rememberMe parameter with configurable session expiry. 4 additional auth tests added (13/13 total). Frontend implementation complete with 5 additional tests (17/17 total). UI bug (#115) fixed: Checkbox now visible and accessible in LoginForm.
 - [2024-12-19] **ADDED**: 'Remember Me' (persistent login) feature to authentication. Login endpoint now accepts 'rememberMe' boolean. Both frontend and backend must implement this. See DevelopmentPlan.md and API_CONTRACT.md.
 - [2024-12-19] **RESOLVED**: Todo CRUD endpoints (#107) - All todo endpoints implemented with comprehensive testing. 35/35 backend todo tests passing. Full CRUD operations, time tracking, and recurring patterns supported.
@@ -155,9 +156,9 @@
 - [x] Configure environment variables for E2E testing
 
 #### Phase 2: Test Structure Setup (Frontend Team)
-- [ ] Create `tests/e2e/` directory structure
-- [ ] Add E2E test scripts to `package.json`
-- [ ] Set up test utilities and helpers
+- [x] Create `tests/e2e/` directory structure
+- [x] Add E2E test scripts to `package.json`
+- [x] Set up test utilities and helpers
 - [ ] Create base test setup files
 
 #### Phase 3: Test Implementation (Frontend Team)
