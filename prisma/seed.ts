@@ -24,7 +24,7 @@ async function main() {
 
   // Create admin user
   console.log('👤 Creating admin user...')
-  const adminPassword = 'loKonoma!!!!!11111'
+  const adminPassword = 'kmToDo1!1!'
   const adminPasswordHash = await bcrypt.hash(adminPassword, 12)
   
   const adminUser = await prisma.user.create({
@@ -326,7 +326,7 @@ async function main() {
 
   console.log('\n🎉 Database seeding completed successfully!')
   console.log('\n📋 Summary:')
-  console.log(`   👤 Admin user: admin@example.com / loKonoma!!!!!11111`)
+  console.log(`   👤 Admin user: admin@example.com / kmToDo1!1!`)
   console.log(`   📁 Projects: ${personalProject.name}, ${workProject.name}, ${teamProject.name}`)
   console.log(`   📝 Todos: ${createdTodos.length} todos with various priorities and statuses`)
   console.log(`   ⏱️ Time logs: ${timeLogs.length} time tracking entries`)
