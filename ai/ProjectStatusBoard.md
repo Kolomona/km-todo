@@ -18,6 +18,7 @@
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
 | #119 | 2024-12-20 | Frontend  | Main content starts below sidebar (vertical misalignment) | Open     | Frontend  | High     | Main content area is not vertically aligned with sidebar; see screenshots and AIPM notes |
+| #121 | 2024-12-20 | Frontend  | Missing edit/delete actions in project list views (todos, members, messages) | Open     | Frontend  | High     | Edit/delete options are inconsistently available. See AIPM notes for details. |
 | *No other open issues in current sprint* | | | | | | | |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
@@ -39,6 +40,7 @@
 - [2024-12-19] **RESOLVED**: Prisma transaction mock issue (#117) - Backend team fixed project creation tests by adding proper $transaction mock
 - [2024-12-19] **CRITICAL**: E2E tests configured but not executing properly (#118) - Moved to deferred/backlog
 - [2024-12-20] **OPENED**: Main content starts below sidebar (vertical misalignment) (#119) - Documented for frontend team to address
+- [2024-12-20] **OPENED**: Missing edit/delete actions in project list views (todos, members, messages) (#121) - Frontend team to audit and address UX gaps
 
 ## Archive
 ### 2024-12-20
@@ -192,4 +194,22 @@
 ---
 
 **Last Updated**: 2024-12-19
-**Next Review**: 2024-12-20 
+**Next Review**: 2024-12-20
+
+### AIPM Notes on Issue #121
+
+#### Problem
+- Edit and delete actions are inconsistently available across project list views:
+  - **Todos (Project View):** No edit button/modal for todos in the project's Todos tab (users cannot edit todos from this view)
+  - **Members:** No edit option for project members (e.g., to change role/permissions)
+  - **Messages:** No edit or delete option for project messages
+- This leads to a fragmented and confusing user experience.
+
+#### Expected
+- All list views (todos, members, messages) should provide edit and delete actions where appropriate, consistent with the global Todos page and project edit modal.
+- Users should be able to edit todos, update member roles, and (optionally) edit/delete messages directly from the relevant project tabs.
+
+#### Action Required
+- Frontend team to audit all project list views for missing CRUD actions
+- Implement consistent edit/delete options for todos, members, and messages
+- Update @ProjectStatusBoard.md with progress and mark this issue resolved when complete 
