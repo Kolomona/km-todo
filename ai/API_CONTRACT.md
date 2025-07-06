@@ -150,6 +150,7 @@ interface ProjectMessage {
 {
   email: string;
   password: string;
+  rememberMe?: boolean; // If true, session lasts 30 days; otherwise, session expires on browser close
 }
 ```
 
@@ -161,6 +162,7 @@ interface ProjectMessage {
     id: string;
     userId: string;
     expiresAt: string;
+    persistent: boolean; // true if rememberMe was set, false otherwise
   };
 }
 ```

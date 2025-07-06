@@ -13,6 +13,7 @@
 - ✅ **NEW**: Sidebar menu overlap bug (#114) fixed - User profile no longer overlaps navigation links
 - ⏳ **E2E Testing**: Playwright installed but not yet configured
 - **Next Priority**: Todo CRUD operations
+- **NEW REQUIREMENT**: 'Remember Me' (persistent login) feature added to authentication. Login endpoint now accepts 'rememberMe' boolean. See DevelopmentPlan.md and API_CONTRACT.md for details.
 
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
@@ -24,6 +25,7 @@
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
+- [2024-12-19] **ADDED**: 'Remember Me' (persistent login) feature to authentication. Login endpoint now accepts 'rememberMe' boolean. Both frontend and backend must implement this. See DevelopmentPlan.md and API_CONTRACT.md.
 - [2024-12-19] **RESOLVED**: Sidebar menu overlap bug (#114) - Fixed with proper flexbox layout, scrollable navigation section, and fixed user profile section. All layout tests passing.
 - [2024-12-19] **IDENTIFIED**: Sidebar menu overlap bug (#114) - User profile overlaps with navigation links in sidebar. Impacts usability and accessibility. Fix required before or alongside next major feature.
 - [2024-12-19] **RESOLVED**: Login route test mock issue (#113) - Added validateEmail to auth mock and fixed error message expectations. All backend auth tests now pass.

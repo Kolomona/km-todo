@@ -19,6 +19,7 @@
 - [x] Project setup with Next.js, PostgreSQL, and Docker
 - [ ] Database schema design and Prisma setup
 - [ ] User authentication system (register, login, logout, session management)
+- [ ] Remember Me (Persistent Login) option on login form
 - [ ] Basic project CRUD operations
 - [ ] Basic todo CRUD operations
 - [ ] Simple project-todo relationships
@@ -26,6 +27,7 @@
 
 #### Deliverables:
 - Working authentication system
+- Remember Me (persistent login) feature
 - Basic project and todo management
 - Simple responsive UI
 - Database schema with core tables
@@ -35,6 +37,7 @@
 - Implement authentication API endpoints
 - Create basic React components for auth forms
 - Set up session management with cookies
+- Implement 'Remember Me' option on login form and persistent session logic
 - Implement basic project and todo API endpoints
 - Create responsive layout with sidebar navigation
 
