@@ -13,3 +13,236 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// User model for authentication and user management
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  passwordHash String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  ownedProjects     Project[]        @relation("ProjectOwner")
+  projectMemberships ProjectMember[]
+  createdTodos      Todo[]           @relation("TodoCreator")
+  assignedTodos     Todo[]           @relation("TodoAssignee")
+  timeLogs          TodoTime[]
+  messages          ProjectMessage[]
+  sessions          Session[]
+
+  // Indexes for performance
+  @@index([email])
+  @@index([createdAt])
+
+  @@map("users")
+}
+
+// Session model for authentication
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes for performance
+  @@index([userId])
+  @@index([expiresAt])
+
+  @@map("sessions")
+}
+
+// Project model for organizing todos
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  owner       User             @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members     ProjectMember[]
+  todos       TodoProject[]
+  messages    ProjectMessage[]
+
+  // Indexes for performance
+  @@index([ownerId])
+  @@index([createdAt])
+
+  @@map("projects")
+}
+
+// ProjectMember model for project permissions
+model ProjectMember {
+  id          String   @id @default(cuid())
+  projectId   String
+  userId      String
+  role        ProjectRole
+  permissions String[] // Array of permission strings
+  joinedAt    DateTime @default(now())
+
+  // Relationships
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Unique constraint to prevent duplicate memberships
+  @@unique([projectId, userId])
+
+  // Indexes for performance
+  @@index([projectId])
+  @@index([userId])
+  @@index([role])
+
+  @@map("project_members")
+}
+
+// Todo model for task management
+model Todo {
+  id             String           @id @default(cuid())
+  title          String
+  description    String?
+  dueDate        DateTime?
+  priority       TodoPriority     @default(medium)
+  status         TodoStatus       @default(pending)
+  estimatedTime  Int?             // Minutes
+  createdBy      String
+  assignedTo     String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Relationships
+  creator        User             @relation("TodoCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  assignee       User?            @relation("TodoAssignee", fields: [assignedTo], references: [id], onDelete: SetNull)
+  projects       TodoProject[]
+  timeLogs       TodoTime[]
+  recurringPattern RecurringPattern?
+
+  // Indexes for performance
+  @@index([createdBy])
+  @@index([assignedTo])
+  @@index([dueDate])
+  @@index([priority])
+  @@index([status])
+  @@index([createdAt])
+
+  @@map("todos")
+}
+
+// TodoProject model for many-to-many relationship
+model TodoProject {
+  id        String @id @default(cuid())
+  todoId    String
+  projectId String
+
+  // Relationships
+  todo    Todo    @relation(fields: [todoId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Unique constraint to prevent duplicate relationships
+  @@unique([todoId, projectId])
+
+  // Indexes for performance
+  @@index([todoId])
+  @@index([projectId])
+
+  @@map("todo_projects")
+}
+
+// TodoTime model for time tracking
+model TodoTime {
+  id        String   @id @default(cuid())
+  todoId    String
+  userId    String
+  timeSpent Int      // Minutes
+  date      DateTime
+  notes     String?
+  createdAt DateTime @default(now())
+
+  // Relationships
+  todo Todo @relation(fields: [todoId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes for performance
+  @@index([todoId])
+  @@index([userId])
+  @@index([date])
+
+  @@map("todo_times")
+}
+
+// RecurringPattern model for recurring todos
+model RecurringPattern {
+  id          String           @id @default(cuid())
+  todoId      String           @unique
+  patternType RecurringPatternType
+  patternData Json             // Flexible JSON for pattern configuration
+  nextDueDate DateTime
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relationships
+  todo Todo @relation(fields: [todoId], references: [id], onDelete: Cascade)
+
+  // Indexes for performance
+  @@index([nextDueDate])
+  @@index([isActive])
+
+  @@map("recurring_patterns")
+}
+
+// ProjectMessage model for project communication
+model ProjectMessage {
+  id             String   @id @default(cuid())
+  projectId      String
+  userId         String
+  message        String
+  todoReferences String[] // Array of todo IDs referenced
+  createdAt      DateTime @default(now())
+
+  // Relationships
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes for performance
+  @@index([projectId])
+  @@index([userId])
+  @@index([createdAt])
+
+  @@map("project_messages")
+}
+
+// Enums for type safety
+enum ProjectRole {
+  owner
+  admin
+  editor
+  viewer
+}
+
+enum TodoPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+enum TodoStatus {
+  pending
+  in_progress
+  completed
+  cancelled
+}
+
+enum RecurringPatternType {
+  daily
+  weekly
+  monthly
+  custom
+}
