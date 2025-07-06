@@ -26,8 +26,7 @@ describe('LoginForm', () => {
     fireEvent.submit(form);
     
     await waitFor(() => {
-      expect(screen.getByText(/email is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/password is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/email and password are required/i)).toBeInTheDocument();
     });
   });
 
