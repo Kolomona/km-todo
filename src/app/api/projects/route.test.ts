@@ -10,7 +10,12 @@ vi.mock('@/lib/prisma', () => ({
     project: {
       findMany: vi.fn(),
       create: vi.fn(),
+      findUnique: vi.fn(),
     },
+    projectMember: {
+      create: vi.fn(),
+    },
+    $transaction: vi.fn(),
   },
 }))
 
@@ -24,6 +29,7 @@ describe('/api/projects', () => {
     id: 'user-1',
     email: 'test@example.com',
     name: 'Test User',
+    passwordHash: 'hashed-password',
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -125,11 +131,27 @@ describe('/api/projects', () => {
         ownerId: 'user-1',
         createdAt: new Date(),
         updatedAt: new Date(),
-        members: [],
+        members: [
+          {
+            id: 'member-1',
+            projectId: 'project-1',
+            userId: 'user-1',
+            role: 'owner',
+            permissions: ['read', 'write', 'delete', 'manage_members'],
+            joinedAt: new Date(),
+            user: {
+              id: 'user-1',
+              name: 'Test User',
+              email: 'test@example.com',
+            },
+          },
+        ],
       }
 
       vi.mocked(getCurrentUser).mockResolvedValue(mockUser)
-      vi.mocked(prisma.project.create).mockResolvedValue(mockProject as any)
+      
+      // Mock the transaction to return the project with members
+      vi.mocked(prisma.$transaction).mockResolvedValue(mockProject)
 
       const request = new NextRequest('http://localhost:3000/api/projects', {
         method: 'POST',
@@ -156,11 +178,27 @@ describe('/api/projects', () => {
         ownerId: 'user-1',
         createdAt: new Date(),
         updatedAt: new Date(),
-        members: [],
+        members: [
+          {
+            id: 'member-1',
+            projectId: 'project-1',
+            userId: 'user-1',
+            role: 'owner',
+            permissions: ['read', 'write', 'delete', 'manage_members'],
+            joinedAt: new Date(),
+            user: {
+              id: 'user-1',
+              name: 'Test User',
+              email: 'test@example.com',
+            },
+          },
+        ],
       }
 
       vi.mocked(getCurrentUser).mockResolvedValue(mockUser)
-      vi.mocked(prisma.project.create).mockResolvedValue(mockProject as any)
+      
+      // Mock the transaction to return the project with members
+      vi.mocked(prisma.$transaction).mockResolvedValue(mockProject)
 
       const request = new NextRequest('http://localhost:3000/api/projects', {
         method: 'POST',
