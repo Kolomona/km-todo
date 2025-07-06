@@ -16,7 +16,7 @@
 - ✅ **Frontend Todo Management UI**: Complete with comprehensive testing (111/111 tests passing)
 - ⏳ **E2E Testing**: Playwright installed but not yet configured
 - **Next Priority**: Analytics and search endpoints
-- ✅ **NEW**: 'Remember Me' (persistent login) feature implemented in frontend. LoginForm now includes checkbox with proper accessibility and API integration. 5 additional tests added (17/17 total auth tests passing).
+- ✅ **NEW**: 'Remember Me' (persistent login) feature implemented in frontend. LoginForm now includes checkbox with proper accessibility and API integration. 5 additional tests added (17/17 total auth tests passing). UI bug (#115) fixed: Checkbox now visible in login screen.
 
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
@@ -24,12 +24,12 @@
 | #107 | 2024-12-19 | Backend   | Todo management system             | Resolved | Backend   | High     | Todo CRUD endpoints complete |
 | #109 | 2024-12-19 | Both      | E2E testing setup                  | Open     | Both      | Medium   | Playwright config     |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Resolved | Frontend  | High     | Todo CRUD interfaces complete |
-| #115 | 2024-12-19 | Frontend  | 'Remember me' checkbox missing from login screen in UI | Open     | Frontend  | High     | Checkbox not visible in browser; verify in both dev and docker environments |
+| #115 | 2024-12-19 | Frontend  | 'Remember me' checkbox missing from login screen in UI | Resolved | Frontend  | High     | Checkbox now visible and accessible in LoginForm |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
 ## Recent Decisions
-- [2024-12-19] **RESOLVED**: 'Remember Me' (persistent login) feature implementation complete. Backend login endpoint now handles rememberMe parameter with configurable session expiry. 4 additional auth tests added (13/13 total). Frontend implementation complete with 5 additional tests (17/17 total).
+- [2024-12-19] **RESOLVED**: 'Remember Me' (persistent login) feature implementation complete. Backend login endpoint now handles rememberMe parameter with configurable session expiry. 4 additional auth tests added (13/13 total). Frontend implementation complete with 5 additional tests (17/17 total). UI bug (#115) fixed: Checkbox now visible and accessible in LoginForm.
 - [2024-12-19] **ADDED**: 'Remember Me' (persistent login) feature to authentication. Login endpoint now accepts 'rememberMe' boolean. Both frontend and backend must implement this. See DevelopmentPlan.md and API_CONTRACT.md.
 - [2024-12-19] **RESOLVED**: Todo CRUD endpoints (#107) - All todo endpoints implemented with comprehensive testing. 35/35 backend todo tests passing. Full CRUD operations, time tracking, and recurring patterns supported.
 - [2024-12-19] **RESOLVED**: Sidebar menu overlap bug (#114) - Fixed with proper flexbox layout, scrollable navigation section, and fixed user profile section. All layout tests passing.
