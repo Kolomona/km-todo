@@ -177,7 +177,7 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
 
 3. **Set up environment variables:**
    ```bash
-   cp .env.example .env.production
+   cp sample.env .env.production
    nano .env.production
    ```
    
