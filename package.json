@@ -5,6 +5,7 @@
   "scripts": {
     "db:up": "docker compose up -d db",
     "db:down": "docker compose down",
+    "db:seed": "tsx prisma/seed.ts",
     "dev": "npm run db:up && npx wait-on tcp:5432 && next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -42,6 +43,7 @@
     "supertest": "^7.1.1",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "tsx": "^4.19.2",
     "vitest": "^3.2.4",
     "wait-on": "^8.0.3"
   }
