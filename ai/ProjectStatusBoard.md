@@ -17,7 +17,9 @@
 - ⚠️ **Note**: Some ESLint errors remain but do not block the build. These will be addressed in a future sprint.
 
 ## Open Issues
-*No open issues in current sprint* | | | | | | | |
+| ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
+|------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
+| #124 | 2024-12-20 | Frontend  | Root path (/) redirects to login even when authenticated | Open     | Frontend  | High     | When logged in and navigating to /, users are redirected to login instead of dashboard. Root page should check auth status and redirect to dashboard if authenticated. |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -30,6 +32,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **NEW ISSUE**: Root path redirect behavior (#124) - When logged in and navigating to /, users are redirected to login instead of dashboard. Root page should check authentication status and redirect appropriately. Frontend team to implement auth check in src/app/page.tsx.
 - [2024-12-20] **RESOLVED**: Add Todo modal layout bug (#123) - Frontend team applied layout fixes. Modal is now fully visible and functional, all fields and buttons accessible. User confirmed resolution. All 26 TodoModal tests passing.
 - [2024-12-20] **RESOLVED**: '+ Add Todo' button does not work in project todos view (#122) - Frontend team implemented missing functionality. Button now opens TodoModal with project context pre-filled. Users can add todos directly from project view. Added comprehensive unit tests (24/24 passing). All 249 unit tests passing.
 - [2024-12-20] **RESOLVED**: Login issue after database seeding - Fixed cookie configuration in src/lib/auth.ts. Changed SameSite from 'none' to 'lax' for localhost development to resolve 401 Unauthorized errors in browser. Login now works correctly with admin@example.com / loKonoma!!!!!11111.
