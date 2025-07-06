@@ -24,6 +24,7 @@
 | #107 | 2024-12-19 | Backend   | Todo management system             | Resolved | Backend   | High     | Todo CRUD endpoints complete |
 | #109 | 2024-12-19 | Both      | E2E testing setup                  | Open     | Both      | Medium   | Playwright config     |
 | #111 | 2024-12-19 | Frontend  | Todo management UI components      | Resolved | Frontend  | High     | Todo CRUD interfaces complete |
+| #115 | 2024-12-19 | Frontend  | 'Remember me' checkbox missing from login screen in UI | Open     | Frontend  | High     | Checkbox not visible in browser; verify in both dev and docker environments |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
