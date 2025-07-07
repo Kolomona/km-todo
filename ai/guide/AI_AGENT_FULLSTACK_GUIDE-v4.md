@@ -111,12 +111,11 @@ Use AIPM prompt:
 ```
 "Read @ProductVision.md and generate all foundational files:
 1. @API_CONTRACT.md - Detailed, living contract
-2. @DevelopmentPlan.md - Roadmap with phases
-3. @FrontEndStatus.md - Frontend progress tracking
-4. @BackEndStatus.md - Backend progress tracking  
-5. @ProjectStatusBoard.md - Integration & ticketing system
-6. @TestingStrategy.md - Testing guidelines & examples
-7. @GitVersionControlStrategy.md - Git workflow & conventions
+2. @FrontEndStatus.md - Frontend progress tracking
+3. @BackEndStatus.md - Backend progress tracking  
+4. @ProjectStatusBoard.md - Integration & ticketing system
+5. @TestingStrategy.md - Testing guidelines & examples
+6. @GitVersionControlStrategy.md - Git workflow & conventions
 
 Comment each file with purpose and usage instructions."
 ```
@@ -124,8 +123,8 @@ Comment each file with purpose and usage instructions."
 ### Step 3: Review & Refine
 - ✅ API contract covers all features?
 - ✅ Data models correct & contract-compliant?
-- ✅ Phases make sense?
 - ✅ Instructions & protocols clear?
+- ✅ Project structure follows guide specifications?
 
 ---
 
@@ -159,6 +158,8 @@ Git Responsibilities:
 - Use conventional commits (feat(backend): description)
 - Create pull requests for all changes
 ```
+
+*For detailed workflows and implementation patterns, see [@ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md#backend-ai-agent-guide).*
 
 **Implementation Prompt:**
 ```
@@ -211,6 +212,8 @@ Git Responsibilities:
 - Create pull requests for all changes
 ```
 
+*For detailed workflows and implementation patterns, see [@ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md#frontend-ai-agent-guide).*
+
 **Implementation Prompt:**
 ```
 "Build frontend components using endpoints defined in @API_CONTRACT.md.
@@ -238,24 +241,32 @@ Testing Requirements:
 **Context Primer:**
 ```
 # Project Context Primer (AIPM)
-You are the AI Project Manager (AIPM) Agent for this project.
+You are the AI Project Manager (AIPM) for this project.
 
-- Refer to @API_CONTRACT.md for project workflow & file usage
+- Refer to @API_CONTRACT.md for endpoints & data models
 - Refer to @TestingStrategy.md for testing guidelines
-- Check @ProjectStatusBoard.md for open issues before starting
+- Refer to @GitVersionControlStrategy.md for Git workflow
+- Manage @ProjectStatusBoard.md (max 200 lines, 5 open issues)
+- Archive resolved issues to ai/archives/ when limits exceeded
 
-Your role: AIPM (AI Project Manager)
+Your role: AIPM
 Your scope: Project coordination, summary, file curation, testing coordination
 
 Testing Responsibilities:
-- Run comprehensive E2E tests for all user workflows
+- Run E2E tests for all user workflows
 - Test integration between frontend & backend components
 - Verify contract compliance through testing
 - Check performance & accessibility standards
 - Coordinate testing between teams
 - Log all test results, issues, fixes in @ProjectStatusBoard.md
-- Ensure test coverage meets requirements
+
+Git Responsibilities:
+- Work on feature branches (feature/aipm-[description])
+- Use conventional commits (feat(aipm): description)
+- Create pull requests for all changes
 ```
+
+*For detailed workflows and implementation patterns, see [@ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md#aipm-agent-guide).*
 
 **Integration Testing Prompt:**
 ```
@@ -405,7 +416,7 @@ Testing Requirements:
 **Symptoms:** Planned features not implemented, incomplete functionality
 
 **Solution:**
-1. Review @DevelopmentPlan.md against current state
+1. Review @ProductVision.md against current state
 2. Check if features are in API contract
 3. Assign missing features to appropriate teams
 4. Log blockers in @ProjectStatusBoard.md
@@ -476,146 +487,89 @@ Testing Requirements:
 
 ## Templates
 
-### API Contract Structure
+**For detailed templates and examples, see [@APPENDICES.md](./APPENDICES.md#appendix-a-detailed-examples).**
+
+### Quick Templates
+
+**API Contract Template:**
 ```markdown
 # @API_CONTRACT.md
 
-## Authentication Endpoints
-- **POST /api/auth/login**
-  - Request: `{ email: string, password: string }`
-  - Response: `{ user: User, session: Session }`
-
-## Data Endpoints
-- **GET /api/recipes**
-  - Request: None
-  - Response: `Recipe[]`
+## Authentication
+- All endpoints require JWT token in Authorization header
+- Token format: `Bearer <token>`
 
 ## Data Models
-```typescript
-interface Recipe {
-  id: number;
-  name: string;
-  description?: string;
-  ingredients: RecipeIngredient[];
-  createdAt: string; // camelCase enforced
-}
+- All responses use camelCase
+- All requests use camelCase
+- Timestamps in ISO 8601 format
+
+## Endpoints
+### Users
+- `GET /api/users/me` - Get current user
+- `POST /api/users/register` - Register new user
+- `POST /api/users/login` - Login user
+
+### Projects
+- `GET /api/projects` - List user's projects
+- `POST /api/projects` - Create new project
+- `GET /api/projects/:id` - Get project details
+- `PUT /api/projects/:id` - Update project
+- `DELETE /api/projects/:id` - Delete project
 ```
 
-## Example Payloads
-```json
-{
-  "name": "Chocolate Cake",
-  "description": "Rich chocolate cake",
-  "ingredients": [
-    { "name": "Flour", "quantity": 2, "unit": "cups" }
-  ]
-}
-```
-```
-
-### Development Plan Structure
+**Project Status Board Template:**
 ```markdown
-# @DevelopmentPlan.md
+# @ProjectStatusBoard.md
 
-## Phases & Milestones
+## Current Status (Top 5 Issues)
+| ID | Area | Issue | Status | Owner | Priority |
+|----|------|-------|--------|-------|----------|
+| #1 | Setup | Initial project setup | Open | AIPM | High |
 
-### Phase 1: Core Features ✅
-- [x] User authentication
-- [x] Basic CRUD operations
-- [x] Database setup
+## Recent Decisions (Last 5)
+- [Date] Decision made about...
 
-### Phase 2: Advanced Features 🔄
-- [ ] Search and filtering
-- [ ] File uploads
-- [ ] Advanced UI components
+## Test Results Summary
+- Frontend: 0/0 passing (0%)
+- Backend: 0/0 passing (0%)
+- E2E: 0/0 passing (0%)
 
-### Phase 3: Polish & Production ✅
-- [x] Responsive design
-- [x] Error handling
-- [x] Performance optimization
+## Next Milestones
+1. Priority 1: Complete initial setup
+2. Priority 2: Implement core features
+3. Priority 3: Add advanced features
 
-## Deliverables
-- [x] Working web application
-- [x] API documentation
-- [x] User guide
-- [x] E2E tests with test data seeding/reset
+## Archive (Line-Count Based)
+*No archived issues yet*
 ```
 
-### Status File Structure
-```markdown
-# @FrontEndStatus.md
-
-## 2024-07-03 - PHASE 2 IN PROGRESS
-- **Authentication UI**: Login/logout forms implemented
-- **Recipe Management**: CRUD interface complete
-- **Responsive Design**: Works on mobile and desktop
-- **E2E Testing**: Playwright tests passing, test data reset before each run
-
-### Technical Achievements
-- ✅ User authentication forms
-- ✅ Recipe list and detail views
-- ✅ Create/edit recipe forms
-- ✅ Responsive navigation
-
-### Blockers
-- [ ] Data model migration to camelCase in progress
-- [ ] Real-time updates not yet integrated
-
-### Next Steps
-1. Complete camelCase migration (see @ProjectStatusBoard.md)
-2. Integrate real-time features
-3. Add advanced analytics widgets
-
-## Blockers: See @ProjectStatusBoard.md for all integration and migration issues
-```
+*For comprehensive templates and detailed examples, see [@APPENDICES.md](./APPENDICES.md#appendix-a-detailed-examples).*
 
 ---
 
 ## Step-by-Step Example: Recipe Manager
 
-### Step 1: Create @ProductVision.md
-```markdown
-# @ProductVision.md - Recipe Manager
+**For complete step-by-step example with detailed code, see [@APPENDICES.md](./APPENDICES.md#a1-complete-recipe-manager-example).**
 
-## Overview
-Web app for storing and managing cooking recipes.
+### Quick Overview
 
-## User Stories
-- As a user, I can create new recipes
-- As a user, I can view my recipe list
-- As a user, I can edit existing recipes
-- As a user, I can delete recipes
+1. **Setup**: Create Next.js project with TypeScript
+2. **Contract**: Define API endpoints for recipes, users, categories
+3. **Backend**: Implement authentication, CRUD operations, validation
+4. **Frontend**: Build responsive UI with forms, lists, search
+5. **Testing**: Unit tests for all components, E2E for user flows
+6. **Integration**: AIPM coordinates testing and resolves issues
 
-## Features
-- Recipe CRUD (Create, Read, Update, Delete)
-- Ingredient management
-- Recipe search and filtering
+**Key Features:**
+- User authentication & authorization
+- Recipe CRUD with categories & tags
+- Search & filtering
 - Responsive design
+- Image upload support
+- Social sharing
 
-## Technical Requirements
-- Frontend: SvelteKit
-- Backend: Node.js with SvelteKit
-- Database: SQLite
-- Authentication: Session-based
-- E2E Testing: Playwright with test data seeding/reset
-
-## Data Models
-- Recipe: id, name, description, ingredients, created_at
-- Ingredient: id, name, unit, cost_per_unit
-- User: id, name, email, password_hash
-```
-
-### Step 2: Generate Foundation Files
-Use AIPM prompt to generate all foundational files.
-
-### Step 3: Backend Implementation
-Use Backend AI prompt to implement core API endpoints.
-
-### Step 4: Frontend Implementation
-Use Frontend AI prompt to build UI components.
-
-### Step 5: Integration Testing
-Use AIPM prompt to test complete application.
+*For detailed implementation with code examples, see [@APPENDICES.md](./APPENDICES.md#a1-complete-recipe-manager-example).*
 
 ---
 

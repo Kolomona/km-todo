@@ -105,7 +105,7 @@ Integration Testing → AIPM Summary → Repeat
 ## Common Issues & Solutions
 1. **Integration Issues**: Check API contract matches exactly
 2. **Data Mismatches**: Ensure consistent naming (camelCase)
-3. **Missing Features**: Review DevelopmentPlan.md vs current state
+3. **Missing Features**: Review @ProductVision.md vs current state
 4. **Performance**: Optimize queries, add caching, check bundle size
 
 *For detailed problem-solving guidance, see [Common Problems & Solutions](#common-problems--solutions) in the main guide.*

@@ -8,15 +8,15 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
 
 ### [@AI_AGENT_FULLSTACK_GUIDE-v4.md](./AI_AGENT_FULLSTACK_GUIDE-v4.md)
 **Recommended for most users**
-- **Length**: 643 lines (53% reduction from v3)
+- **Length**: ~400 lines (streamlined)
 - **Focus**: Streamlined, AI-interpretable format
 - **Features**:
   - [Quick start section](./AI_AGENT_FULLSTACK_GUIDE-v4.md#quick-start) for immediate use
-  - Condensed explanations without losing vital information
+  - Condensed explanations with references to detailed content
   - Structured formats for better AI parsing
   - Explicit callouts and parameterized primers
-  - [Comprehensive templates and examples](./AI_AGENT_FULLSTACK_GUIDE-v4.md#templates)
-  - [Common problems and solutions](./AI_AGENT_FULLSTACK_GUIDE-v4.md#common-problems--solutions)
+  - References to [detailed templates](./APPENDICES.md#appendix-a-detailed-examples)
+  - References to [common problems and solutions](./AI_AGENT_FULLSTACK_GUIDE-v4.md#common-problems--solutions)
 
 ### [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
 **Essential information at a glance**
@@ -30,6 +30,30 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
   - [Git workflow](./QUICK_REFERENCE.md#git-workflow)
   - [Common issues and solutions](./QUICK_REFERENCE.md#common-issues--solutions)
   - [Best practices checklist](./QUICK_REFERENCE.md#best-practices)
+
+### [APPENDICES.md](./APPENDICES.md)
+**Detailed examples and advanced topics**
+- **Length**: ~800 lines
+- **Focus**: Comprehensive examples and advanced content
+- **Features**:
+  - [Complete step-by-step examples](./APPENDICES.md#a1-complete-recipe-manager-example)
+  - [Advanced testing strategies](./APPENDICES.md#appendix-b-detailed-testing-strategy)
+  - [Git workflow details](./APPENDICES.md#appendix-c-advanced-git-workflow)
+  - [Performance optimization](./APPENDICES.md#appendix-d-performance-optimization)
+  - [Security best practices](./APPENDICES.md#appendix-e-security-best-practices)
+  - [Deployment strategies](./APPENDICES.md#appendix-f-deployment-strategies)
+
+### [ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md)
+**Complete role-specific guides**
+- **Length**: ~600 lines
+- **Focus**: Detailed guides for each AI agent role
+- **Features**:
+  - [Backend AI Agent Guide](./ROLE_SPECIFIC_GUIDES.md#backend-ai-agent-guide)
+  - [Frontend AI Agent Guide](./ROLE_SPECIFIC_GUIDES.md#frontend-ai-agent-guide)
+  - [AIPM Agent Guide](./ROLE_SPECIFIC_GUIDES.md#aipm-agent-guide)
+  - [Human Project Manager Guide](./ROLE_SPECIFIC_GUIDES.md#human-project-manager-guide)
+  - Complete context primers and workflows
+  - Implementation patterns and templates
 
 ## Usage Recommendations
 
@@ -71,12 +95,14 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
 - Best practices and templates
 
 ## File Structure
- ```
- ai/guide/
- ├── README.md                           # This file
- ├── AI_AGENT_FULLSTACK_GUIDE-v4.md     # Main guide (streamlined)
- └── QUICK_REFERENCE.md                  # Essential reference
- ```
+```
+ai/guide/
+├── README.md                           # This file
+├── AI_AGENT_FULLSTACK_GUIDE-v4.md     # Main guide (streamlined)
+├── QUICK_REFERENCE.md                  # Essential reference
+├── APPENDICES.md                       # Detailed examples & advanced topics
+└── ROLE_SPECIFIC_GUIDES.md             # Complete role-specific guides
+```
 
 ## Migration from v3
 
