@@ -2,6 +2,16 @@
 
 *This file tracks the real progress of frontend development, technical achievements, blockers, and next steps.*
 
+## 2025-07-07 - Issue #137 FIXED: First-Run Setup Now Triggers in Production
+
+### Critical Setup Flow Bug Resolved
+- **Issue #137 (CRITICAL)**: First-run setup not triggered in production is now fixed.
+- **Fix**: Setup status is now checked on the login page and in AuthenticatedLayout. If setup is required, users are redirected to /setup before seeing login or any protected route.
+- **Tests**: All related unit tests updated and passing (316/316). E2E and integration flow verified.
+- **Production Build**: ✅ VERIFIED - `npm run build:prod` completes successfully, no blocking warnings.
+- **Acceptance Criteria**: On a fresh deployment, the first page shown is the setup flow if setup is required. The login screen is only shown after setup is complete. All tests and build verified.
+- **Next Step**: Monitor for regressions and continue with analytics dashboard.
+
 ## 2025-07-07 - ESLint ERRORS FIXED, PRODUCTION BUILD UNBLOCKED
 
 ### Urgent Build Blocker Resolved

@@ -34,7 +34,7 @@ export default function SetupPage() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     checkSetupStatus();

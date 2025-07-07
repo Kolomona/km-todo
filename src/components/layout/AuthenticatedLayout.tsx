@@ -25,6 +25,18 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
 
   const checkAuth = useCallback(async () => {
     try {
+      // First check if setup is needed
+      const setupResponse = await fetch('/api/setup/status');
+      if (setupResponse.ok) {
+        const setupData = await setupResponse.json();
+        if (setupData.needsSetup) {
+          // Setup is needed, redirect to setup page
+          router.push('/setup');
+          return;
+        }
+      }
+
+      // Setup is complete, check authentication
       const response = await fetch('/api/auth/me');
       if (!response.ok) {
         router.push('/login');
@@ -33,7 +45,18 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
       const data = await response.json();
       setUser(data.user);
     } catch {
-      router.push('/login');
+      // If setup check fails, assume setup is complete and check auth
+      try {
+        const response = await fetch('/api/auth/me');
+        if (!response.ok) {
+          router.push('/login');
+          return;
+        }
+        const data = await response.json();
+        setUser(data.user);
+      } catch {
+        router.push('/login');
+      }
     } finally {
       setIsLoading(false);
     }

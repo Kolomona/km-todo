@@ -3,9 +3,10 @@ import { vi } from 'vitest';
 import AuthenticatedLayout from '../AuthenticatedLayout';
 
 // Mock Next.js router
+const mockPush = vi.fn();
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: vi.fn(),
+    push: mockPush,
   }),
 }));
 
@@ -26,9 +27,7 @@ describe('AuthenticatedLayout', () => {
   });
 
   it('should render loading state initially', () => {
-    global.fetch.mockResolvedValue({
-      ok: false,
-    });
+    global.fetch.mockImplementation(() => new Promise(() => {})); // Never resolves
 
     render(
       <AuthenticatedLayout title="Test Page">
@@ -39,11 +38,55 @@ describe('AuthenticatedLayout', () => {
     expect(screen.getByRole('status', { hidden: true })).toBeInTheDocument();
   });
 
-  it('should render authenticated layout with user data', async () => {
-    global.fetch.mockResolvedValue({
+  it('should redirect to setup when setup is needed', async () => {
+    global.fetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ user: mockUser }),
+      json: () => Promise.resolve({ needsSetup: true }),
     });
+
+    render(
+      <AuthenticatedLayout title="Test Page">
+        <div>Test content</div>
+      </AuthenticatedLayout>
+    );
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/setup');
+    });
+  });
+
+  it('should redirect to login when setup is complete but user is not authenticated', async () => {
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+      });
+
+    render(
+      <AuthenticatedLayout title="Test Page">
+        <div>Test content</div>
+      </AuthenticatedLayout>
+    );
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/login');
+    });
+  });
+
+  it('should render authenticated layout with user data when setup is complete and user is authenticated', async () => {
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
 
     render(
       <AuthenticatedLayout title="Test Page">
@@ -61,10 +104,15 @@ describe('AuthenticatedLayout', () => {
   });
 
   it('should render navigation links correctly', async () => {
-    global.fetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ user: mockUser }),
-    });
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
 
     render(
       <AuthenticatedLayout title="Projects">
@@ -86,10 +134,15 @@ describe('AuthenticatedLayout', () => {
   });
 
   it('should highlight active navigation link', async () => {
-    global.fetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ user: mockUser }),
-    });
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
 
     render(
       <AuthenticatedLayout title="Projects">
@@ -106,10 +159,15 @@ describe('AuthenticatedLayout', () => {
   });
 
   it('should render user profile with avatar and logout button', async () => {
-    global.fetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ user: mockUser }),
-    });
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
 
     render(
       <AuthenticatedLayout title="Test Page">
@@ -131,10 +189,15 @@ describe('AuthenticatedLayout', () => {
   });
 
   it('should have proper sidebar structure without overlap', async () => {
-    global.fetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ user: mockUser }),
-    });
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
 
     render(
       <AuthenticatedLayout title="Test Page">
@@ -157,10 +220,15 @@ describe('AuthenticatedLayout', () => {
   });
 
   it('should have root flex layout and sidebar/main content top-aligned', async () => {
-    global.fetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ user: mockUser }),
-    });
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
 
     render(
       <AuthenticatedLayout title="Test Page">
@@ -178,6 +246,42 @@ describe('AuthenticatedLayout', () => {
       // Main content should be flex-1 and min-h-screen
       const mainContent = screen.getByTestId('main-content');
       expect(mainContent).toHaveClass('flex-1', 'flex', 'flex-col', 'min-h-screen');
+    });
+  });
+
+  it('should handle setup status check failure gracefully', async () => {
+    global.fetch
+      .mockRejectedValueOnce(new Error('Network error'))
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: mockUser }),
+      });
+
+    render(
+      <AuthenticatedLayout title="Test Page">
+        <div>Test content</div>
+      </AuthenticatedLayout>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('KM Todo')).toBeInTheDocument();
+      expect(screen.getByText('Test User')).toBeInTheDocument();
+    });
+  });
+
+  it('should handle both setup and auth check failures gracefully', async () => {
+    global.fetch
+      .mockRejectedValueOnce(new Error('Network error'))
+      .mockRejectedValueOnce(new Error('Auth error'));
+
+    render(
+      <AuthenticatedLayout title="Test Page">
+        <div>Test content</div>
+      </AuthenticatedLayout>
+    );
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/login');
     });
   });
 }); 

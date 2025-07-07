@@ -16,7 +16,7 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #137 | 2025-07-07 | Frontend  | First-run setup not triggered in production | Open     | Frontend  | High     | On first production deployment, the app shows the login screen instead of the setup flow. Expected: If /api/setup/status returns needsSetup: true, user should be redirected to /setup. Likely cause: Frontend not checking setup status before rendering login. See API_CONTRACT.md and TestingStrategy.md. |
+| #137 | 2025-07-07 | Frontend  | First-run setup not triggered in production | Resolved | Frontend  | High     | Setup status now checked on login page and in AuthenticatedLayout; users are redirected to /setup if needed. All tests and production build verified. |
 | #126 | 2024-12-20 | Frontend  | React Testing warnings about act() wrapping | Open     | Frontend  | Low      | Multiple components need act() wrapping for state updates - non-blocking |
 | #127 | 2024-12-20 | Frontend  | LoginForm test navigation error | Open     | Frontend  | Low      | JSDOM navigation not implemented error in test - non-blocking |
 | #131 | 2024-07-07 | Frontend  | First-run setup frontend implementation | In Progress | Frontend | High | Setup page and form implemented, 2 failing tests need fixing |
@@ -48,7 +48,7 @@
 - [2024-07-07] **SETUPFORM EMAIL VALIDATION TEST FIXED**: Issue #132 resolved. Test was refactored to use fireEvent.submit(form) instead of clicking the button. All SetupForm and SetupPage tests now pass. Validation logic is contract-compliant and matches intended UX.
 - [2025-07-07] **RESOLVED**: Issue #135 - Seed script no longer creates admin user or marks setup as complete. First-run setup flow now works as intended and verified by backend agent.
 - [2025-07-07] **BUILD BLOCKER RESOLVED**: All ESLint errors blocking production build (Issue #136) have been fixed. Production build verified working. Additional fix: Next.js 15 Suspense boundary requirement resolved in login page. Deployment unblocked. Files updated: src/app/api/setup/status/route.ts, src/app/login/__tests__/page.test.tsx, src/app/setup/page.tsx, src/components/setup/SetupForm.tsx, src/components/setup/__tests__/SetupForm.test.tsx, src/app/login/page.tsx.
-- [2025-07-07] **NEW ISSUE IDENTIFIED**: On first production deployment, the first-run setup process does not trigger and the standard login screen is shown instead. Assigned to frontend team. See Issue #137. Expected: If /api/setup/status returns needsSetup: true, user should be redirected to /setup. See API_CONTRACT.md and TestingStrategy.md.
+- [2025-07-07] **SETUP FLOW CRITICAL BUG FIXED**: Issue #137 resolved. Setup status is now checked on the login page and in AuthenticatedLayout. If setup is required, users are redirected to /setup before seeing login or any protected route. All tests and production build verified. Acceptance criteria met.
 
 ## Archive
 ### 2024-07-07
@@ -222,6 +222,7 @@
 2. **SetupForm Test**: Email validation test failing - error message not displaying properly
 3. **SetupPage Test**: Setup form retry test failing - form not appearing after retry
 4. **Analytics Endpoints**: Not implemented despite being claimed as next priority
+5. **First-Run Setup**: [RESOLVED] Setup status now checked on login page and in AuthenticatedLayout; users are redirected to /setup if needed. All tests and production build verified.
 
 #### 🎯 **Recommendations**
 1. **Immediate**: Fix production build ESLint errors (Issue #136) - CRITICAL for deployment

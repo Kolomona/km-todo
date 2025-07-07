@@ -1,22 +1,60 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LoginForm from '@/components/auth/LoginForm';
 
 function LoginPageContent() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
-    // Check if redirected from successful setup
-    const setupSuccess = searchParams.get('setup');
-    if (setupSuccess === 'success') {
-      setSuccessMessage('Setup completed successfully! You can now sign in with your admin account.');
-    }
-  }, [searchParams]);
+    const checkSetupAndHandleParams = async () => {
+      try {
+        // First check if setup is needed
+        const setupResponse = await fetch('/api/setup/status');
+        if (setupResponse.ok) {
+          const setupData = await setupResponse.json();
+          if (setupData.needsSetup) {
+            // Setup is needed, redirect to setup page
+            router.push('/setup');
+            return;
+          }
+        }
+
+        // Setup is complete, check if redirected from successful setup
+        const setupSuccess = searchParams.get('setup');
+        if (setupSuccess === 'success') {
+          setSuccessMessage('Setup completed successfully! You can now sign in with your admin account.');
+        }
+      } catch {
+        // If setup check fails, assume setup is complete and continue
+        const setupSuccess = searchParams.get('setup');
+        if (setupSuccess === 'success') {
+          setSuccessMessage('Setup completed successfully! You can now sign in with your admin account.');
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSetupAndHandleParams();
+  }, [searchParams, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto" role="status" aria-label="Loading"></div>
+          <p className="mt-4 text-gray-600">Checking setup status...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
