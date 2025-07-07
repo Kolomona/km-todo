@@ -1,4 +1,4 @@
-# Testing Strategy - KM Todo Application
+npm rin db:   # Testing Strategy - KM Todo Application
 
 *This document outlines the comprehensive testing approach for the KM Todo application, covering unit, integration, and E2E testing.*
 

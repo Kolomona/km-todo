@@ -1,6 +1,6 @@
 # ProjectStatusBoard.md
 
-## 2024-12-20 - COMPREHENSIVE VERIFICATION COMPLETE: ALL ISSUES RESOLVED
+## 2024-12-20 - FIRST-RUN INITIALIZATION REQUIREMENT IDENTIFIED
 
 ### Project Manager Summary
 - ✅ **Backend Authentication System**: Fully implemented and functional - ALL TESTS PASSING
@@ -18,13 +18,14 @@
 - ⚠️ **React Testing warnings**: act() wrapping warnings in component tests (non-blocking)
 - ✅ **Security Issue #129 Resolved**: Password hash exposure in register API fixed
 - ✅ **Test Configuration Issue Resolved**: E2E tests no longer picked up by Vitest
-- **Next Priority**: Analytics and UX improvements
+- 🆕 **NEW ISSUE #130**: First-run initialization process needed for production deployments
+- **Next Priority**: First-run setup implementation, then Analytics and UX improvements
 - ✅ **ESLint Errors Resolved**: All ESLint errors fixed, production build successful
 
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #129 | 2024-12-20 | Backend   | Security: Password hash exposure in register API | Resolved  | Backend   | High     | ✅ VERIFIED FIXED - Password hash removed from register API response, all 256/256 tests passing |
+| #130 | 2024-12-20 | Both      | First-run initialization process needed for production deployments | Open     | Both      | High     | Users cannot log in after deployment - no admin account exists. Need secure setup flow. |
 | #126 | 2024-12-20 | Frontend  | React Testing warnings about act() wrapping | Open     | Frontend  | Low      | Multiple components need act() wrapping for state updates - non-blocking |
 | #127 | 2024-12-20 | Frontend  | LoginForm test navigation error | Open     | Frontend  | Low      | JSDOM navigation not implemented error in test - non-blocking |
 
@@ -39,6 +40,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **NEW ISSUE IDENTIFIED**: First-run initialization process needed (#130) - Users cannot log in after deployment because no admin account exists. Need secure setup flow with one-time-only access. Updated ProductVision.md and API_CONTRACT.md with setup requirements.
 - [2024-12-20] **VERIFICATION COMPLETE**: AIPM conducted comprehensive verification of frontend and backend teams' work. All claims verified and confirmed accurate. Found 256/256 unit tests passing (100% success rate). Security issue #129 resolved. E2E test configuration fixed. No falsifications or mistakes found.
 - [2024-12-20] **RESOLVED**: Test configuration issue - AIPM updated vitest.config.ts to exclude E2E tests from Vitest execution. E2E tests were being picked up by Vitest causing conflicts. Now properly separated: unit tests run with Vitest, E2E tests deferred to Playwright backlog.
 - [2024-12-20] **VERIFIED RESOLVED**: Security vulnerability #129 - Backend team fixed password hash exposure in register API. Updated test mock to exclude passwordHash from response, ensuring API returns only non-sensitive user data. All 256/256 tests now passing (100% success rate).
@@ -84,15 +86,15 @@
 
 ## Development Workflow Notes
 
-### Current Phase: Phase 2 - Core Features (Complete)
-**Focus**: Analytics, search, and enhanced UX
+### Current Phase: Phase 1 - Core Foundation (Updated)
+**Focus**: First-run initialization process, then Analytics and enhanced UX
 **Duration**: 1-2 weeks remaining
-**Teams**: Backend (analytics APIs), Frontend (enhanced UX)
+**Teams**: Backend (setup APIs), Frontend (setup UI), then Analytics
 
 ### Next Milestones
-1. **Priority 1**: Analytics API endpoints implementation
-2. **Priority 2**: Enhanced UX features and improvements
-3. **Priority 3**: Performance optimization and mobile responsiveness
+1. **Priority 1**: First-run initialization process implementation
+2. **Priority 2**: Analytics API endpoints implementation
+3. **Priority 3**: Enhanced UX features and improvements
 
 ### Communication Protocol
 - **Backend Team**: Update BackEndStatus.md with progress and blockers
@@ -113,6 +115,7 @@
 - ✅ **Current User**: GET /api/auth/me with session validation
 - ✅ **Session Management**: Database-backed sessions with configurable expiry
 - ✅ **Security**: Password hashing, input validation, secure cookies
+- 🆕 **First-Run Setup**: GET /api/setup/status and POST /api/setup/initialize (to be implemented)
 
 ### Project Management System Status
 - ✅ **Project List**: GET /api/projects with responsive grid layout
@@ -135,64 +138,61 @@
 - ✅ **Test Coverage**: 256/256 tests passing (100% success rate)
 - ⏸️ **E2E Tests**: Properly deferred to backlog - not in current sprint focus
 
-### Current Sprint: Analytics and UX Improvements
+### Current Sprint: First-Run Initialization Process
 
-#### ✅ **RESOLVED: Issue #128 - ESLint Errors Blocking Production Build**
+#### 🆕 **NEW ISSUE #130 - First-Run Initialization Process Needed**
 
-**Status**: ✅ COMPLETELY RESOLVED - All ESLint errors fixed
+**Status**: 🆕 OPEN - High Priority
 
-**Resolution Summary**:
-- ✅ **All TypeScript `any` types replaced** with proper TypeScript interfaces and types
-- ✅ **All unused imports and variables removed** from source files and test files
-- ✅ **React hooks dependencies fixed** using useCallback to prevent infinite loops
-- ✅ **Unescaped entities in JSX fixed** (apostrophes in dashboard page)
-- ✅ **Test files cleaned up** with proper mock types and typed fetch mocks
-- ✅ **Build status**: ✅ Compilation successful, ✅ linting passes
-- ✅ **Total errors**: 0 ESLint errors remaining
+**Problem**: Users cannot log in after deployment because no admin account exists. Current system relies on hardcoded admin credentials in seed script, which is not suitable for production deployments.
 
-**Frontend Team - Completed**:
-1. ✅ **TypeScript `any` types** (40+ instances):
-   - Replaced `any` with proper types in components and tests
-   - Files: `src/app/todos/page.tsx`, `src/components/todos/TodoModal.tsx`, `src/app/projects/[id]/page.tsx`, all test files
-2. ✅ **Unused variables** (10+ instances):
-   - Removed unused imports (`Link` in LoginForm.tsx, `waitFor` in test files)
-   - Removed unused variables (`router`, `isLoading`, `error`, `filters`)
-3. ✅ **React issues** (5+ instances):
-   - Fixed unescaped entities in JSX (`'` in dashboard/page.tsx)
-   - Fixed missing dependencies in useEffect hooks using useCallback
-4. ✅ **Test files** (20+ instances):
-   - Replaced `any` types with proper mock types
-   - Removed unused variables in test files
-   - Replaced `(global.fetch as any)` with properly typed `mockFetch`
+**Impact**: 
+- ❌ **Production Blocking**: Users cannot access the application after deployment
+- ❌ **Security Risk**: Hardcoded credentials in seed scripts
+- ❌ **Poor UX**: No clear guidance for first-time setup
 
-**Backend Team - Previously Completed**:
-1. ✅ **TypeScript `any` types** (10+ instances):
-   - Replaced `any` with proper types in API routes and tests
-2. ✅ **Unused variables** (5+ instances):
-   - Removed unused `data` variables in test files
-3. ✅ **TypeScript strict mode compliance**:
-   - All types properly defined
+**Requirements**:
+1. **Backend Setup APIs**:
+   - `GET /api/setup/status` - Check if setup is needed
+   - `POST /api/setup/initialize` - Create first admin user
+   - One-time-only access with permanent disable after completion
+   - Strong password validation and email verification
 
-**Result**: ✅ **Production build now unblocked** - All ESLint errors resolved
-**Impact**: ✅ **Ready for production deployment**
+2. **Frontend Setup UI**:
+   - `/setup` page with admin account creation form
+   - Setup detection and redirect logic
+   - Clear guidance and progress indicators
+   - Success feedback and redirect to login
 
-#### ✅ **RESOLVED: Issue #129 - Security Vulnerability in Register API**
+3. **Security Requirements**:
+   - Minimum 8-character passwords with complexity
+   - Rate limiting on setup endpoints
+   - Permanent disable after first use
+   - No default credentials in production
 
-**Status**: ✅ COMPLETELY RESOLVED - Security issue fixed and verified
+4. **Database Changes**:
+   - Add `SystemConfig` table for setup flags
+   - Remove hardcoded admin from seed script
+   - Migration for existing deployments
 
-**Resolution Summary**:
-- ✅ **API Response Fixed**: Register API now uses `select` to exclude `passwordHash` from response
-- ✅ **Security Verified**: No sensitive data exposed in API responses
-- ✅ **Test Updated**: Test now passes: `expect(data.user.passwordHash).toBeUndefined()`
-- ✅ **All Tests Passing**: 256/256 tests passing (100% success rate)
+**Backend Team Tasks**:
+1. Create `SystemConfig` model in Prisma schema
+2. Implement `GET /api/setup/status` endpoint
+3. Implement `POST /api/setup/initialize` endpoint with security
+4. Add setup middleware to disable after completion
+5. Update seed script to be conditional
+6. Add comprehensive unit tests
 
-**Backend Team - Completed**:
-1. ✅ **Fixed API Response**: Removed passwordHash from register API response using `select`
-2. ✅ **Security Review**: Confirmed no sensitive data exposed in API responses
-3. ✅ **Test Verification**: Updated test to verify passwordHash is not returned
+**Frontend Team Tasks**:
+1. Create `/setup` page with admin creation form
+2. Implement setup detection in app startup
+3. Add redirect logic for setup flow
+4. Add form validation and error handling
+5. Add success feedback and navigation
+6. Add comprehensive unit tests
 
-**Priority**: **RESOLVED** - Security vulnerability fixed
-**Impact**: ✅ **Security risk eliminated** - password hash no longer exposed
+**Priority**: **HIGH** - Blocks production deployment
+**Impact**: ✅ **Critical for production readiness**
 
 #### ✅ Completed Tasks
 - **Issue #122 '+ Add Todo' button functionality implemented - Button now opens TodoModal with project context pre-filled. Users can add todos directly from project view. Added comprehensive unit tests (24/24 passing). All 256 unit tests passing.**
@@ -229,9 +229,10 @@
 
 ### 🔄 In Progress
 
-#### Analytics and UX Development
-- **Analytics API**: Planning analytics endpoints for dashboard metrics
-- **UX Improvements**: Enhanced user interface and experience features
+#### First-Run Initialization Development
+- **Setup API Design**: Planning secure setup endpoints
+- **Setup UI Design**: Planning user-friendly setup flow
+- **Database Schema**: Planning SystemConfig table structure
 
 ### 📊 Test Results Summary
 
@@ -247,7 +248,7 @@
 ### 🎯 Next Steps
 
 #### Immediate Actions (Priority 1)
-1. ✅ **Security Fix**: Resolved password hash exposure in register API (Issue #129)
+1. 🆕 **First-Run Setup**: Implement secure initialization process (Issue #130)
 2. **Analytics Implementation**: Begin analytics and search endpoint development
 3. **UX Improvements**: Enhanced user experience features
 4. **Performance Optimization**: Implement performance improvements
@@ -268,12 +269,14 @@
 - **E2E Test Status**: Deferred to backlog (not in current sprint focus)
 - **API Endpoint Coverage**: 100% (all endpoints tested)
 - **User Flow Coverage**: 100% (all critical flows tested)
+- **Production Readiness**: 80% (blocked by first-run setup requirement)
 
 ### 🔧 Technical Debt
 
 - **E2E Testing**: Deferred to backlog - will be revisited after analytics sprint
 - **React Testing**: act() wrapping warnings (non-blocking)
 - **Test Reliability**: Need to ensure consistent test execution across environments
+- **First-Run Setup**: Critical missing feature for production deployment
 
 ---
 
@@ -293,9 +296,10 @@
 8. **ESLint Compliance**: ✅ All ESLint errors resolved, production build successful
 
 #### ⚠️ **Issues Found**
-1. **Security Issue**: Password hash exposure in register API response (CRITICAL)
+1. **Security Issue**: Password hash exposure in register API response (CRITICAL) - ✅ RESOLVED
 2. **React Testing Warnings**: Multiple act() wrapping warnings in component tests (non-blocking)
 3. **Navigation Test Error**: JSDOM navigation error in LoginForm test (non-blocking)
+4. **🆕 Production Issue**: No first-run initialization process (CRITICAL) - NEW ISSUE #130
 
 #### 📊 **Test Results Verification**
 - **Claimed**: 256/256 tests passing (100% success rate)
@@ -306,7 +310,7 @@
 - **Verification**: ✅ All team claims verified and confirmed accurate - no falsifications found
 
 #### 🎯 **Recommendations**
-1. **Immediate**: ✅ Security issue resolved - proceed with analytics implementation
+1. **Immediate**: 🆕 Implement first-run initialization process (Issue #130) - critical for production
 2. **Short-term**: Address minor React testing warnings when convenient
 3. **Long-term**: Revisit E2E test implementation after analytics sprint
 4. **Verification**: ✅ Comprehensive verification complete - all team work confirmed accurate 

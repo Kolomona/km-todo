@@ -116,6 +116,55 @@ interface ProjectMessage {
 }
 ```
 
+### SystemConfig
+```typescript
+interface SystemConfig {
+  id: string;
+  key: string;
+  value: string;
+  createdAt: string; // ISO 8601 date string
+}
+```
+
+## Setup Endpoints (First-Run Initialization)
+
+### GET /api/setup/status
+**Request:** None
+
+**Response:**
+```typescript
+{
+  needsSetup: boolean;
+  message?: string; // Optional message explaining setup status
+}
+```
+
+**Error Responses:**
+- `500` - Database connection error
+
+### POST /api/setup/initialize
+**Request:**
+```typescript
+{
+  email: string;
+  password: string;
+  name: string;
+}
+```
+
+**Response:**
+```typescript
+{
+  user: User;
+  message: string; // Success message
+}
+```
+
+**Error Responses:**
+- `400` - Invalid input data (weak password, invalid email)
+- `409` - Setup already completed
+- `500` - Database error during setup
+
 ## Authentication Endpoints
 
 ### POST /api/auth/register
