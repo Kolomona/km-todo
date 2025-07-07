@@ -6,44 +6,44 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
 
 ## Guide Versions
 
-### @AI_AGENT_FULLSTACK_GUIDE-v4.md
+### [@AI_AGENT_FULLSTACK_GUIDE-v4.md](./AI_AGENT_FULLSTACK_GUIDE-v4.md)
 **Recommended for most users**
 - **Length**: 643 lines (53% reduction from v3)
 - **Focus**: Streamlined, AI-interpretable format
 - **Features**:
-  - Quick start section for immediate use
+  - [Quick start section](./AI_AGENT_FULLSTACK_GUIDE-v4.md#quick-start) for immediate use
   - Condensed explanations without losing vital information
   - Structured formats for better AI parsing
   - Explicit callouts and parameterized primers
-  - Comprehensive templates and examples
-  - Common problems and solutions
+  - [Comprehensive templates and examples](./AI_AGENT_FULLSTACK_GUIDE-v4.md#templates)
+  - [Common problems and solutions](./AI_AGENT_FULLSTACK_GUIDE-v4.md#common-problems--solutions)
 
-### QUICK_REFERENCE.md
+### [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
 **Essential information at a glance**
 - **Length**: ~100 lines
 - **Focus**: Rapid reference for experienced users
 - **Features**:
-  - Context primer template
-  - Team responsibilities summary
-  - ProjectStatusBoard.md structure
-  - Testing requirements
-  - Git workflow
-  - Common issues and solutions
-  - Best practices checklist
+  - [Context primer template](./QUICK_REFERENCE.md#context-primer-paste-at-start-of-each-conversation)
+  - [Team responsibilities summary](./QUICK_REFERENCE.md#team-responsibilities)
+  - [ProjectStatusBoard.md structure](./QUICK_REFERENCE.md#projectstatusboardmd-structure)
+  - [Testing requirements](./QUICK_REFERENCE.md#testing-requirements)
+  - [Git workflow](./QUICK_REFERENCE.md#git-workflow)
+  - [Common issues and solutions](./QUICK_REFERENCE.md#common-issues--solutions)
+  - [Best practices checklist](./QUICK_REFERENCE.md#best-practices)
 
 ## Usage Recommendations
 
 ### For New Users
-1. Start with **@AI_AGENT_FULLSTACK_GUIDE-v4.md** for complete understanding
-2. Use **QUICK_REFERENCE.md** for daily reference
+1. Start with **[@AI_AGENT_FULLSTACK_GUIDE-v4.md](./AI_AGENT_FULLSTACK_GUIDE-v4.md)** for complete understanding
+2. Use **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** for daily reference
 3. Keep both files open during development
 
 ### For Experienced Users
-1. Use **QUICK_REFERENCE.md** for daily reference
-2. Refer to **@AI_AGENT_FULLSTACK_GUIDE-v4.md** for detailed explanations when needed
+1. Use **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** for daily reference
+2. Refer to **[@AI_AGENT_FULLSTACK_GUIDE-v4.md](./AI_AGENT_FULLSTACK_GUIDE-v4.md)** for detailed explanations when needed
 
 ### For AI Agents
-1. Always use the **Context Primer** from QUICK_REFERENCE.md
+1. Always use the **[Context Primer](./QUICK_REFERENCE.md#context-primer-paste-at-start-of-each-conversation)** from QUICK_REFERENCE.md
 2. Follow the structured formats in v4 guide
 3. Maintain the ProjectStatusBoard.md structure exactly as specified
 

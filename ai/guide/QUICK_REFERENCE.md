@@ -9,6 +9,8 @@
 - @TestingStrategy.md - Testing guidelines & examples
 - @GitVersionControlStrategy.md - Git workflow & conventions
 
+*For detailed explanations, see [Core Concepts](#core-concepts) and [Project Setup](#project-setup) in the main guide.*
+
 ## Context Primer (Paste at start of each conversation)
 ```
 # Project Context Primer
@@ -61,6 +63,8 @@ Integration Testing → AIPM Summary → Repeat
 - Run E2E tests & log results
 - Summarize progress, flag blockers, ensure contract compliance
 
+*For detailed workflows and prompts, see [AI Team Workflows](#ai-team-workflows) in the main guide.*
+
 ## @ProjectStatusBoard.md Structure
 ```markdown
 ## Current Status (Top 5 Issues)
@@ -82,12 +86,16 @@ Integration Testing → AIPM Summary → Repeat
 - [RESOLVED] #ID Description
 ```
 
+*For detailed structure and archiving workflow, see [ProjectStatusBoard.md Structure](#projectstatusboardmd-structure) in the main guide.*
+
 ## Testing Requirements
 - **Unit Tests (70%)**: Individual pieces work correctly
 - **Integration Tests (20%)**: Pieces work together
 - **E2E Tests (10%)**: Whole application works for users
 - **Tools**: Vitest, React Testing Library, Playwright
 - **Test Data**: Seeding/reset before each E2E run
+
+*For comprehensive testing strategy and communication protocols, see [Testing Strategy](#testing-strategy) in the main guide.*
 
 ## Git Workflow
 - Feature branches: `feature/backend-[description]` / `feature/frontend-[description]`
@@ -100,6 +108,8 @@ Integration Testing → AIPM Summary → Repeat
 3. **Missing Features**: Review DevelopmentPlan.md vs current state
 4. **Performance**: Optimize queries, add caching, check bundle size
 
+*For detailed problem-solving guidance, see [Common Problems & Solutions](#common-problems--solutions) in the main guide.*
+
 ## Best Practices
 - ✅ Keep contract as single source of truth
 - ✅ Update status files after each session
@@ -107,4 +117,6 @@ Integration Testing → AIPM Summary → Repeat
 - ✅ Log all issues in @ProjectStatusBoard.md
 - ❌ Don't implement without updating contract
 - ❌ Don't skip status updates
-- ❌ Don't ignore contract violations 
+- ❌ Don't ignore contract violations
+
+*For comprehensive best practices and guidelines, see [Best Practices](#best-practices) in the main guide.* 
