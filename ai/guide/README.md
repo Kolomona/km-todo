@@ -4,7 +4,7 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
 
 ## Guide Versions
 
-### AI_AGENT_FULLSTACK_GUIDE-v4.md
+### @AI_AGENT_FULLSTACK_GUIDE-v4.md
 **Recommended for most users**
 - **Length**: 643 lines (53% reduction from v3)
 - **Focus**: Streamlined, AI-interpretable format
@@ -32,13 +32,13 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
 ## Usage Recommendations
 
 ### For New Users
-1. Start with **AI_AGENT_FULLSTACK_GUIDE-v4.md** for complete understanding
+1. Start with **@AI_AGENT_FULLSTACK_GUIDE-v4.md** for complete understanding
 2. Use **QUICK_REFERENCE.md** for daily reference
 3. Keep both files open during development
 
 ### For Experienced Users
 1. Use **QUICK_REFERENCE.md** for daily reference
-2. Refer to **AI_AGENT_FULLSTACK_GUIDE-v4.md** for detailed explanations when needed
+2. Refer to **@AI_AGENT_FULLSTACK_GUIDE-v4.md** for detailed explanations when needed
 
 ### For AI Agents
 1. Always use the **Context Primer** from QUICK_REFERENCE.md
@@ -69,12 +69,12 @@ This folder contains the AI Agent Full-Stack Development Guide in different vers
 - Best practices and templates
 
 ## File Structure
-```
-ai/guide/
-├── README.md                           # This file
-├── AI_AGENT_FULLSTACK_GUIDE-v4.md     # Main guide (streamlined)
-└── QUICK_REFERENCE.md                  # Essential reference
-```
+ ```
+ ai/guide/
+ ├── README.md                           # This file
+ ├── AI_AGENT_FULLSTACK_GUIDE-v4.md     # Main guide (streamlined)
+ └── QUICK_REFERENCE.md                  # Essential reference
+ ```
 
 ## Migration from v3
 
