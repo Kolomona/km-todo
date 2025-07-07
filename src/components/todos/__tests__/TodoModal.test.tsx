@@ -3,7 +3,8 @@ import { vi } from 'vitest'
 import TodoModal from '../TodoModal'
 
 // Mock fetch
-global.fetch = vi.fn()
+const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>
+global.fetch = mockFetch
 
 const mockProjects = [
   {
@@ -63,7 +64,7 @@ const defaultProps = {
 describe('TodoModal', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    ;(fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({ projects: mockProjects })
     })
@@ -387,7 +388,7 @@ describe('TodoModal', () => {
 
   describe('Error Handling', () => {
     it('should handle fetch error for projects', async () => {
-      ;(fetch as any).mockRejectedValue(new Error('Failed to fetch'))
+      mockFetch.mockRejectedValue(new Error('Failed to fetch'))
       
       render(<TodoModal {...defaultProps} />)
       

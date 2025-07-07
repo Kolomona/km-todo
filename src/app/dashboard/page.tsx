@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+
 import Link from 'next/link';
 import AuthenticatedLayout from '@/components/layout/AuthenticatedLayout';
 
@@ -15,7 +15,7 @@ interface User {
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
+
 
   useEffect(() => {
     // Get user info for the welcome message
@@ -41,7 +41,7 @@ export default function DashboardPage() {
           Welcome back, {user?.name || 'User'}!
         </h1>
         <p className="mt-2 text-gray-600">
-          Here's what's happening with your projects and todos.
+          Here&apos;s what&apos;s happening with your projects and todos.
         </p>
       </div>
 

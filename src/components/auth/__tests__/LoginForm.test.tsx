@@ -3,7 +3,8 @@ import { vi } from 'vitest';
 import LoginForm from '../LoginForm';
 
 // Mock fetch
-global.fetch = vi.fn();
+const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>;
+global.fetch = mockFetch;
 
 describe('LoginForm', () => {
   beforeEach(() => {
@@ -37,7 +38,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
     };
     
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
     
     render(<LoginForm onSuccess={mockOnSuccess} />);
     
@@ -70,7 +71,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ error: { message: 'Invalid credentials' } })
     };
     
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
     
     render(<LoginForm onError={mockOnError} />);
     
@@ -96,7 +97,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
     };
     
-    (global.fetch as any).mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
+    mockFetch.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
     
     render(<LoginForm />);
     
@@ -120,7 +121,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
     };
     
-    (global.fetch as any).mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
+    mockFetch.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
     
     render(<LoginForm />);
     
@@ -144,7 +145,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ error: { message: 'Invalid credentials' } })
     };
     
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
     
     render(<LoginForm onError={mockOnError} />);
     
@@ -202,7 +203,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
     };
     
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
     
     render(<LoginForm onSuccess={mockOnSuccess} />);
     
@@ -243,7 +244,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
     };
     
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
     
     render(<LoginForm onSuccess={mockOnSuccess} />);
     
@@ -279,7 +280,7 @@ describe('LoginForm', () => {
       json: () => Promise.resolve({ user: { id: '1', email: 'test@example.com', name: 'Test User' } })
     };
     
-    (global.fetch as any).mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
+    mockFetch.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve(mockResponse), 100)));
     
     render(<LoginForm />);
     

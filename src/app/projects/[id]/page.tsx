@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { 
   PencilIcon, 
@@ -67,6 +67,26 @@ interface ProjectMessage {
   };
 }
 
+interface CreateTodoData {
+  title: string;
+  description?: string;
+  dueDate?: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  estimatedTime?: number;
+  assignedTo?: string;
+  projectIds: string[];
+  recurringPattern?: {
+    patternType: 'daily' | 'weekly' | 'monthly' | 'custom';
+    patternData: {
+      interval?: number;
+      dayOfWeek?: number[];
+      dayOfMonth?: number[];
+      weekOfMonth?: number[];
+      customRule?: string;
+    };
+  };
+}
+
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -96,13 +116,7 @@ export default function ProjectDetailPage() {
   // New state for Add Todo modal
   const [showAddTodo, setShowAddTodo] = useState(false);
 
-  useEffect(() => {
-    if (projectId) {
-      fetchProjectData();
-    }
-  }, [projectId]);
-
-  const fetchProjectData = async () => {
+  const fetchProjectData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -127,7 +141,13 @@ export default function ProjectDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    if (projectId) {
+      fetchProjectData();
+    }
+  }, [projectId, fetchProjectData]);
 
   const handleDeleteProject = async () => {
     try {
@@ -210,7 +230,7 @@ export default function ProjectDetailPage() {
     setShowAddTodo(true);
   };
 
-  const handleAddTodoSubmit = async (data: any) => {
+  const handleAddTodoSubmit = async (data: CreateTodoData) => {
     try {
       // Pre-fill the project context
       const todoData = {
@@ -400,7 +420,7 @@ export default function ProjectDetailPage() {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as 'overview' | 'todos' | 'members' | 'messages')}
                   className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
                     activeTab === tab.id
                       ? 'border-indigo-500 text-indigo-600'

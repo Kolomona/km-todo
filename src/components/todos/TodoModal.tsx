@@ -38,7 +38,13 @@ interface Todo {
     id: string
     todoId: string
     patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
-    patternData: any
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
     nextDueDate: string
     isActive: boolean
   }
@@ -50,10 +56,30 @@ interface Project {
   description?: string
 }
 
+interface CreateTodoData {
+  title: string
+  description?: string
+  dueDate?: string
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  estimatedTime?: number
+  assignedTo?: string
+  projectIds: string[]
+  recurringPattern?: {
+    patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
+  }
+}
+
 interface TodoModalProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (data: any) => void
+  onSubmit: (data: CreateTodoData) => void
   todo?: Todo | null
   title: string
 }
@@ -103,7 +129,13 @@ export default function TodoModal({
           projectIds: todo.projects.map(tp => tp.projectId),
           recurringPattern: todo.recurringPattern ? {
             patternType: todo.recurringPattern.patternType,
-            patternData: todo.recurringPattern.patternData
+            patternData: {
+              interval: typeof todo.recurringPattern.patternData.interval === 'number' ? todo.recurringPattern.patternData.interval : 1,
+              dayOfWeek: todo.recurringPattern.patternData.dayOfWeek || [],
+              dayOfMonth: todo.recurringPattern.patternData.dayOfMonth || [],
+              weekOfMonth: todo.recurringPattern.patternData.weekOfMonth || [],
+              customRule: todo.recurringPattern.patternData.customRule || ''
+            }
           } : {
             patternType: 'daily',
             patternData: {
@@ -219,7 +251,7 @@ export default function TodoModal({
     }
   }
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | string[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -234,7 +266,7 @@ export default function TodoModal({
     }
   }
 
-  const handleRecurringPatternChange = (field: string, value: any) => {
+  const handleRecurringPatternChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       recurringPattern: {
@@ -244,7 +276,7 @@ export default function TodoModal({
     }))
   }
 
-  const handleRecurringDataChange = (field: string, value: any) => {
+  const handleRecurringDataChange = (field: string, value: number | number[] | string) => {
     setFormData(prev => ({
       ...prev,
       recurringPattern: {

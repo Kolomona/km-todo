@@ -48,7 +48,13 @@ interface Todo {
     id: string
     todoId: string
     patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
-    patternData: any
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
     nextDueDate: string
     isActive: boolean
   }

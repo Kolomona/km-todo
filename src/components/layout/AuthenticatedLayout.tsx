@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -23,11 +23,7 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const response = await fetch('/api/auth/me');
       if (!response.ok) {
@@ -36,12 +32,16 @@ export default function AuthenticatedLayout({ children, title = 'Dashboard' }: A
       }
       const data = await response.json();
       setUser(data.user);
-    } catch (error) {
+    } catch {
       router.push('/login');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [router]);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   const handleLogout = async () => {
     try {

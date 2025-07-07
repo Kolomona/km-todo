@@ -42,7 +42,13 @@ interface Todo {
     id: string
     todoId: string
     patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
-    patternData: any
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
     nextDueDate: string
     isActive: boolean
   }
@@ -101,7 +107,38 @@ export default function TodosPage() {
     fetchTodos(1, filters)
   }, [filters])
 
-  const handleCreateTodo = async (todoData: any) => {
+interface CreateTodoData {
+  title: string
+  description?: string
+  dueDate?: string
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  estimatedTime?: number
+  assignedTo?: string
+  projectIds: string[]
+  recurringPattern?: {
+    patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
+  }
+}
+
+interface UpdateTodoData {
+  title?: string
+  description?: string
+  dueDate?: string
+  priority?: 'low' | 'medium' | 'high' | 'urgent'
+  status?: 'pending' | 'in_progress' | 'completed' | 'cancelled'
+  estimatedTime?: number
+  assignedTo?: string
+  projectIds?: string[]
+}
+
+  const handleCreateTodo = async (todoData: CreateTodoData) => {
     try {
       const response = await fetch('/api/todos', {
         method: 'POST',
@@ -123,7 +160,7 @@ export default function TodosPage() {
     }
   }
 
-  const handleUpdateTodo = async (todoId: string, todoData: any) => {
+  const handleUpdateTodo = async (todoId: string, todoData: UpdateTodoData) => {
     try {
       const response = await fetch(`/api/todos/${todoId}`, {
         method: 'PUT',

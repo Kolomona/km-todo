@@ -2,13 +2,115 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import TodosPage from '../page'
 
+// Mock types
+type MockTodo = {
+  id: string
+  title: string
+  description?: string
+  dueDate?: string
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled'
+  estimatedTime?: number
+  createdBy: string
+  assignedTo?: string
+  createdAt: string
+  updatedAt: string
+  projects: Array<{
+    id: string
+    todoId: string
+    projectId: string
+    project: {
+      id: string
+      name: string
+      description?: string
+    }
+  }>
+  timeLogs: Array<{
+    id: string
+    todoId: string
+    userId: string
+    timeSpent: number
+    date: string
+    notes?: string
+    createdAt: string
+  }>
+  recurringPattern?: {
+    id: string
+    todoId: string
+    patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
+    nextDueDate: string
+    isActive: boolean
+  }
+}
+
+type MockTodoData = {
+  title: string
+  description?: string
+  dueDate?: string
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  estimatedTime?: number
+  assignedTo?: string
+  projectIds: string[]
+  recurringPattern?: {
+    patternType: 'daily' | 'weekly' | 'monthly' | 'custom'
+    patternData: {
+      interval?: number
+      dayOfWeek?: number[]
+      dayOfMonth?: number[]
+      weekOfMonth?: number[]
+      customRule?: string
+    }
+  }
+}
+
+type MockFilters = {
+  status?: string
+  priority?: string
+  assignedTo?: string
+  dueDateFrom?: string
+  dueDateTo?: string
+  search?: string
+}
+
+interface TodoListProps {
+  todos: MockTodo[]
+  loading: boolean
+  onEdit: (todo: MockTodo) => void
+  onDelete: (todoId: string) => void
+  onStatusToggle: (todoId: string, newStatus: string) => void
+  currentPage: number
+  totalPages: number
+  totalCount: number
+  onPageChange: (page: number) => void
+}
+
+interface TodoModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (data: MockTodoData) => void
+  todo?: MockTodo
+  title: string
+}
+
+interface TodoFiltersProps {
+  filters: MockFilters
+  onFilterChange: (filters: MockFilters) => void
+}
+
 // Mock the components
 vi.mock('@/components/layout/AuthenticatedLayout', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="authenticated-layout">{children}</div>
 }))
 
 vi.mock('@/components/todos/TodoList', () => ({
-  default: ({ todos, loading, onEdit, onDelete, onStatusToggle }: any) => (
+  default: ({ todos, loading, onEdit, onDelete, onStatusToggle }: TodoListProps) => (
     <div data-testid="todo-list">
       {loading ? 'Loading...' : `Todos: ${todos?.length || 0}`}
       {todos && todos.length > 0 && (
@@ -23,7 +125,7 @@ vi.mock('@/components/todos/TodoList', () => ({
 }))
 
 vi.mock('@/components/todos/TodoModal', () => ({
-  default: ({ isOpen, onClose, onSubmit, title }: any) => (
+  default: ({ isOpen, onClose, onSubmit, title }: TodoModalProps) => (
     isOpen ? (
       <div data-testid="todo-modal">
         <h2>{title}</h2>
@@ -37,7 +139,7 @@ vi.mock('@/components/todos/TodoModal', () => ({
 }))
 
 vi.mock('@/components/todos/TodoFilters', () => ({
-  default: ({ filters, onFilterChange }: any) => (
+  default: ({ onFilterChange }: TodoFiltersProps) => (
     <div data-testid="todo-filters">
       <button onClick={() => onFilterChange({ status: 'pending' })}>Apply Status Filter</button>
       <button onClick={() => onFilterChange({})}>Clear Filters</button>
@@ -46,7 +148,8 @@ vi.mock('@/components/todos/TodoFilters', () => ({
 }))
 
 // Mock fetch
-global.fetch = vi.fn()
+const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>
+global.fetch = mockFetch
 
 const mockTodos = [
   {
@@ -86,7 +189,7 @@ const mockTodos = [
 describe('TodosPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    ;(fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({
         todos: mockTodos,
@@ -99,7 +202,7 @@ describe('TodosPage', () => {
 
   afterEach(() => {
     // Reset to default mock after each test
-    ;(fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({
         todos: mockTodos,
@@ -153,7 +256,7 @@ describe('TodosPage', () => {
     })
 
     it('should handle fetch error gracefully', async () => {
-      ;(fetch as any).mockRejectedValue(new Error('Failed to fetch'))
+      mockFetch.mockRejectedValue(new Error('Failed to fetch'))
       
       render(<TodosPage />)
       
@@ -182,7 +285,7 @@ describe('TodosPage', () => {
     })
 
     it('should close modal and refresh todos when todo is created', async () => {
-      ;(fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true })
       })
@@ -204,7 +307,7 @@ describe('TodosPage', () => {
 
     it('should handle create todo error', async () => {
       // First call returns todos, second call fails for create todo
-      ;(fetch as any)
+      mockFetch
         .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -258,7 +361,7 @@ describe('TodosPage', () => {
 
     it('should close modal and refresh todos when todo is updated', async () => {
       // First call returns todos, second call is for the update
-      ;(fetch as any)
+      mockFetch
         .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -296,7 +399,7 @@ describe('TodosPage', () => {
     it('should show confirmation dialog and delete todo', async () => {
       const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
       // First call returns todos, second call is for the delete
-      ;(fetch as any)
+      mockFetch
         .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -353,7 +456,7 @@ describe('TodosPage', () => {
   describe('Status Toggle', () => {
     it('should toggle todo status', async () => {
       // First call returns todos, second call is for the status toggle
-      ;(fetch as any)
+      mockFetch
         .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -444,7 +547,7 @@ describe('TodosPage', () => {
 
   describe('Pagination', () => {
     it('should handle page changes', async () => {
-      ;(fetch as any).mockResolvedValue({
+      mockFetch.mockResolvedValue({
         ok: true,
         json: async () => ({
           todos: mockTodos,
@@ -466,7 +569,7 @@ describe('TodosPage', () => {
 
   describe('Error Handling', () => {
     it('should show error message and retry button when fetch fails', async () => {
-      ;(fetch as any).mockRejectedValue(new Error('Network error'))
+      mockFetch.mockRejectedValue(new Error('Network error'))
       
       render(<TodosPage />)
       
@@ -478,7 +581,7 @@ describe('TodosPage', () => {
     })
 
     it('should retry fetch when retry button is clicked', async () => {
-      ;(fetch as any).mockRejectedValueOnce(new Error('Network error'))
+      mockFetch.mockRejectedValueOnce(new Error('Network error'))
       
       render(<TodosPage />)
       

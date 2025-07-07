@@ -11,7 +11,8 @@ vi.mock('next/navigation', () => ({
 }));
 
 // Mock fetch
-global.fetch = vi.fn();
+const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>;
+global.fetch = mockFetch;
 
 describe('Home Page', () => {
   beforeEach(() => {
@@ -27,7 +28,7 @@ describe('Home Page', () => {
 
   it('should redirect to dashboard when user is authenticated', async () => {
     // Mock successful authentication response
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ user: { id: '1', email: 'test@example.com', name: 'Test User' } }),
     });
@@ -41,7 +42,7 @@ describe('Home Page', () => {
 
   it('should redirect to login when user is not authenticated', async () => {
     // Mock failed authentication response
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: false,
     });
 
@@ -54,7 +55,7 @@ describe('Home Page', () => {
 
   it('should redirect to login when authentication check fails', async () => {
     // Mock network error
-    (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+    mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
     render(<Home />);
 
@@ -65,7 +66,7 @@ describe('Home Page', () => {
 
   it('should handle 401 unauthorized response', async () => {
     // Mock 401 response
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: false,
       status: 401,
     });
@@ -79,7 +80,7 @@ describe('Home Page', () => {
 
   it('should handle 403 forbidden response', async () => {
     // Mock 403 response
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: false,
       status: 403,
     });

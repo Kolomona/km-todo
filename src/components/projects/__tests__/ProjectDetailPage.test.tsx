@@ -2,6 +2,10 @@ import { render, screen, fireEvent, waitFor, within } from '@testing-library/rea
 import { vi } from 'vitest';
 import ProjectDetailPage from '../../../app/projects/[id]/page';
 
+// Mock fetch
+const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>;
+global.fetch = mockFetch;
+
 // Mock Next.js router
 const mockPush = vi.fn();
 vi.mock('next/navigation', () => ({
@@ -35,7 +39,7 @@ vi.mock('@/components/todos/TodoModal', () => ({
   default: ({ isOpen, onClose, onSubmit, title }: { 
     isOpen: boolean; 
     onClose: () => void; 
-    onSubmit: (data: any) => void; 
+    onSubmit: (data: { title: string; projectIds: string[] }) => void; 
     title: string; 
   }) => (
     isOpen ? (
@@ -122,7 +126,7 @@ describe('ProjectDetailPage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    global.fetch = vi.fn();
+    global.fetch = mockFetch;
   });
 
   it('should render project detail page with title', async () => {
@@ -135,7 +139,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -180,7 +184,7 @@ describe('ProjectDetailPage', () => {
       status: 404
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -197,7 +201,7 @@ describe('ProjectDetailPage', () => {
       status: 403
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -213,7 +217,7 @@ describe('ProjectDetailPage', () => {
       status: 404
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -236,7 +240,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -261,7 +265,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -289,7 +293,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -318,7 +322,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -345,7 +349,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -379,7 +383,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any)
+    mockFetch
       .mockResolvedValueOnce(mockResponse)
       .mockResolvedValueOnce(mockUpdateResponse);
 
@@ -427,7 +431,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -461,7 +465,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -515,7 +519,7 @@ describe('ProjectDetailPage', () => {
     fireEvent.click(deleteButton);
 
     await waitFor(() => {
-      const calls = (global.fetch as any).mock.calls;
+      const calls = mockFetch.mock.calls;
       const found = calls.some(
         ([url, options]) =>
           url === '/api/projects/test-project-id' &&
@@ -676,7 +680,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -702,7 +706,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 
@@ -747,7 +751,7 @@ describe('ProjectDetailPage', () => {
       })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectDetailPage />);
 

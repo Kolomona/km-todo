@@ -2,6 +2,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import ProjectsPage from '../../../app/projects/page';
 
+// Mock fetch
+const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>;
+global.fetch = mockFetch;
+
 // Mock the AuthenticatedLayout component
 vi.mock('@/components/layout/AuthenticatedLayout', () => ({
   default: ({ children, title }: { children: React.ReactNode; title?: string }) => (
@@ -22,7 +26,6 @@ vi.mock('@heroicons/react/24/outline', () => ({
 describe('ProjectsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    global.fetch = vi.fn();
   });
 
   it('should render projects page with title', async () => {
@@ -83,7 +86,7 @@ describe('ProjectsPage', () => {
       json: () => Promise.resolve({ projects: mockProjects })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectsPage />);
 
@@ -104,7 +107,7 @@ describe('ProjectsPage', () => {
       json: () => Promise.resolve({ projects: [] })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectsPage />);
 
@@ -121,7 +124,7 @@ describe('ProjectsPage', () => {
       status: 500
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectsPage />);
 
@@ -216,7 +219,7 @@ describe('ProjectsPage', () => {
       })
     };
 
-    (global.fetch as any)
+    mockFetch
       .mockResolvedValueOnce(mockResponse) // Initial fetch
       .mockResolvedValueOnce(mockCreateResponse); // Create project
 
@@ -260,7 +263,7 @@ describe('ProjectsPage', () => {
       json: () => Promise.resolve({ projects: [] })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectsPage />);
 
@@ -294,7 +297,7 @@ describe('ProjectsPage', () => {
       })
     };
 
-    (global.fetch as any)
+    mockFetch
       .mockResolvedValueOnce(mockResponse)
       .mockResolvedValueOnce(mockCreateResponse);
 
@@ -326,7 +329,7 @@ describe('ProjectsPage', () => {
       json: () => Promise.resolve({ projects: [] })
     };
 
-    (global.fetch as any).mockResolvedValue(mockResponse);
+    mockFetch.mockResolvedValue(mockResponse);
 
     render(<ProjectsPage />);
 
