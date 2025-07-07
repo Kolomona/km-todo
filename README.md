@@ -85,97 +85,17 @@ For more on this methodology, see [ai/AI_AGENT_FULLSTACK_GUIDE-v2.md](ai/AI_AGEN
 
 ### Production Deployment
 
-1. **Build the production version:**
+KM Todo is designed to be deployed using Docker containers for easy deployment and management. Here are the recommended deployment methods:
+
+#### Method 1: Docker Compose (Recommended)
+
+1. **Clone the repository on your server:**
    ```bash
-   npm run build:prod
-   ```
-
-2. **Start production server:**
-   ```bash
-   npm run start:prod
-   ```
-   This will:
-   - Start the database
-   - Wait for database connection
-   - Seed the database
-   - Start the Next.js production server
-
-3. **Or use the complete deployment script:**
-   ```bash
-   npm run deploy
-   ```
-
-### DigitalOcean Droplet Deployment with Apache Reverse Proxy
-
-This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as a reverse proxy.
-
-#### Prerequisites
-- A DigitalOcean account
-- A droplet with Ubuntu 22.04 LTS
-- Domain name (optional but recommended)
-
-#### Step 1: Create and Configure Droplet
-
-1. **Create a new droplet:**
-   - Choose Ubuntu 22.04 LTS
-   - Select plan (minimum 1GB RAM, 1 vCPU)
-   - Choose datacenter region
-   - Add SSH key or create password
-   - Create droplet
-
-2. **Connect to your droplet:**
-   ```bash
-   ssh root@your-droplet-ip
-   ```
-
-3. **Create a non-root user:**
-   ```bash
-   adduser kmtodo
-   usermod -aG sudo kmtodo
-   su - kmtodo
-   ```
-
-#### Step 2: Install Dependencies
-
-1. **Update system and install Node.js:**
-   ```bash
-   sudo apt update && sudo apt upgrade -y
-   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-   sudo apt-get install -y nodejs
-   ```
-
-2. **Install Docker and Docker Compose:**
-   ```bash
-   curl -fsSL https://get.docker.com -o get-docker.sh
-   sudo sh get-docker.sh
-   sudo usermod -aG docker $USER
-   sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-   sudo chmod +x /usr/local/bin/docker-compose
-   ```
-
-3. **Install Apache:**
-   ```bash
-   sudo apt install apache2 -y
-   sudo a2enmod proxy
-   sudo a2enmod proxy_http
-   sudo a2enmod ssl
-   sudo a2enmod rewrite
-   ```
-
-#### Step 3: Deploy the Application
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/km-todo.git
+   git clone <repository-url>
    cd km-todo
    ```
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables:**
+2. **Set up environment variables:**
    ```bash
    cp sample.env .env.production
    nano .env.production
@@ -185,173 +105,249 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
    ```env
    NODE_ENV=production
    PORT=3000
-   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/km_todo
+   DATABASE_URL=postgresql://postgres:postgres@db:5432/km_todo
    DB_PORT=5432
    DB_E2E_PORT=5433
    ```
 
-4. **Build and start the application:**
+3. **Build and start with Docker Compose:**
    ```bash
+   # Build the application
    npm run build:prod
-   npm run start:prod
-   ```
-
-#### Step 4: Configure Apache Reverse Proxy
-
-1. **Create Apache virtual host configuration:**
-   ```bash
-   sudo nano /etc/apache2/sites-available/km-todo.conf
-   ```
-
-2. **Add the following configuration:**
-   ```apache
-   <VirtualHost *:80>
-       ServerName your-domain.com
-       ServerAlias www.your-domain.com
-       
-       ProxyPreserveHost On
-       ProxyPass / http://localhost:${PORT:-3000}/
-       ProxyPassReverse / http://localhost:${PORT:-3000}/
-       
-       ErrorLog ${APACHE_LOG_DIR}/km-todo_error.log
-       CustomLog ${APACHE_LOG_DIR}/km-todo_access.log combined
-   </VirtualHost>
-   ```
-
-3. **Enable the site and restart Apache:**
-   ```bash
-   sudo a2ensite km-todo.conf
-   sudo systemctl restart apache2
-   ```
-
-#### Step 5: Set Up SSL (Optional but Recommended)
-
-1. **Install Certbot:**
-   ```bash
-   sudo apt install certbot python3-certbot-apache -y
-   ```
-
-2. **Obtain SSL certificate:**
-   ```bash
-   sudo certbot --apache -d your-domain.com -d www.your-domain.com
-   ```
-
-3. **Set up auto-renewal:**
-   ```bash
-   sudo crontab -e
-   ```
-   Add this line:
-   ```
-   0 12 * * * /usr/bin/certbot renew --quiet
-   ```
-
-#### Step 6: Set Up Process Management
-
-1. **Install PM2 for process management:**
-   ```bash
-   sudo npm install -g pm2
-   ```
-
-2. **Create PM2 ecosystem file:**
-   ```bash
-   nano ecosystem.config.js
-   ```
    
-   Add this configuration:
-   ```javascript
-   module.exports = {
-     apps: [{
-       name: 'km-todo',
-       script: 'npm',
-       args: 'start:prod',
-       cwd: '/home/kmtodo/km-todo',
-       env: {
-         NODE_ENV: 'production',
-         PORT: '3000',
-         DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/km_todo',
-         DB_PORT: '5432',
-         DB_E2E_PORT: '5433'
-       },
-       instances: 1,
-       autorestart: true,
-       watch: false,
-       max_memory_restart: '1G'
-     }]
-   }
+   # Start all services (app + database)
+   docker-compose up -d
    ```
 
-3. **Start the application with PM2:**
+4. **Seed the database (first time only):**
    ```bash
-   pm2 start ecosystem.config.js
-   pm2 startup
-   pm2 save
+   docker-compose exec app npm run db:seed
    ```
 
-#### Step 7: Configure Firewall
-
-1. **Set up UFW firewall:**
-   ```bash
-   sudo ufw allow ssh
-   sudo ufw allow 'Apache Full'
-   sudo ufw enable
-   ```
-
-#### Step 8: Database Setup
-
-1. **Start the database:**
-   ```bash
-   npm run db:up
-   ```
-
-2. **Seed the database:**
-   ```bash
-   npm run db:seed
-   ```
-
-#### Step 9: Final Configuration
-
-1. **Test the application:**
-   - Visit `http://your-domain.com` or `http://your-droplet-ip`
+5. **Access your application:**
+   - Visit `http://your-server-ip:3000`
    - Login with admin credentials: `admin@example.com` / `kmToDo1!1!`
 
-2. **Set up automatic updates:**
+#### Method 2: Manual Docker Deployment
+
+1. **Build the Docker image:**
    ```bash
-   sudo apt install unattended-upgrades
-   sudo dpkg-reconfigure -plow unattended-upgrades
+   docker build -t km-todo .
    ```
 
-#### Troubleshooting
+2. **Start PostgreSQL container:**
+   ```bash
+   docker run -d \
+     --name km-todo-db \
+     -e POSTGRES_DB=km_todo \
+     -e POSTGRES_USER=postgres \
+     -e POSTGRES_PASSWORD=postgres \
+     -p 5432:5432 \
+     postgres:15
+   ```
 
-- **Check application logs:**
-  ```bash
-  pm2 logs km-todo
-  ```
+3. **Start the application container:**
+   ```bash
+   docker run -d \
+     --name km-todo-app \
+     --link km-todo-db:db \
+     -e NODE_ENV=production \
+     -e DATABASE_URL=postgresql://postgres:postgres@db:5432/km_todo \
+     -p 3000:3000 \
+     km-todo
+   ```
 
-- **Check Apache logs:**
-  ```bash
-  sudo tail -f /var/log/apache2/km-todo_error.log
-  ```
+4. **Seed the database:**
+   ```bash
+   docker exec km-todo-app npm run db:seed
+   ```
 
-- **Restart services:**
-  ```bash
-  pm2 restart km-todo
-  sudo systemctl restart apache2
-  ```
+#### Method 3: Cloud Platform Deployment
 
-- **Check database status:**
-  ```bash
-  docker ps
-  docker logs km-todo-db-1
-  ```
+**Deploy to Vercel:**
+1. Connect your GitHub repository to Vercel
+2. Set environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
+
+**Deploy to Railway:**
+1. Connect your GitHub repository to Railway
+2. Add PostgreSQL service
+3. Set environment variables
+4. Deploy automatically
+
+**Deploy to DigitalOcean App Platform:**
+1. Connect your GitHub repository
+2. Add PostgreSQL database service
+3. Configure environment variables
+4. Deploy with automatic scaling
+
+### Production Environment Setup
+
+#### Environment Variables for Production
+
+Create a `.env.production` file with these settings:
+
+```env
+NODE_ENV=production
+PORT=3000
+DATABASE_URL=postgresql://postgres:postgres@db:5432/km_todo
+DB_PORT=5432
+DB_E2E_PORT=5433
+NEXTAUTH_SECRET=your-secret-key-here
+NEXTAUTH_URL=https://your-domain.com
+```
 
 #### Security Considerations
 
-- Change default admin password after first login
-- Regularly update system packages
-- Monitor logs for suspicious activity
-- Consider setting up fail2ban for additional security
-- Use strong passwords for database and application
-- Keep SSL certificates up to date
+- **Change default passwords**: Update admin password after first login
+- **Use strong secrets**: Generate strong NEXTAUTH_SECRET
+- **Enable HTTPS**: Use SSL certificates for production
+- **Database security**: Use strong database passwords
+- **Firewall**: Configure firewall to allow only necessary ports
+- **Regular updates**: Keep system and dependencies updated
+
+#### Firewall Configuration (UFW)
+
+For Ubuntu/Debian servers, configure UFW to secure your deployment:
+
+1. **Install UFW (if not already installed):**
+   ```bash
+   sudo apt update
+   sudo apt install ufw
+   ```
+
+2. **Set default policies:**
+   ```bash
+   sudo ufw default deny incoming
+   sudo ufw default allow outgoing
+   ```
+
+3. **Allow SSH access (important - do this first):**
+   ```bash
+   sudo ufw allow ssh
+   # or if using custom SSH port
+   sudo ufw allow 22
+   ```
+
+4. **Allow application port:**
+   ```bash
+   sudo ufw allow 3000
+   ```
+
+5. **Allow HTTP/HTTPS (if using reverse proxy):**
+   ```bash
+   sudo ufw allow 80
+   sudo ufw allow 443
+   ```
+
+6. **Enable UFW:**
+   ```bash
+   sudo ufw enable
+   ```
+
+7. **Check UFW status:**
+   ```bash
+   sudo ufw status verbose
+   ```
+
+**Important Notes:**
+- Always allow SSH before enabling UFW to avoid locking yourself out
+- If using Docker, UFW may not block Docker containers by default
+- For Docker deployments, consider using `iptables` rules or Docker's built-in networking
+- Regularly review and update firewall rules as needed
+
+#### Monitoring and Maintenance
+
+**View logs:**
+```bash
+# Docker Compose logs
+docker-compose logs -f app
+docker-compose logs -f db
+
+# Individual container logs
+docker logs km-todo-app
+docker logs km-todo-db
+```
+
+**Restart services:**
+```bash
+# Docker Compose
+docker-compose restart
+
+# Individual containers
+docker restart km-todo-app
+docker restart km-todo-db
+```
+
+**Update application:**
+```bash
+# Pull latest changes
+git pull origin main
+
+# Rebuild and restart
+npm run build:prod
+docker-compose down
+docker-compose up -d --build
+```
+
+### Reverse Proxy Setup (Optional)
+
+For production deployments, you may want to set up a reverse proxy (Nginx/Apache) to handle SSL termination and serve static files efficiently.
+
+**Nginx configuration example:**
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name your-domain.com;
+    
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+    
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+### Troubleshooting
+
+**Common issues and solutions:**
+
+1. **Database connection failed:**
+   - Check if PostgreSQL container is running: `docker ps`
+   - Verify DATABASE_URL in environment variables
+   - Check database logs: `docker logs km-todo-db`
+
+2. **Application won't start:**
+   - Check application logs: `docker logs km-todo-app`
+   - Verify all environment variables are set
+   - Ensure port 3000 is available
+
+3. **Build failures:**
+   - Clear Docker cache: `docker system prune -a`
+   - Check for syntax errors: `npm run lint`
+   - Verify all dependencies are installed
+
+4. **Performance issues:**
+   - Monitor resource usage: `docker stats`
+   - Check database performance
+   - Consider adding caching layer (Redis)
+
+For more detailed deployment guides, see the project documentation in the `ai/` directory.
 
 ---
 
@@ -366,7 +362,6 @@ This guide shows how to deploy KM Todo to a DigitalOcean droplet using Apache as
 ### Production
 - `npm run build:prod` - Build production version
 - `npm run start:prod` - Start production server with database setup
-- `npm run deploy` - Complete deployment (build + start)
 
 ### Testing
 - `npm run test` - Run all tests
