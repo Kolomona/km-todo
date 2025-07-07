@@ -27,9 +27,19 @@ Your scope: [Define specific responsibilities]
 
 ## Development Cycle
 ```
-Update Contract → Backend Implementation → Frontend Implementation → 
+Setup Tech Stack → Update Contract → Backend Implementation → Frontend Implementation → 
 Integration Testing → AIPM Summary → Repeat
 ```
+
+## Tech Stack Setup (Recommended)
+**Start with a skeleton project for best results:**
+- **Next.js**: `npx create-next-app@latest my-app --typescript --tailwind --eslint`
+- **SvelteKit**: `npm create svelte@latest my-app`
+- **Nuxt 3**: `npx nuxi@latest init my-app`
+- **Vue + Vite**: `npm create vue@latest my-app`
+- **React + Vite**: `npm create vite@latest my-app -- --template react-ts`
+
+**Benefits**: Pre-configured tools, TypeScript, testing, database connections, authentication boilerplate
 
 ## Team Responsibilities
 

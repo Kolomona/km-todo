@@ -41,7 +41,7 @@
 
 3. **Development Cycle**
    ```
-   Update Contract → Backend Implementation → Frontend Implementation → 
+   Setup Tech Stack → Update Contract → Backend Implementation → Frontend Implementation → 
    Integration Testing → AIPM Summary → Repeat
    ```
 
@@ -77,6 +77,23 @@ Single AI development results in:
 ---
 
 ## Project Setup
+
+### Step 0: Tech Stack Foundation (Recommended)
+**Best results are achieved when you start with a skeleton project for your chosen tech stack:**
+- **Next.js**: `npx create-next-app@latest my-app --typescript --tailwind --eslint`
+- **SvelteKit**: `npm create svelte@latest my-app`
+- **Nuxt 3**: `npx nuxi@latest init my-app`
+- **Vue + Vite**: `npm create vue@latest my-app`
+- **React + Vite**: `npm create vite@latest my-app -- --template react-ts`
+- **Express + TypeScript**: Use a starter template with Express, TypeScript, and testing setup
+
+**Benefits of starting with a skeleton:**
+- ✅ Pre-configured build tools, testing, and linting
+- ✅ Proper TypeScript setup and type checking
+- ✅ Database connections and ORM already configured
+- ✅ Authentication boilerplate available
+- ✅ AI agents can focus on business logic, not setup
+- ✅ Faster development and fewer configuration issues
 
 ### Step 1: Business Foundation
 Create @ProductVision.md with:
