@@ -14,6 +14,14 @@
 - **Search & filtering**: Powerful search and filter capabilities
 - **Responsive & accessible**: Mobile-first, WCAG 2.1 AA compliant
 
+### 🎯 **Live Demo**
+
+**Try it now!** A demo server is running at **[https://todo.kolomona.com/](https://todo.kolomona.com/)**
+
+**Demo credentials:**
+- Email: `demo@example.com`
+- Password: `DemoUser6969!`
+
 See [ai/ProductVision.md](ai/ProductVision.md) for the full product vision and feature set.
 
 ---
