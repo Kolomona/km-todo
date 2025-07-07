@@ -2,6 +2,8 @@
 
 This folder contains the AI Agent Full-Stack Development Guide in different versions, optimized for different use cases.
 
+> **Note for Human Readers**: Throughout this document, `@` symbols are used before filename references (e.g., `@API_CONTRACT.md`) to help AI agents better understand file relationships and importance. These `@` symbols are **not part of the actual filenames** - they are only used in this documentation for AI interpretability. Actual filenames do not have `@` prefixes.
+
 ## Guide Versions
 
 ### @AI_AGENT_FULLSTACK_GUIDE-v4.md

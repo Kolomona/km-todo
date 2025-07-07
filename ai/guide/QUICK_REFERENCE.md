@@ -1,5 +1,7 @@
 # AI Agent Quick Reference Card
 
+> **Note for Human Readers**: Throughout this document, `@` symbols are used before filename references (e.g., `@API_CONTRACT.md`) to help AI agents better understand file relationships and importance. These `@` symbols are **not part of the actual filenames** - they are only used in this documentation for AI interpretability. Actual filenames do not have `@` prefixes.
+
 ## Essential Files
 - @API_CONTRACT.md - Single source of truth for endpoints & data models
 - @ProjectStatusBoard.md - Integration & ticketing (max 5 issues, 200 lines)

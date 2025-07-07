@@ -3,6 +3,8 @@
 
 *Streamlined guide for building full-stack web applications using multiple AI agents with contract-driven development, explicit project management, and production-grade workflows.*
 
+> **Note for Human Readers**: Throughout this document, `@` symbols are used before filename references (e.g., `@API_CONTRACT.md`) to help AI agents better understand file relationships and importance. These `@` symbols are **not part of the actual filenames** - they are only used in this documentation for AI interpretability. Actual filenames do not have `@` prefixes.
+
 ---
 
 ## Quick Start
