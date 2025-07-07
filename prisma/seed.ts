@@ -6,6 +6,20 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting database seeding...')
 
+  // Check if setup is already complete
+  const setupConfig = await prisma.systemConfig.findUnique({
+    where: { key: 'setup_complete' }
+  })
+
+  const userCount = await prisma.user.count()
+  const isSetupComplete = userCount > 0 && setupConfig && setupConfig.value === 'true'
+
+  if (isSetupComplete) {
+    console.log('⚠️ Setup is already complete. Skipping admin user creation.')
+    console.log('💡 To create sample data, use the setup endpoints or manually create users.')
+    return
+  }
+
   // Clean up existing data - delete in proper order to respect foreign key constraints
   console.log('🧹 Cleaning up existing data...')
   
@@ -19,6 +33,7 @@ async function main() {
   await prisma.project.deleteMany()
   await prisma.session.deleteMany()
   await prisma.user.deleteMany()
+  await prisma.systemConfig.deleteMany()
   
   console.log('✅ Database cleared successfully')
 
@@ -36,6 +51,16 @@ async function main() {
   })
 
   console.log(`✅ Admin user created: ${adminUser.email}`)
+
+  // Mark setup as complete
+  await prisma.systemConfig.create({
+    data: {
+      key: 'setup_complete',
+      value: 'true',
+    }
+  })
+
+  console.log('✅ Setup marked as complete')
 
   // Create sample projects
   console.log('📁 Creating sample projects...')

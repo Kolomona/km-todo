@@ -218,6 +218,19 @@ model ProjectMessage {
   @@map("project_messages")
 }
 
+// SystemConfig model for application configuration and setup status
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+
+  // Indexes for performance
+  @@index([key])
+
+  @@map("system_configs")
+}
+
 // Enums for type safety
 enum ProjectRole {
   owner
