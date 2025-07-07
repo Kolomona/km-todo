@@ -21,6 +21,7 @@
 | #132 | 2024-07-07 | Frontend  | SetupForm email validation test failing | Resolved | Frontend  | Medium    | Test fixed by refactoring to use fireEvent.submit(form); all SetupForm tests now pass |
 | #133 | 2024-07-07 | Frontend  | SetupPage retry test failing | Resolved | Frontend  | Medium    | Retry logic now robust; SetupPage tests all passing |
 | #135 | 2025-07-07 | Backend | Seed script blocks first-run setup flow | Resolved | Backend | High | Seed script no longer blocks first-run setup; only /api/setup/initialize can create the first admin. |
+| #136 | 2024-07-07 | Frontend  | Production build failing due to ESLint errors | Open     | Frontend  | High      | 10 ESLint errors blocking npm run build:prod - unused variables, unescaped entities, missing dependencies |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -34,6 +35,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-07-07] **BUILD ISSUE IDENTIFIED**: Production build failing due to ESLint errors (Issue #136) - AIPM identified 10 ESLint errors blocking npm run build:prod. Issues include unused variables, unescaped entities, and missing React hook dependencies. Frontend team needs to fix these code quality issues before deployment.
 - [2024-07-07] **AIPM VERIFICATION COMPLETE**: Comprehensive verification of frontend and backend teams' work completed. Found 305/307 unit tests passing (99.3% success rate) with 2 failing tests identified. E2E testing properly deferred. Analytics endpoints missing despite being claimed as next priority.
 - [2024-07-07] **FRONTEND IMPLEMENTATION IN PROGRESS**: First-run setup frontend implementation (Issue #131) - Frontend team implemented setup page, form, validation, and comprehensive tests. Most tests passing, 2 failing tests being resolved. Implementation includes proper error handling, validation, and redirect logic.
 - [2024-07-07] **AIPM VERIFICATION COMPLETE**: First-run initialization process (Issue #130) - AIPM verified backend implementation. All requirements met: SystemConfig model, setup endpoints, middleware, conditional seed script, comprehensive tests (12/12 passing), security validation, and production readiness confirmed.
@@ -67,9 +69,10 @@
 **Teams**: Backend (analytics APIs), Frontend (UX improvements)
 
 ### Next Milestones
-1. **Priority 1**: Fix 2 failing unit tests (Issues #132, #133)
-2. **Priority 2**: Analytics API endpoints implementation (Issue #134)
-3. **Priority 3**: Enhanced UX features and improvements
+1. **Priority 1**: Fix production build ESLint errors (Issue #136) - BLOCKING DEPLOYMENT
+2. **Priority 2**: Fix 2 failing unit tests (Issues #132, #133)
+3. **Priority 3**: Analytics API endpoints implementation (Issue #134)
+4. **Priority 4**: Enhanced UX features and improvements
 
 ### Communication Protocol
 - **Backend Team**: Update BackEndStatus.md with progress and blockers
@@ -114,10 +117,30 @@
 - ✅ **Backend Todo Tests**: 35/35 tests passing (100% success rate)
 - ✅ **Test Coverage**: 305/307 tests passing (99.3% success rate)
 - ⏸️ **E2E Tests**: Properly deferred to backlog - not in current sprint focus
+- ❌ **Production Build**: Failing due to 10 ESLint errors - BLOCKING DEPLOYMENT
 
 ### Current Sprint: Analytics API Endpoints
 
-#### 🆕 **NEXT PRIORITY: Analytics API Endpoints**
+#### 🆕 **NEXT PRIORITY: Production Build Fix**
+
+**Status**: 🆕 OPEN - High Priority
+
+**Problem**: Production build failing due to ESLint errors. Deployment blocked.
+
+**Impact**: 
+- ❌ **Deployment Blocked**: Cannot deploy to production
+- ❌ **Build Pipeline**: CI/CD pipeline will fail
+- ❌ **Code Quality**: 10 ESLint errors need resolution
+
+**Requirements**:
+- Fix all ESLint errors in identified files
+- Ensure npm run build:prod completes successfully
+- Verify deployment script works
+
+**Priority**: **HIGH** - Blocking deployment
+**Impact**: ✅ **Critical for production deployment**
+
+#### **SECOND PRIORITY: Analytics API Endpoints**
 
 **Status**: 🆕 OPEN - High Priority
 
@@ -139,6 +162,26 @@
 
 **Last Updated**: 2024-07-07
 **Next Review**: 2024-07-08
+
+### AIPM Build Issue Analysis (2024-07-07)
+
+#### **Issue #136: Production Build Failing**
+**Status**: 🔴 CRITICAL - Blocking Deployment
+
+**Root Cause**: ESLint errors preventing `npm run build:prod` from completing
+
+**Files Affected**:
+1. `src/app/api/setup/status/route.ts` - Unused `request` parameter
+2. `src/app/login/__tests__/page.test.tsx` - Unused `waitFor` import
+3. `src/app/setup/page.tsx` - Unused `err` variable, missing dependency, unescaped entities
+4. `src/components/setup/SetupForm.tsx` - Unused `err` variable
+5. `src/components/setup/__tests__/SetupForm.test.tsx` - Unused imports and assignments
+
+**Error Count**: 10 ESLint errors total
+
+**Frontend Team Action Required**: Fix all ESLint errors to unblock deployment
+
+**Impact**: ❌ Deployment script cannot complete, production deployment blocked
 
 ### AIPM Verification Summary (Updated)
 
@@ -171,12 +214,14 @@
 6. ✅ **Middleware**: Setup endpoints permanently disabled after completion
 
 #### 🎯 **Issues Identified**
-1. **SetupForm Test**: Email validation test failing - error message not displaying properly
-2. **SetupPage Test**: Setup form retry test failing - form not appearing after retry
-3. **Analytics Endpoints**: Not implemented despite being claimed as next priority
+1. **Production Build**: 10 ESLint errors blocking deployment - unused variables, unescaped entities, missing dependencies
+2. **SetupForm Test**: Email validation test failing - error message not displaying properly
+3. **SetupPage Test**: Setup form retry test failing - form not appearing after retry
+4. **Analytics Endpoints**: Not implemented despite being claimed as next priority
 
 #### 🎯 **Recommendations**
-1. **Immediate**: Investigate/fix the last SetupForm test if needed (email format validation)
-2. **Short-term**: Continue with analytics dashboard and enhanced UX features
-3. **Long-term**: Monitor E2E and integration test results for any remaining frontend issues
-4. **Process**: Improve test result reporting accuracy for better transparency 
+1. **Immediate**: Fix production build ESLint errors (Issue #136) - CRITICAL for deployment
+2. **Short-term**: Investigate/fix the last SetupForm test if needed (email format validation)
+3. **Medium-term**: Continue with analytics dashboard and enhanced UX features
+4. **Long-term**: Monitor E2E and integration test results for any remaining frontend issues
+5. **Process**: Improve test result reporting accuracy for better transparency 
