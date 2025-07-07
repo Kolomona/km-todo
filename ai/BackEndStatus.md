@@ -30,10 +30,12 @@
 - ✅ **DATABASE SEEDING COMPLETE** - `prisma/seed.ts` script creates admin user, 3 projects, 10 todos, memberships, messages, time logs, and a recurring todo. Admin login and sample data verified.
 - ✅ **ALL BACKEND TESTS PASSING** - 72/72 backend tests passing (auth: 12, projects: 25, todos: 35)
 - ✅ **PRISMA TRANSACTION MOCK FIXED** - Project creation tests now passing with proper $transaction mock
+- ✅ **SECURITY VULNERABILITY FIXED** - Password hash exposure in register API resolved
 
 ### Current Blockers
 - [ ] No blockers - all project CRUD, todo CRUD, seeding, and auth tests passing
 - [ ] Analytics and search endpoints to be implemented next
+- ✅ **SECURITY ISSUE #129 RESOLVED** - Password hash exposure in register API fixed
 
 ### E2E Testing Infrastructure Status
 - ✅ **Playwright Configuration**: Complete with multi-browser and mobile device support

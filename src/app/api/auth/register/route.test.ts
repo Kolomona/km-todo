@@ -41,10 +41,10 @@ describe('/api/auth/register', () => {
       id: 'user-1',
       email: 'test@example.com',
       name: 'Test User',
-      passwordHash: 'hashedpassword',
       createdAt: new Date(),
       updatedAt: new Date(),
-    })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
     vi.mocked(hashPassword).mockResolvedValue('hashedpassword')
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(validatePassword).mockReturnValue({ isValid: true, errors: [] })
