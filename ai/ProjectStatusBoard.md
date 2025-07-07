@@ -18,7 +18,7 @@
 | #126 | 2024-12-20 | Frontend  | React Testing warnings about act() wrapping | Open     | Frontend  | Low      | Multiple components need act() wrapping for state updates - non-blocking |
 | #127 | 2024-12-20 | Frontend  | LoginForm test navigation error | Open     | Frontend  | Low      | JSDOM navigation not implemented error in test - non-blocking |
 | #131 | 2024-07-07 | Frontend  | First-run setup frontend implementation | In Progress | Frontend | High | Setup page and form implemented, 2 failing tests need fixing |
-| #132 | 2024-07-07 | Frontend  | SetupForm email validation test failing | Resolved | Frontend  | Medium    | Email validation error now accessible and testable; code and accessibility correct, test may need further review |
+| #132 | 2024-07-07 | Frontend  | SetupForm email validation test failing | Open | Frontend  | Medium    | Email validation error now accessible and testable; however, the test is still failing in the latest run. Code and accessibility may be correct, but the test itself may need to be reviewed or rewritten. |
 | #133 | 2024-07-07 | Frontend  | SetupPage retry test failing | Resolved | Frontend  | Medium    | Retry logic now robust; SetupPage tests all passing |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
