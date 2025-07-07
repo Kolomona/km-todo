@@ -104,6 +104,8 @@ Create @ProductVision.md with:
 - Data models & key algorithms
 - Success metrics & risk assessment
 
+**💡 Hint**: After having an AI read this document, you can ask it to give you a questionnaire to answer, then it can generate @ProductVision.md for you 🙂
+
 ### Step 2: Generate Foundation Files
 Use AIPM prompt:
 ```
