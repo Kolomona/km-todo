@@ -10,6 +10,7 @@
     "db:e2e:down": "docker compose stop db-e2e",
     "dev": "npm run db:up && npx wait-on tcp:${DB_PORT:-5432} && next dev --turbopack",
     "build": "next build",
+    "build:low-memory": "NODE_OPTIONS='--max-old-space-size=1024' next build",
     "start": "next start",
     "start:prod": "npm run db:up && npx wait-on tcp:${DB_PORT:-5432} && npm run db:seed && next start",
     "build:prod": "npm run build",

@@ -21,6 +21,7 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
+| #128 | 2024-12-20 | Both      | ESLint errors preventing production build | Open     | Both      | High     | ✅ Generated Prisma files excluded. ⚠️ 50+ TypeScript and React ESLint errors in source files need fixing. Build compiles successfully. |
 | #126 | 2024-12-20 | Frontend  | React Testing warnings about act() wrapping | Open     | Frontend  | Low      | Multiple components need act() wrapping for state updates - non-blocking |
 | #127 | 2024-12-20 | Frontend  | LoginForm test navigation error | Open     | Frontend  | Low      | JSDOM navigation not implemented error in test - non-blocking |
 
@@ -35,6 +36,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-12-20] **RESOLVED**: ESLint configuration for generated Prisma files - AIPM updated eslint.config.mjs with comprehensive ignore patterns to properly exclude all generated Prisma files from linting. Generated Prisma client files were causing build failures due to minified code triggering ESLint rules. Build now proceeds to actual source code issues (50+ errors identified).
 - [2024-12-20] **UPDATED**: Admin credentials changed from loKonoma!!!!!11111 to kmToDo1!1! for better security and naming consistency. Updated prisma/seed.ts and README.md to reflect new credentials. Database successfully seeded with new admin password.
 - [2024-12-20] **VERIFICATION COMPLETE**: AIPM conducted comprehensive verification of frontend and backend teams' work. Found 256/256 unit tests passing. E2E tests properly deferred to backlog as planned.
 - [2024-12-20] **RESOLVED**: Root path redirect behavior (#124) - Frontend team implemented authentication check in src/app/page.tsx. Authenticated users now redirect to /dashboard, unauthenticated users redirect to /login. Added comprehensive unit tests (6/6 passing). All 256 frontend tests passing.
@@ -128,6 +130,55 @@
 - ⏸️ **E2E Tests**: Properly deferred to backlog - not in current sprint focus
 
 ### Current Sprint: Analytics and UX Improvements
+
+#### 🔥 **CRITICAL: Issue #128 - ESLint Errors Blocking Production Build**
+
+**Status**: Generated Prisma files excluded ✅, Source code errors identified ⚠️
+
+**Error Summary**:
+- **50+ ESLint errors** preventing production build
+- **Generated files**: ✅ Now properly excluded from linting
+- **Source files**: ⚠️ Need immediate attention from teams
+- **Build status**: ✅ Compilation successful, ⚠️ linting fails
+- **Total errors**: ~50 TypeScript and React ESLint errors
+
+**Frontend Team - Fix Required**:
+1. **TypeScript `any` types** (40+ instances):
+   - Replace `any` with proper types in components and tests
+   - Files: `src/app/todos/page.tsx`, `src/components/todos/TodoModal.tsx`, `src/app/projects/[id]/page.tsx`, test files
+2. **Unused variables** (10+ instances):
+   - Remove unused imports (`Link` in LoginForm.tsx, `waitFor` in test files)
+   - Remove unused variables (`router`, `isLoading`, `error`, `filters`)
+3. **React issues** (5+ instances):
+   - Fix unescaped entities in JSX (`'` in dashboard/page.tsx)
+   - Fix missing dependencies in useEffect hooks
+4. **Test files** (20+ instances):
+   - Replace `any` types with proper mock types
+   - Remove unused variables in test files
+
+**Backend Team - Fix Required**:
+1. **TypeScript `any` types** (10+ instances):
+   - Replace `any` with proper types in API routes and tests
+   - Files: `src/app/api/todos/route.ts`, test files
+2. **Unused variables** (5+ instances):
+   - Remove unused `data` variables in test files (`src/app/api/todos/route.test.ts`, `src/app/api/todos/[id]/route.test.ts`)
+3. **TypeScript strict mode compliance**:
+   - Ensure all types are properly defined
+
+**Priority**: **HIGH** - Blocks production deployment
+**Estimated Effort**: 2-4 hours for each team
+**Impact**: Production builds failing
+
+**Quick Fix Option**: Teams can temporarily disable ESLint for production builds by adding `--no-lint` to the build command in package.json:
+```json
+"build:prod": "next build --no-lint"
+```
+**Note**: This is a temporary solution. Proper fix requires addressing all ESLint errors.
+
+**Immediate Action Required**: 
+- **Frontend Team**: Fix TypeScript `any` types and unused variables (40+ errors)
+- **Backend Team**: Fix TypeScript `any` types and unused variables (10+ errors)
+- **Both Teams**: Coordinate on proper type definitions for shared interfaces
 
 #### ✅ Completed Tasks
 - **Issue #122 '+ Add Todo' button functionality implemented - Button now opens TodoModal with project context pre-filled. Users can add todos directly from project view. Added comprehensive unit tests (24/24 passing). All 256 unit tests passing.**
