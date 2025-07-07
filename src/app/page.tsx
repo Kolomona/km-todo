@@ -6,10 +6,22 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const router = useRouter();
 
-  const checkAuth = useCallback(async () => {
+  const checkSetupAndAuth = useCallback(async () => {
     try {
-      const response = await fetch('/api/auth/me');
-      if (response.ok) {
+      // First check if setup is needed
+      const setupResponse = await fetch('/api/setup/status');
+      if (setupResponse.ok) {
+        const setupData = await setupResponse.json();
+        if (setupData.needsSetup) {
+          // Setup is needed, redirect to setup page
+          router.push('/setup');
+          return;
+        }
+      }
+
+      // Setup is complete, check authentication
+      const authResponse = await fetch('/api/auth/me');
+      if (authResponse.ok) {
         // User is authenticated, redirect to dashboard
         router.push('/dashboard');
       } else {
@@ -23,8 +35,8 @@ export default function Home() {
   }, [router]);
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    checkSetupAndAuth();
+  }, [checkSetupAndAuth]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">

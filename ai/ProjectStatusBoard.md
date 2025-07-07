@@ -16,6 +16,7 @@
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
 | #126 | 2024-12-20 | Frontend  | React Testing warnings about act() wrapping | Open     | Frontend  | Low      | Multiple components need act() wrapping for state updates - non-blocking |
 | #127 | 2024-12-20 | Frontend  | LoginForm test navigation error | Open     | Frontend  | Low      | JSDOM navigation not implemented error in test - non-blocking |
+| #131 | 2024-07-07 | Frontend  | First-run setup frontend implementation | In Progress | Frontend | High | Setup page and form implemented, tests mostly passing (2 failing tests being fixed) |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -28,6 +29,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2024-07-07] **FRONTEND IMPLEMENTATION IN PROGRESS**: First-run setup frontend implementation (Issue #131) - Frontend team implemented setup page, form, validation, and comprehensive tests. Most tests passing, 2 failing tests being resolved. Implementation includes proper error handling, validation, and redirect logic.
 - [2024-07-07] **AIPM VERIFICATION COMPLETE**: First-run initialization process (Issue #130) - AIPM verified backend implementation. All requirements met: SystemConfig model, setup endpoints, middleware, conditional seed script, comprehensive tests (12/12 passing), security validation, and production readiness confirmed.
 - [2024-07-07] **COMPLETED**: First-run initialization process (Issue #130) - Backend delivered SystemConfig model, setup endpoints, middleware, and conditional seed script. All unit tests passing. Production deployment is now unblocked.
 - [2024-12-20] **NEW ISSUE IDENTIFIED**: First-run initialization process needed (#130) - Users cannot log in after deployment because no admin account exists. Need secure setup flow with one-time-only access. Updated ProductVision.md and API_CONTRACT.md with setup requirements.

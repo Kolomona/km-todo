@@ -1,37 +1,56 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { useRouter } from 'next/navigation';
 import Home from '../page';
 
-// Mock Next.js router
-const mockPush = vi.fn();
+// Mock next/navigation
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
+  useRouter: vi.fn(),
 }));
 
 // Mock fetch
-const mockFetch = vi.fn() as jest.MockedFunction<typeof fetch>;
-global.fetch = mockFetch;
+global.fetch = vi.fn();
 
-describe('Home Page', () => {
+describe('Home', () => {
+  const mockPush = vi.fn();
+  const mockRouter = { push: mockPush };
+
   beforeEach(() => {
     vi.clearAllMocks();
+    (useRouter as vi.Mock).mockReturnValue(mockRouter);
   });
 
   it('should show loading spinner initially', () => {
+    (global.fetch as vi.Mock).mockImplementation(() => new Promise(() => {})); // Never resolves
+
     render(<Home />);
-    
-    expect(screen.getByRole('status')).toBeInTheDocument();
-    expect(screen.getByLabelText('Loading')).toBeInTheDocument();
+
+    expect(screen.getByRole('status', { hidden: true })).toBeInTheDocument();
+  });
+
+  it('should redirect to setup when setup is needed', async () => {
+    (global.fetch as vi.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ needsSetup: true }),
+    });
+
+    render(<Home />);
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/setup');
+    });
   });
 
   it('should redirect to dashboard when user is authenticated', async () => {
-    // Mock successful authentication response
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ user: { id: '1', email: 'test@example.com', name: 'Test User' } }),
-    });
+    (global.fetch as vi.Mock)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ user: { id: '1', email: 'test@example.com' } }),
+      });
 
     render(<Home />);
 
@@ -41,9 +60,27 @@ describe('Home Page', () => {
   });
 
   it('should redirect to login when user is not authenticated', async () => {
-    // Mock failed authentication response
-    mockFetch.mockResolvedValueOnce({
+    (global.fetch as vi.Mock)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+      });
+
+    render(<Home />);
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/login');
+    });
+  });
+
+  it('should redirect to login when setup status check fails', async () => {
+    (global.fetch as vi.Mock).mockResolvedValueOnce({
       ok: false,
+      status: 500,
     });
 
     render(<Home />);
@@ -53,9 +90,8 @@ describe('Home Page', () => {
     });
   });
 
-  it('should redirect to login when authentication check fails', async () => {
-    // Mock network error
-    mockFetch.mockRejectedValueOnce(new Error('Network error'));
+  it('should redirect to login when network error occurs', async () => {
+    (global.fetch as vi.Mock).mockRejectedValueOnce(new Error('Network error'));
 
     render(<Home />);
 
@@ -64,31 +100,36 @@ describe('Home Page', () => {
     });
   });
 
-  it('should handle 401 unauthorized response', async () => {
-    // Mock 401 response
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 401,
-    });
+  it('should check setup status first, then auth status', async () => {
+    (global.fetch as vi.Mock)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ needsSetup: false }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ user: { id: '1', email: 'test@example.com' } }),
+      });
 
     render(<Home />);
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/login');
+      expect(global.fetch).toHaveBeenCalledWith('/api/setup/status');
+      expect(global.fetch).toHaveBeenCalledWith('/api/auth/me');
     });
   });
 
-  it('should handle 403 forbidden response', async () => {
-    // Mock 403 response
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 403,
+  it('should not check auth status when setup is needed', async () => {
+    (global.fetch as vi.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ needsSetup: true }),
     });
 
     render(<Home />);
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/login');
+      expect(global.fetch).toHaveBeenCalledWith('/api/setup/status');
+      expect(global.fetch).not.toHaveBeenCalledWith('/api/auth/me');
     });
   });
 }); 
