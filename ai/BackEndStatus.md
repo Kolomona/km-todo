@@ -267,6 +267,13 @@
 - **All E2E API endpoint tests are now passing**: Project creation now adds creator as member, dynamic route param bugs fixed in todos API
 - **Impact**: E2E test integration for backend endpoints is complete and passing
 
+### [2025-07-07] Seed Script First-Run Setup Fix
+- **Fixed Issue #135**: Seed script no longer creates a hardcoded admin user or marks setup as complete.
+  - Now, only `/api/setup/initialize` can create the first admin and mark setup as complete, per API_CONTRACT.md.
+  - Seed script only creates sample data if setup is already complete and a user exists.
+  - Verified by resetting the database, running migrations, and confirming `/api/setup/status` reports `needsSetup: true` until setup is performed.
+  - Fix is now live and tested in development environment.
+
 ## Current Status
 - ✅ **Database Schema**: Complete with all API_CONTRACT.md tables
 - ✅ **Authentication System**: Login, register, logout endpoints functional

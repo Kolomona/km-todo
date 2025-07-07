@@ -20,7 +20,7 @@
 | #131 | 2024-07-07 | Frontend  | First-run setup frontend implementation | In Progress | Frontend | High | Setup page and form implemented, 2 failing tests need fixing |
 | #132 | 2024-07-07 | Frontend  | SetupForm email validation test failing | Resolved | Frontend  | Medium    | Test fixed by refactoring to use fireEvent.submit(form); all SetupForm tests now pass |
 | #133 | 2024-07-07 | Frontend  | SetupPage retry test failing | Resolved | Frontend  | Medium    | Retry logic now robust; SetupPage tests all passing |
-| #135 | 2025-07-07 | Backend | Seed script blocks first-run setup flow | Open | Backend | High | Seed script still creates hardcoded admin and marks setup as complete, preventing first-run setup. Remove admin creation from seed script; only allow /api/setup/initialize to create first admin. See API_CONTRACT.md. AIPM verified root cause and provided remediation steps. |
+| #135 | 2025-07-07 | Backend | Seed script blocks first-run setup flow | Resolved | Backend | High | Seed script no longer blocks first-run setup; only /api/setup/initialize can create the first admin. |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -42,6 +42,7 @@
 - [2024-12-20] **VERIFICATION COMPLETE**: AIPM conducted comprehensive verification of frontend and backend teams' work. All claims verified and confirmed accurate. Found 256/256 unit tests passing (100% success rate). Security issue #129 resolved. E2E test configuration fixed. No falsifications or mistakes found.
 - [2024-07-07] **SETUP COMPONENT ISSUES FIXED**: Issues #132 (SetupForm email validation accessibility) and #133 (SetupPage retry logic) resolved. All SetupPage tests passing. Only one SetupForm test (email format validation) remains failing, likely due to a test-library quirk. Accessibility and error handling improved in setup components.
 - [2024-07-07] **SETUPFORM EMAIL VALIDATION TEST FIXED**: Issue #132 resolved. Test was refactored to use fireEvent.submit(form) instead of clicking the button. All SetupForm and SetupPage tests now pass. Validation logic is contract-compliant and matches intended UX.
+- [2025-07-07] **RESOLVED**: Issue #135 - Seed script no longer creates admin user or marks setup as complete. First-run setup flow now works as intended and verified by backend agent.
 
 ## Archive
 ### 2024-07-07

@@ -1,5 +1,4 @@
 import { PrismaClient, ProjectRole, TodoPriority, TodoStatus, RecurringPatternType } from '../src/generated/prisma'
-import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -14,53 +13,29 @@ async function main() {
   const userCount = await prisma.user.count()
   const isSetupComplete = userCount > 0 && setupConfig && setupConfig.value === 'true'
 
-  if (isSetupComplete) {
-    console.log('⚠️ Setup is already complete. Skipping admin user creation.')
-    console.log('💡 To create sample data, use the setup endpoints or manually create users.')
+  if (!isSetupComplete) {
+    console.log('⚠️ Setup is not complete. Skipping sample data creation.')
+    console.log('💡 Please run the setup process first using /api/setup/initialize')
+    console.log('💡 Then run this seed script to create sample data.')
     return
   }
 
-  // Clean up existing data - delete in proper order to respect foreign key constraints
-  console.log('🧹 Cleaning up existing data...')
-  
-  // Delete in reverse order of dependencies to avoid foreign key constraint violations
-  await prisma.todoTime.deleteMany()
-  await prisma.todoProject.deleteMany()
-  await prisma.recurringPattern.deleteMany()
-  await prisma.todo.deleteMany()
-  await prisma.projectMessage.deleteMany()
-  await prisma.projectMember.deleteMany()
-  await prisma.project.deleteMany()
-  await prisma.session.deleteMany()
-  await prisma.user.deleteMany()
-  await prisma.systemConfig.deleteMany()
-  
-  console.log('✅ Database cleared successfully')
+  // Get the first user (admin) for sample data creation
+  const adminUser = await prisma.user.findFirst()
+  if (!adminUser) {
+    console.log('⚠️ No users found. Please complete setup first.')
+    return
+  }
 
-  // Create admin user
-  console.log('👤 Creating admin user...')
-  const adminPassword = 'kmToDo1!1!'
-  const adminPasswordHash = await bcrypt.hash(adminPassword, 12)
-  
-  const adminUser = await prisma.user.create({
-    data: {
-      email: 'admin@example.com',
-      name: 'Admin User',
-      passwordHash: adminPasswordHash,
-    },
-  })
+  console.log(`✅ Setup complete. Creating sample data for user: ${adminUser.email}`)
 
-  console.log(`✅ Admin user created: ${adminUser.email}`)
-
-  // Mark setup as complete
-  await prisma.systemConfig.create({
-    data: {
-      key: 'setup_complete',
-      value: 'true',
-    }
-  })
-
-  console.log('✅ Setup marked as complete')
+  // Check if sample data already exists
+  const existingProjects = await prisma.project.count()
+  if (existingProjects > 0) {
+    console.log('⚠️ Sample data already exists. Skipping creation.')
+    console.log('💡 To recreate sample data, clear the database first.')
+    return
+  }
 
   // Create sample projects
   console.log('📁 Creating sample projects...')
@@ -349,15 +324,15 @@ async function main() {
 
   console.log(`✅ Created ${messages.length} project messages`)
 
-  console.log('\n🎉 Database seeding completed successfully!')
+  console.log('\n🎉 Sample data creation completed successfully!')
   console.log('\n📋 Summary:')
-  console.log(`   👤 Admin user: admin@example.com / kmToDo1!1!`)
+  console.log(`   👤 Using existing user: ${adminUser.email}`)
   console.log(`   📁 Projects: ${personalProject.name}, ${workProject.name}, ${teamProject.name}`)
   console.log(`   📝 Todos: ${createdTodos.length} todos with various priorities and statuses`)
   console.log(`   ⏱️ Time logs: ${timeLogs.length} time tracking entries`)
   console.log(`   🔄 Recurring patterns: 1 weekly recurring todo`)
   console.log(`   💬 Messages: ${messages.length} project messages`)
-  console.log('\n🚀 You can now login with the admin credentials and explore the application!')
+  console.log('\n🚀 You can now explore the application with sample data!')
 }
 
 main()
