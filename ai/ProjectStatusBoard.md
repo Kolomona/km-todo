@@ -20,6 +20,7 @@
 | #131 | 2024-07-07 | Frontend  | First-run setup frontend implementation | In Progress | Frontend | High | Setup page and form implemented, 2 failing tests need fixing |
 | #132 | 2024-07-07 | Frontend  | SetupForm email validation test failing | Resolved | Frontend  | Medium    | Test fixed by refactoring to use fireEvent.submit(form); all SetupForm tests now pass |
 | #133 | 2024-07-07 | Frontend  | SetupPage retry test failing | Resolved | Frontend  | Medium    | Retry logic now robust; SetupPage tests all passing |
+| #135 | 2025-07-07 | Backend | Seed script blocks first-run setup flow | Open | Backend | High | Seed script still creates hardcoded admin and marks setup as complete, preventing first-run setup. Remove admin creation from seed script; only allow /api/setup/initialize to create first admin. See API_CONTRACT.md. AIPM verified root cause and provided remediation steps. |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
