@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: km_todo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - km-todo-network
+
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/km_todo
+      NODE_ENV: production
+      PORT: 3456
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://your-domain.com}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-secret-key-here}
+    ports:
+      - "3456:3456"
+    depends_on:
+      - db
+    networks:
+      - km-todo-network
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  pgdata:
+
+networks:
+  km-todo-network:
+    driver: bridge

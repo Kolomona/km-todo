@@ -7,14 +7,20 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including devDependencies for build)
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Build the application
 RUN npm run build
+
+# Remove devDependencies to reduce image size
+RUN npm prune --production
 
 # Expose the port the app runs on
 EXPOSE ${PORT:-3000}
