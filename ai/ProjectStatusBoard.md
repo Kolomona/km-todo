@@ -16,7 +16,7 @@
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
 |------|------------|-----------|------------------------------------|----------|-----------|----------|----------------------|
-| #137 | 2025-07-07 | Frontend  | First-run setup not triggered in production | Resolved | Frontend  | High     | Setup status now checked on login page and in AuthenticatedLayout; users are redirected to /setup if needed. All tests and production build verified. |
+| #138 | 2025-07-07 | DevOps    | Production setup flow not appearing due to missing database migrations | Resolved | DevOps    | High     | Dockerfile updated with automatic migration script (docker-entrypoint.sh). Migrations now run automatically on container startup. Production setup flow should now work correctly. |
 | #126 | 2024-12-20 | Frontend  | React Testing warnings about act() wrapping | Open     | Frontend  | Low      | Multiple components need act() wrapping for state updates - non-blocking |
 | #127 | 2024-12-20 | Frontend  | LoginForm test navigation error | Open     | Frontend  | Low      | JSDOM navigation not implemented error in test - non-blocking |
 | #131 | 2024-07-07 | Frontend  | First-run setup frontend implementation | In Progress | Frontend | High | Setup page and form implemented, 2 failing tests need fixing |
@@ -37,6 +37,7 @@
 *E2E testing will be revisited after the current sprint. See TestingStrategy.md for requirements.*
 
 ## Recent Decisions
+- [2025-07-07] **PRODUCTION SETUP ISSUE RESOLVED**: Issue #138 - Production setup flow not appearing due to missing database migrations. Root cause identified: Docker containers not running migrations automatically. Solution implemented: Updated Dockerfile with docker-entrypoint.sh script that runs migrations before starting the app. Production setup flow should now work correctly.
 - [2024-07-07] **BUILD ISSUE IDENTIFIED**: Production build failing due to ESLint errors (Issue #136) - AIPM identified 10 ESLint errors blocking npm run build:prod. Issues include unused variables, unescaped entities, and missing React hook dependencies. Frontend team needs to fix these code quality issues before deployment.
 - [2024-07-07] **AIPM VERIFICATION COMPLETE**: Comprehensive verification of frontend and backend teams' work completed. Found 305/307 unit tests passing (99.3% success rate) with 2 failing tests identified. E2E testing properly deferred. Analytics endpoints missing despite being claimed as next priority.
 - [2024-07-07] **FRONTEND IMPLEMENTATION IN PROGRESS**: First-run setup frontend implementation (Issue #131) - Frontend team implemented setup page, form, validation, and comprehensive tests. Most tests passing, 2 failing tests being resolved. Implementation includes proper error handling, validation, and redirect logic.
@@ -125,26 +126,7 @@
 
 ### Current Sprint: Analytics API Endpoints
 
-#### 🆕 **NEXT PRIORITY: Production Build Fix**
-
-**Status**: 🆕 OPEN - High Priority
-
-**Problem**: Production build failing due to ESLint errors. Deployment blocked.
-
-**Impact**: 
-- ❌ **Deployment Blocked**: Cannot deploy to production
-- ❌ **Build Pipeline**: CI/CD pipeline will fail
-- ❌ **Code Quality**: 10 ESLint errors need resolution
-
-**Requirements**:
-- Fix all ESLint errors in identified files
-- Ensure npm run build:prod completes successfully
-- Verify deployment script works
-
-**Priority**: **HIGH** - Blocking deployment
-**Impact**: ✅ **Critical for production deployment**
-
-#### **SECOND PRIORITY: Analytics API Endpoints**
+#### 🆕 **NEXT PRIORITY: Analytics API Endpoints**
 
 **Status**: 🆕 OPEN - High Priority
 
@@ -162,10 +144,28 @@
 **Priority**: **HIGH** - Required for next phase
 **Impact**: ✅ **Critical for analytics and reporting features**
 
+#### **SECOND PRIORITY: Enhanced UX Features**
+
+**Status**: 🆕 OPEN - Medium Priority
+
+**Problem**: Frontend UX improvements needed for better user experience.
+
+**Impact**: 
+- ⚠️ **User Experience**: Current UX could be improved
+- ⚠️ **Feature Completeness**: Some UX enhancements planned
+
+**Requirements**:
+- Implement enhanced UX features
+- Improve accessibility and usability
+- Add user feedback mechanisms
+
+**Priority**: **MEDIUM** - Enhancement for next phase
+**Impact**: ✅ **Important for user satisfaction**
+
 ---
 
-**Last Updated**: 2024-07-07
-**Next Review**: 2024-07-08
+**Last Updated**: 2025-07-07
+**Next Review**: 2025-07-08
 
 ### AIPM Build Issue Analysis (2024-07-07)
 

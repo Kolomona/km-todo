@@ -25,5 +25,9 @@ RUN npm prune --production
 # Expose the port the app runs on
 EXPOSE ${PORT:-3000}
 
-# Start the application
-CMD ["npm", "start"] 
+# Create a startup script that runs migrations then starts the app
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Use the startup script
+ENTRYPOINT ["docker-entrypoint.sh"] 
