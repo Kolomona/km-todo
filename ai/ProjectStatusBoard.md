@@ -11,6 +11,7 @@
 - ✅ **Production Readiness**: No blockers for deployment
 - ✅ **E2E Testing**: Properly deferred to backlog as documented
 - ✅ **AIPM Verification**: Comprehensive verification completed with minor discrepancies identified
+- ✅ **Build Blocker Resolved [2025-07-07]**: All ESLint errors blocking production build (Issue #136) have been fixed. Lint now passes, build is unblocked. Next step: verify production build.
 
 ## Open Issues
 | ID   | Date       | Area      | Title/Description                  | Status   | Owner     | Priority | Notes                |
@@ -21,7 +22,7 @@
 | #132 | 2024-07-07 | Frontend  | SetupForm email validation test failing | Resolved | Frontend  | Medium    | Test fixed by refactoring to use fireEvent.submit(form); all SetupForm tests now pass |
 | #133 | 2024-07-07 | Frontend  | SetupPage retry test failing | Resolved | Frontend  | Medium    | Retry logic now robust; SetupPage tests all passing |
 | #135 | 2025-07-07 | Backend | Seed script blocks first-run setup flow | Resolved | Backend | High | Seed script no longer blocks first-run setup; only /api/setup/initialize can create the first admin. |
-| #136 | 2024-07-07 | Frontend  | Production build failing due to ESLint errors | Open     | Frontend  | High      | 10 ESLint errors blocking npm run build:prod - unused variables, unescaped entities, missing dependencies |
+| #136 | 2024-07-07 | Frontend  | Production build failing due to ESLint errors | Resolved | Frontend  | High      | All ESLint errors fixed as of 2025-07-07. Lint passes, build is unblocked. Next: verify production build. |
 
 *No more than 5 open issues should be present at any time. The human project manager is responsible for enforcing this limit.*
 
@@ -45,6 +46,7 @@
 - [2024-07-07] **SETUP COMPONENT ISSUES FIXED**: Issues #132 (SetupForm email validation accessibility) and #133 (SetupPage retry logic) resolved. All SetupPage tests passing. Only one SetupForm test (email format validation) remains failing, likely due to a test-library quirk. Accessibility and error handling improved in setup components.
 - [2024-07-07] **SETUPFORM EMAIL VALIDATION TEST FIXED**: Issue #132 resolved. Test was refactored to use fireEvent.submit(form) instead of clicking the button. All SetupForm and SetupPage tests now pass. Validation logic is contract-compliant and matches intended UX.
 - [2025-07-07] **RESOLVED**: Issue #135 - Seed script no longer creates admin user or marks setup as complete. First-run setup flow now works as intended and verified by backend agent.
+- [2025-07-07] **BUILD BLOCKER RESOLVED**: All ESLint errors blocking production build (Issue #136) have been fixed. Lint now passes, build is unblocked. Files updated: src/app/api/setup/status/route.ts, src/app/login/__tests__/page.test.tsx, src/app/setup/page.tsx, src/components/setup/SetupForm.tsx, src/components/setup/__tests__/SetupForm.test.tsx. Next: verify production build.
 
 ## Archive
 ### 2024-07-07

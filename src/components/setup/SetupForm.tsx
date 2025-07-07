@@ -136,7 +136,7 @@ export default function SetupForm({ onSuccess, onError }: SetupFormProps) {
 
       // Success
       onSuccess?.();
-    } catch (err) {
+    } catch {
       const errorMessage = 'Network error. Please check your connection and try again.';
       setErrors({ general: errorMessage });
       onError?.(errorMessage);

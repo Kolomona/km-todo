@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import SetupForm from '@/components/setup/SetupForm';
 
@@ -10,11 +10,7 @@ export default function SetupPage() {
   const [needsSetup, setNeedsSetup] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    checkSetupStatus();
-  }, []);
-
-  const checkSetupStatus = async () => {
+  const checkSetupStatus = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
@@ -33,12 +29,16 @@ export default function SetupPage() {
       } else {
         setError('Failed to check setup status. Please try again.');
       }
-    } catch (err) {
+    } catch {
       setError('Network error. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    checkSetupStatus();
+  }, [checkSetupStatus]);
 
   const handleSetupSuccess = () => {
     // Redirect to login with success message
@@ -95,7 +95,7 @@ export default function SetupPage() {
             Initial Setup
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Welcome to KM Todo! Let's set up your admin account.
+            Welcome to KM Todo! Let&apos;s set up your admin account.
           </p>
           <div className="mt-4 bg-blue-50 border border-blue-200 rounded-md p-4">
             <div className="flex">
@@ -106,7 +106,7 @@ export default function SetupPage() {
               </div>
               <div className="ml-3">
                 <p className="text-sm text-blue-700">
-                  This is a one-time setup to create your admin account. After setup, you'll be able to log in and start using the application.
+                  This is a one-time setup to create your admin account. After setup, you&apos;ll be able to log in and start using the application.
                 </p>
               </div>
             </div>

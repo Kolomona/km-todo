@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import SetupForm from '../SetupForm';
 import React from 'react';
@@ -373,13 +373,13 @@ describe('SetupForm', () => {
     // We will render, set state, and call validateForm via a ref
     let validateFormFn: (() => boolean) | null = null;
     function TestWrapper() {
-      const [formData, setFormData] = React.useState({
+      const [formData] = React.useState({
         name: 'Test User',
         email: 'invalid-email',
         password: 'StrongPass1!',
         confirmPassword: 'StrongPass1!'
       });
-      const [errors, setErrors] = React.useState({});
+
       validateFormFn = () => {
         // Copy-paste the validation logic from SetupForm
         const newErrors = {};
@@ -389,7 +389,6 @@ describe('SetupForm', () => {
         } else if (!emailRegex.test(formData.email)) {
           newErrors.email = 'Please enter a valid email address';
         }
-        setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
       };
       return null;
