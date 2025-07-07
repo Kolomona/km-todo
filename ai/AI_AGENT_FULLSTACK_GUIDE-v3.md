@@ -86,6 +86,8 @@ You are an AI agent working as part of a multi-agent, contract-driven developmen
 - You must always check TestingStrategy.md for testing guidelines and examples.
 - You must always follow GitVersionControlStrategy.md for version control practices.
 - You must always update [BackendStatus.md / FrontEndStatus.md] when you complete your tasks.
+- **If you notice ProjectStatusBoard.md exceeds 200 lines, immediately create an issue for the AIPM agent to archive the file.**
+- **Keep all ProjectStatusBoard.md entries concise and clear. Minimize verbosity, but never at the expense of clarity.**
 
 **Your role:** [Backend/Frontend/AIPM]  
 **Your scope:** [Backend APIs, database, and integration] / [Frontend UI, client logic, and integration] / [Project coordination, summary, and file curation]
@@ -143,23 +145,30 @@ your-project/
 │   ├── DevelopmentPlan.md         # Roadmap and milestones
 │   ├── FrontEndStatus.md          # Frontend team's real progress log
 │   ├── BackEndStatus.md           # Backend team's real progress log
-│   ├── ProjectStatusBoard.md      # Living ticketing, integration, and cross-team communication system (curated by AIPM, strict markdown format)
+│   ├── ProjectStatusBoard.md      # Living ticketing, integration, and cross-team communication system (curated by AIPM, efficient format)
 │   ├── TestingStrategy.md         # Comprehensive testing guidelines, examples, and best practices
-│   └── GitVersionControlStrategy.md # Git workflow, branching strategy, and AI agent responsibilities
+│   ├── GitVersionControlStrategy.md # Git workflow, branching strategy, and AI agent responsibilities
+│   └── archives/                  # Archive files for ProjectStatusBoard.md
+│       ├── ProjectStatusBoard-Archive-25-07-01-001.md
+│       └── ProjectStatusBoard-Archive-25-07-15-002.md
 ```
 
 > **Note:** `ai/ProjectStatusBoard.md` is the heart of integration, ticketing, and change management. **All team members (backend, frontend, QA, etc.) are responsible for writing updates, issues, and decisions to this file as they occur.** The AI Project Manager (AIPM) agent is responsible for curating and maintaining the efficient format, ensuring focus on actionable information, and immediate archiving of resolved issues. It is not just a log, but a streamlined project communication and ticketing system designed for maximum efficiency.
 
-### ProjectStatusBoard.md Format: Efficient Structure
+### ProjectStatusBoard.md Format: How This File is Used
 
 **ProjectStatusBoard.md uses a streamlined format for maximum efficiency and clarity. The AIPM agent curates this file to maintain focus on actionable information.**
 
 **Archiving Policy:**
 - **Maximum 5 open issues** at any time (enforced by human PM)
-- **Maximum 10 archived issues** in main file (older issues moved to monthly archives)
+- **Maximum 200 lines** in @ProjectStatusBoard.md (enforced by AIPM)
 - **Immediate archiving** of resolved issues to maintain focus
+- **Archive files created** when @ProjectStatusBoard.md exceeds 200 lines
+- **If any agent notices @ProjectStatusBoard.md exceeds 200 lines, they must immediately create an issue for the AIPM agent to archive the file.**
 
 ### **Efficient Format Structure**
+
+- **Verbosity must be kept to a minimum without sacrificing communicatability. All entries should be concise, clear, and actionable.**
 
 1. **Current Status (Top 5 Issues)**
    - Concise table with only active, actionable issues
@@ -178,9 +187,15 @@ your-project/
    - Numbered priority list with brief descriptions
    - Focus on immediate next steps
 
-5. **Archive (Monthly)**
-   - Grouped by month with completed items only
+5. **Archive (Line-Count Based)**
+   - Completed items moved to archive when @ProjectStatusBoard.md exceeds 200 lines
+   - Archive files stored in `ai/archives/` folder
+   - Archive files use standardized naming: `ProjectStatusBoard-Archive-YY-MM-DD-XXX.md`
+   - Example: `ai/archives/ProjectStatusBoard-Archive-25-07-01-001.md`
    - Reference issue IDs for traceability
+   - Archive file discovery: AI agents use `ls -l ai/archives/` to find relevant files
+   - Archive files maintain same 5-section structure for AI readability and human accessibility
+   - Complex historical research handled by human PM when needed
 
 ### **Example Efficient Structure**
 
@@ -207,11 +222,12 @@ your-project/
 2. Priority 2: Fix mobile responsive issues
 3. Priority 3: Implement real-time features
 
-## Archive (Monthly)
-### 2024-07
+## Archive (Line-Count Based)
+### Current Archive
 - [RESOLVED] #100 MenuItem.price migration complete
 - [RESOLVED] #99 Dashboard loading state fixed
-```
+
+*Note: When this file exceeds 200 lines, older resolved issues will be moved to archive files.*
 
 **Benefits of This Structure:**
 - ✅ **Focused**: Only actionable information visible
@@ -376,6 +392,8 @@ Summarize current blockers, open issues, and decisions at the top of ProjectStat
 - **Summarizes** progress, flags blockers, and ensures contract compliance
 - **Maintains** the current status section in ProjectStatusBoard.md (top 5 issues, test results, next milestones)
 - **Archives** resolved issues immediately to maintain focus
+- **Performs archiving workflow** when @ProjectStatusBoard.md exceeds 200 lines: creates archive file in `ai/archives/` with standardized naming, moves older resolved issues, updates @ProjectStatusBoard.md
+- **Archiving process**: Create new archive file with same 5-section structure, move oldest resolved issues from @ProjectStatusBoard.md, update @ProjectStatusBoard.md to remove archived items
 - **Notifies** the human PM of anything requiring strategic input
 
 **Note:** All team members are responsible for writing to ProjectStatusBoard.md. The AIPM agent ensures the file remains focused, actionable, and efficient.
@@ -412,11 +430,12 @@ Summarize current blockers, open issues, and decisions at the top of ProjectStat
 2. Priority 2: Fix mobile responsive issues
 3. Priority 3: Implement real-time features
 
-## Archive (Monthly)
-### 2024-07
+## Archive (Line-Count Based)
+### Current Archive
 - [RESOLVED] #100 MenuItem.price migration complete
 - [RESOLVED] #99 Dashboard loading state fixed
-```
+
+*Note: When this file exceeds 200 lines, older resolved issues will be moved to archive files.*
 
 ### Communication Best Practices
 
