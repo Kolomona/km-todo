@@ -299,7 +299,6 @@ describe('/api/todos/[id]', () => {
       })
 
       const response = await PUT(mockRequest, { params: { id: 'todo-1' } })
-      const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(mockPrisma.$transaction).toHaveBeenCalled()

@@ -129,7 +129,6 @@ describe('/api/todos', () => {
       mockPrisma.todo.count.mockResolvedValue(1)
 
       const response = await GET(mockRequest)
-      const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(mockPrisma.todo.findMany).toHaveBeenCalledWith(
@@ -152,7 +151,6 @@ describe('/api/todos', () => {
       mockPrisma.todo.count.mockResolvedValue(1)
 
       const response = await GET(mockRequest)
-      const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(mockPrisma.todo.findMany).toHaveBeenCalledWith(
@@ -327,7 +325,6 @@ describe('/api/todos', () => {
       mockPrisma.todo.findUnique.mockResolvedValue(mockTodo)
 
       const response = await POST(mockRequest)
-      const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(mockPrisma.$transaction).toHaveBeenCalled()

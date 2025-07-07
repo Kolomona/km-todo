@@ -75,7 +75,7 @@ describe('/api/projects', () => {
       ]
 
       vi.mocked(getCurrentUser).mockResolvedValue(mockUser)
-      vi.mocked(prisma.project.findMany).mockResolvedValue(mockProjects as any)
+      vi.mocked(prisma.project.findMany).mockResolvedValue(mockProjects)
 
       const response = await GET()
       const data = await response.json()

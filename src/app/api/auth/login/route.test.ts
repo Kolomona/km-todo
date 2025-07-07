@@ -46,7 +46,7 @@ describe('/api/auth/login', () => {
     const mockSessionId = 'session-id'
 
     // Mock dependencies
-    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(verifyPassword).mockResolvedValue(true)
     vi.mocked(createSession).mockResolvedValue(mockSessionId)
@@ -108,10 +108,12 @@ describe('/api/auth/login', () => {
       email: 'admin@example.com',
       name: 'Admin User',
       passwordHash: 'hashedpassword',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
 
     vi.mocked(validateEmail).mockReturnValue(true)
-    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
     vi.mocked(verifyPassword).mockResolvedValue(false)
 
     const request = new NextRequest('http://localhost:3000/api/auth/login', {
@@ -142,7 +144,7 @@ describe('/api/auth/login', () => {
     const mockSessionId = 'session-id'
 
     // Mock dependencies
-    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(verifyPassword).mockResolvedValue(true)
     vi.mocked(createSession).mockResolvedValue(mockSessionId)
@@ -183,7 +185,7 @@ describe('/api/auth/login', () => {
     const mockSessionId = 'session-id'
 
     // Mock dependencies
-    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(verifyPassword).mockResolvedValue(true)
     vi.mocked(createSession).mockResolvedValue(mockSessionId)
@@ -224,7 +226,7 @@ describe('/api/auth/login', () => {
     const mockSessionId = 'session-id'
 
     // Mock dependencies
-    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any)
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(verifyPassword).mockResolvedValue(true)
     vi.mocked(createSession).mockResolvedValue(mockSessionId)

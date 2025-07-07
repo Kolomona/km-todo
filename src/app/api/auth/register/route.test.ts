@@ -33,19 +33,18 @@ describe('/api/auth/register', () => {
   })
 
   it('should register a new user successfully', async () => {
-    const mockUser = {
-      id: 'user-1',
-      email: 'test@example.com',
-      name: 'Test User',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-
     const mockSessionId = 'session-1'
 
     // Mock dependencies
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
-    vi.mocked(prisma.user.create).mockResolvedValue(mockUser as unknown as any)
+    vi.mocked(prisma.user.create).mockResolvedValue({
+      id: 'user-1',
+      email: 'test@example.com',
+      name: 'Test User',
+      passwordHash: 'hashedpassword',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
     vi.mocked(hashPassword).mockResolvedValue('hashedpassword')
     vi.mocked(validateEmail).mockReturnValue(true)
     vi.mocked(validatePassword).mockReturnValue({ isValid: true, errors: [] })
