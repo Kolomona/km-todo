@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '../src/generated/prisma'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 export async function middleware(request: NextRequest) {
   // Only apply to setup endpoints
