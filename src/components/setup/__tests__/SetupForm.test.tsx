@@ -65,11 +65,9 @@ describe('SetupForm', () => {
   it('should validate email format', async () => {
     render(<SetupForm onSuccess={mockOnSuccess} onError={mockOnError} />);
 
-    // Fill in all required fields except email
+    // Fill in only name and email, leave password fields empty to trigger validation
     fireEvent.change(screen.getByTestId('name-input'), { target: { value: 'Test User' } });
     fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'invalid-email' } });
-    fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'StrongPass1!' } });
-    fireEvent.change(screen.getByTestId('confirm-password-input'), { target: { value: 'StrongPass1!' } });
 
     const submitButton = screen.getByTestId('setup-button');
     fireEvent.click(submitButton);

@@ -250,22 +250,22 @@ export default function SetupForm({ onSuccess, onError }: SetupFormProps) {
 
       {/* Error messages */}
       {errors.name && (
-        <div id="name-error" className="text-sm text-red-600" role="alert">
+        <div id="name-error" className="text-sm text-red-600" role="alert" aria-label={errors.name}>
           {errors.name}
         </div>
       )}
       {errors.email && (
-        <div id="email-error" className="text-sm text-red-600" role="alert">
+        <div id="email-error" className="text-sm text-red-600" role="alert" aria-label={errors.email}>
           {errors.email}
         </div>
       )}
       {errors.password && (
-        <div id="password-error" className="text-sm text-red-600" role="alert">
+        <div id="password-error" className="text-sm text-red-600" role="alert" aria-label={errors.password}>
           {errors.password}
         </div>
       )}
       {errors.confirmPassword && (
-        <div id="confirm-password-error" className="text-sm text-red-600" role="alert">
+        <div id="confirm-password-error" className="text-sm text-red-600" role="alert" aria-label={errors.confirmPassword}>
           {errors.confirmPassword}
         </div>
       )}

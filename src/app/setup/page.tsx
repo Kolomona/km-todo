@@ -15,6 +15,9 @@ export default function SetupPage() {
   }, []);
 
   const checkSetupStatus = async () => {
+    setIsLoading(true);
+    setError(null);
+    
     try {
       const response = await fetch('/api/setup/status');
       const data = await response.json();
