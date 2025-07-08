@@ -499,20 +499,20 @@ git push origin main
 
 ```bash
 # Backend features
-git commit -m "feat(backend): implement user authentication"
-git commit -m "fix(backend): resolve login validation issue"
+git commit -m "[Backend] feat: implement user authentication"
+git commit -m "[Backend] fix: resolve login validation issue"
 
 # Frontend features
-git commit -m "feat(frontend): add login form component"
-git commit -m "fix(frontend): resolve mobile responsive issues"
+git commit -m "[Frontend] feat: add login form component"
+git commit -m "[Frontend] fix: resolve mobile responsive issues"
 
 # Contract changes
-git commit -m "docs(contract): update API endpoints"
-git commit -m "feat(contract): add new user profile fields"
+git commit -m "[AIPM] docs: update API endpoints"
+git commit -m "[AIPM] feat: add new user profile fields"
 
 # Integration work
-git commit -m "fix(integration): resolve login flow issues"
-git commit -m "test(integration): add E2E tests for auth flow"
+git commit -m "[AIPM] fix: resolve login flow issues"
+git commit -m "[AIPM] test: add E2E tests for auth flow"
 ```
 
 ### C.3: Status File Integration
@@ -520,7 +520,7 @@ git commit -m "test(integration): add E2E tests for auth flow"
 **Update @BackEndStatus.md:**
 ```markdown
 ## 2024-12-19
-- **Last Commit**: feat(backend): implement user authentication
+- **Last Commit**: [Backend] feat: implement user authentication
 - **Testing**: Unit tests 15/15 passing
 - **Progress**: Authentication endpoints complete
 ```
@@ -528,7 +528,7 @@ git commit -m "test(integration): add E2E tests for auth flow"
 **Update @FrontEndStatus.md:**
 ```markdown
 ## 2024-12-19
-- **Last Commit**: feat(frontend): add login form component
+- **Last Commit**: [Frontend] feat: add login form component
 - **Testing**: Unit tests 12/12 passing
 - **Progress**: Login UI complete
 ```

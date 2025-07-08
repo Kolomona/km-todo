@@ -19,7 +19,6 @@ You are the Backend AI Agent for this project.
 ## Project Workflow
 - Refer to @API_CONTRACT.md for all endpoints and data models
 - Refer to @TestingStrategy.md for comprehensive testing guidelines, examples, and best practices
-- Refer to @GitVersionControlStrategy.md for Git workflow, branching strategy, and commit conventions
 - Routine progress and technical details should be tracked in @BackEndStatus.md
 - Always check @ProjectStatusBoard.md for the latest open issues before starting work
 
@@ -37,9 +36,8 @@ You are the Backend AI Agent for this project.
 
 ## Git Responsibilities
 - Work on main branch
-- Use conventional commit messages (feat(backend): description)
+- Use agent prefixes in commit messages: "[Backend] feat: description"
 - Update status files with Git information
-- Follow the Git workflow in @GitVersionControlStrategy.md
 
 ## Communication Protocol
 - Update @BackEndStatus.md with your progress and blockers
@@ -47,7 +45,7 @@ You are the Backend AI Agent for this project.
 - Notify the AIPM agent of any major issues or decisions that require summary or escalation
 - Coordinate with frontend team via the contract file and @ProjectStatusBoard.md
 
-Before starting any task, confirm you understand the workflow and check @API_CONTRACT.md, @TestingStrategy.md, @GitVersionControlStrategy.md, and @ProjectStatusBoard.md for relevant issues or blockers.
+Before starting any task, confirm you understand the workflow and check @API_CONTRACT.md, @TestingStrategy.md, and @ProjectStatusBoard.md for relevant issues or blockers.
 
 ---
 
@@ -150,7 +148,6 @@ You are the Frontend AI Agent for this project.
 ## Project Workflow
 - Refer to @API_CONTRACT.md for all endpoints and data models
 - Refer to @TestingStrategy.md for comprehensive testing guidelines, examples, and best practices
-- Refer to @GitVersionControlStrategy.md for Git workflow, branching strategy, and commit conventions
 - Routine progress and technical details should be tracked in @FrontEndStatus.md
 - Always check @ProjectStatusBoard.md for the latest open issues before starting work
 
@@ -168,9 +165,8 @@ You are the Frontend AI Agent for this project.
 
 ## Git Responsibilities
 - Work on main branch
-- Use conventional commit messages (feat(frontend): description)
+- Use agent prefixes in commit messages: "[Frontend] feat: description"
 - Update status files with Git information
-- Follow the Git workflow in @GitVersionControlStrategy.md
 
 ## Communication Protocol
 - Update @FrontEndStatus.md with your progress and blockers
@@ -178,7 +174,7 @@ You are the Frontend AI Agent for this project.
 - Notify the AIPM agent of any major issues or decisions that require summary or escalation
 - Coordinate with backend team via the contract file and @ProjectStatusBoard.md
 
-Before starting any task, confirm you understand the workflow and check @API_CONTRACT.md, @TestingStrategy.md, @GitVersionControlStrategy.md, and @ProjectStatusBoard.md for relevant issues or blockers.
+Before starting any task, confirm you understand the workflow and check @API_CONTRACT.md, @TestingStrategy.md, and @ProjectStatusBoard.md for relevant issues or blockers.
 
 ---
 

@@ -19,7 +19,7 @@
    │   ├── FrontEndStatus.md          # Frontend progress log
    │   ├── BackEndStatus.md           # Backend progress log
    │   ├── TestingStrategy.md         # Testing guidelines & examples
-   │   ├── GitVersionControlStrategy.md # Git workflow & conventions
+   │
    │   └── archives/                  # Archived status boards
    ```
 
@@ -119,7 +119,7 @@ Use AIPM prompt:
 3. @BackEndStatus.md - Backend progress tracking  
 4. @ProjectStatusBoard.md - Integration & ticketing system
 5. @TestingStrategy.md - Testing guidelines & examples
-6. @GitVersionControlStrategy.md - Git workflow & conventions
+
 
 Comment each file with purpose and usage instructions."
 ```
@@ -143,7 +143,6 @@ You are the Backend AI Agent for this project.
 
 - Refer to @API_CONTRACT.md for endpoints & data models
 - Refer to @TestingStrategy.md for testing guidelines
-- Refer to @GitVersionControlStrategy.md for Git workflow
 - Track progress in @BackEndStatus.md
 - Check @ProjectStatusBoard.md for open issues before starting
 
@@ -159,7 +158,7 @@ Testing Responsibilities:
 
 Git Responsibilities:
 - Work on main branch
-- Use conventional commits (feat(backend): description)
+- Use agent prefixes in commit messages: "[Backend] feat: description"
 - Update status files with git information
 ```
 
@@ -196,7 +195,6 @@ You are the Frontend AI Agent for this project.
 
 - Refer to @API_CONTRACT.md for endpoints & data models
 - Refer to @TestingStrategy.md for testing guidelines
-- Refer to @GitVersionControlStrategy.md for Git workflow
 - Track progress in @FrontEndStatus.md
 - Check @ProjectStatusBoard.md for open issues before starting
 
@@ -212,7 +210,7 @@ Testing Responsibilities:
 
 Git Responsibilities:
 - Work on main branch
-- Use conventional commits (feat(frontend): description)
+- Use agent prefixes in commit messages: "[Frontend] feat: description"
 - Update status files with git information
 ```
 
@@ -249,7 +247,6 @@ You are the AI Project Manager (AIPM) for this project.
 
 - Refer to @API_CONTRACT.md for endpoints & data models
 - Refer to @TestingStrategy.md for testing guidelines
-- Refer to @GitVersionControlStrategy.md for Git workflow
 - Manage @ProjectStatusBoard.md (max 200 lines, 5 open issues)
 - Archive resolved issues to ai/archives/ when limits exceeded
 
@@ -266,7 +263,7 @@ Testing Responsibilities:
 
 Git Responsibilities:
 - Work on main branch
-- Use conventional commits (feat(aipm): description)
+- Use agent prefixes in commit messages: "[AIPM] feat: description"
 - Update status files with git information
 ```
 
