@@ -7,7 +7,7 @@
 - @ProjectStatusBoard.md - Integration & ticketing (max 5 issues, 200 lines)
 - @FrontEndStatus.md / @BackEndStatus.md - Team progress logs
 - @TestingStrategy.md - Testing guidelines & examples
-- @GitVersionControlStrategy.md - Git workflow & conventions
+- Git workflow - Use agent prefixes in commit messages: "[Backend] feat: description"
 
 *For detailed explanations, see [Core Concepts](#core-concepts) and [Project Setup](#project-setup) in the main guide.*
 
@@ -33,7 +33,7 @@ Setup Tech Stack → Update Contract → Backend Implementation → Frontend Imp
 Integration Testing → AIPM Summary → Repeat
 ```
 
-**⚠️ Important**: Run agents sequentially, not simultaneously. While parallel development seems efficient, it leads to integration complexity and contract mismatches.
+**💡 Workflow Note**: Run agents sequentially, not simultaneously. While parallel development seems efficient, it leads to integration complexity and contract mismatches.
 
 ## Tech Stack Setup (Recommended)
 **Start with a skeleton project for best results:**
@@ -101,7 +101,7 @@ Integration Testing → AIPM Summary → Repeat
 
 ## Git Workflow
 - Work on main branch
-- Conventional commits: `feat(backend): description` / `feat(frontend): description`
+- Use agent prefixes: `[Backend] feat: description` / `[Frontend] feat: description`
 - Update status files with git information
 
 ## Common Issues & Solutions

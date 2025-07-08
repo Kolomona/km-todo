@@ -45,7 +45,7 @@
    Integration Testing → AIPM Summary → Repeat
    ```
    
-   **⚠️ Important**: Run agents sequentially, not simultaneously. While parallel development seems efficient, it leads to integration complexity and contract mismatches.
+   **💡 Workflow Note**: Run agents sequentially, not simultaneously. While parallel development seems efficient, it leads to integration complexity and contract mismatches.
 
 ---
 

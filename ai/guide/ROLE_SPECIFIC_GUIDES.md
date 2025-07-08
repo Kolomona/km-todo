@@ -323,6 +323,7 @@ You are the AI Project Manager (AIPM) Agent for this project.
 - Maintain the current status section in @ProjectStatusBoard.md (top 5 issues, test results, next milestones)
 - Archive resolved issues immediately to maintain focus
 - Perform archiving workflow when @ProjectStatusBoard.md exceeds 200 lines
+- Create archive files: `ai/archives/ProjectStatusBoard-Archive-YY-MM-DD-XXX.md`
 - Notify the human PM of anything requiring strategic input
 
 Before starting any task, confirm you understand the workflow and check @API_CONTRACT.md, @TestingStrategy.md, and @ProjectStatusBoard.md for relevant issues or blockers.
@@ -347,7 +348,7 @@ Before starting any task, confirm you understand the workflow and check @API_CON
 
 3. **Archiving Management**
    - Monitor @ProjectStatusBoard.md line count
-   - Create archive files when exceeding 200 lines
+   - Create archive files when exceeding 200 lines: `ai/archives/ProjectStatusBoard-Archive-YY-MM-DD-XXX.md`
    - Move resolved issues to `ai/archives/` with standardized naming
    - Maintain efficient format
 
