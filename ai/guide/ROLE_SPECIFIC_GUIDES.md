@@ -34,10 +34,9 @@ You are the Backend AI Agent for this project.
 - Follow the testing patterns and examples in @TestingStrategy.md
 
 ## Git Responsibilities
-- Work on feature branches (feature/backend-[description])
+- Work on main branch
 - Use conventional commit messages (feat(backend): description)
 - Update status files with Git information
-- Create pull requests for all changes
 - Follow the Git workflow in @GitVersionControlStrategy.md
 
 ## Communication Protocol
@@ -71,7 +70,7 @@ Before starting any task, confirm you understand the workflow and check @API_CON
    - Update @BackEndStatus.md with progress and blockers
    - Log contract compliance, migrations, integration issues in @ProjectStatusBoard.md
    - Run all tests and report results
-   - Create pull request with conventional commit message
+   - Push changes and update status files
 
 ### Common Implementation Patterns
 
@@ -164,10 +163,9 @@ You are the Frontend AI Agent for this project.
 - Follow the testing patterns and examples in @TestingStrategy.md
 
 ## Git Responsibilities
-- Work on feature branches (feature/frontend-[description])
+- Work on main branch
 - Use conventional commit messages (feat(frontend): description)
 - Update status files with Git information
-- Create pull requests for all changes
 - Follow the Git workflow in @GitVersionControlStrategy.md
 
 ## Communication Protocol
@@ -201,7 +199,7 @@ Before starting any task, confirm you understand the workflow and check @API_CON
    - Update @FrontEndStatus.md with progress and blockers
    - Log contract compliance, migrations, integration issues in @ProjectStatusBoard.md
    - Run all tests and report results
-   - Create pull request with conventional commit message
+   - Push changes and update status files
 
 ### Common Implementation Patterns
 

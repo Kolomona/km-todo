@@ -477,94 +477,67 @@ export const cleanupTestData = async () => {
 
 ---
 
-## Appendix C: Advanced Git Workflow
+## Appendix C: Simple Git Workflow
 
-### C.1: Branch Naming Conventions
+### C.1: Basic Git Commands
 
-```
-feature/backend-user-authentication
-feature/frontend-recipe-form
-feature/integration-api-contracts
-bugfix/backend-login-validation
-hotfix/frontend-mobile-responsive
-docs/update-api-documentation
-test/add-e2e-recipe-tests
-refactor/backend-database-schema
+```bash
+# Start work
+git status
+git pull origin main
+
+# Make changes
+git add .
+git commit -m "feat(backend): implement user authentication"
+git push origin main
+
+# Update status files
+# Log in @ProjectStatusBoard.md
 ```
 
 ### C.2: Commit Message Examples
 
-```
-feat(backend): add user authentication endpoints
+```bash
+# Backend features
+git commit -m "feat(backend): implement user authentication"
+git commit -m "fix(backend): resolve login validation issue"
 
-- Add POST /api/auth/login endpoint
-- Add POST /api/auth/register endpoint  
-- Add GET /api/auth/me endpoint
-- Add password hashing with bcrypt
-- Add JWT token generation
-- Add input validation middleware
+# Frontend features
+git commit -m "feat(frontend): add login form component"
+git commit -m "fix(frontend): resolve mobile responsive issues"
 
-Closes #123
+# Contract changes
+git commit -m "docs(contract): update API endpoints"
+git commit -m "feat(contract): add new user profile fields"
 
-feat(frontend): implement recipe creation form
-
-- Add RecipeForm component with validation
-- Add form state management with React Hook Form
-- Add error handling and loading states
-- Add responsive design for mobile devices
-- Add unit tests for form validation
-
-Closes #124
-
-fix(integration): resolve API contract mismatches
-
-- Update frontend to use camelCase for all API calls
-- Fix backend response format inconsistencies
-- Add proper error response handling
-- Update API documentation
-
-Fixes #125
-
-test(e2e): add comprehensive user workflow tests
-
-- Add user registration and login flow
-- Add recipe creation and editing flow
-- Add recipe search and filtering flow
-- Add mobile responsive testing
-- Add accessibility testing
-
-Closes #126
+# Integration work
+git commit -m "fix(integration): resolve login flow issues"
+git commit -m "test(integration): add E2E tests for auth flow"
 ```
 
-### C.3: Pull Request Template
+### C.3: Status File Integration
 
+**Update @BackEndStatus.md:**
 ```markdown
-## Description
-Brief description of changes made
+## 2024-12-19
+- **Last Commit**: feat(backend): implement user authentication
+- **Testing**: Unit tests 15/15 passing
+- **Progress**: Authentication endpoints complete
+```
 
-## Type of Change
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+**Update @FrontEndStatus.md:**
+```markdown
+## 2024-12-19
+- **Last Commit**: feat(frontend): add login form component
+- **Testing**: Unit tests 12/12 passing
+- **Progress**: Login UI complete
+```
 
-## Testing
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] E2E tests pass
-- [ ] Manual testing completed
-
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed
-- [ ] Code is commented where necessary
-- [ ] Documentation updated
-- [ ] No console errors or warnings
-- [ ] Mobile responsive design tested
-
-## Related Issues
-Closes #123
-Fixes #124
+**Update @ProjectStatusBoard.md:**
+```markdown
+## Recent Decisions (Last 5)
+- [2024-12-19] Backend: User authentication implemented
+- [2024-12-19] Frontend: Login form component added
 ```
 
 ---

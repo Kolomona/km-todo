@@ -154,9 +154,9 @@ Testing Responsibilities:
 - Log test failures in @ProjectStatusBoard.md
 
 Git Responsibilities:
-- Work on feature branches (feature/backend-[description])
+- Work on main branch
 - Use conventional commits (feat(backend): description)
-- Create pull requests for all changes
+- Update status files with git information
 ```
 
 *For detailed workflows and implementation patterns, see [@ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md#backend-ai-agent-guide).*
@@ -207,9 +207,9 @@ Testing Responsibilities:
 - Log UI/UX issues in @ProjectStatusBoard.md
 
 Git Responsibilities:
-- Work on feature branches (feature/frontend-[description])
+- Work on main branch
 - Use conventional commits (feat(frontend): description)
-- Create pull requests for all changes
+- Update status files with git information
 ```
 
 *For detailed workflows and implementation patterns, see [@ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md#frontend-ai-agent-guide).*
@@ -261,9 +261,9 @@ Testing Responsibilities:
 - Log all test results, issues, fixes in @ProjectStatusBoard.md
 
 Git Responsibilities:
-- Work on feature branches (feature/aipm-[description])
+- Work on main branch
 - Use conventional commits (feat(aipm): description)
-- Create pull requests for all changes
+- Update status files with git information
 ```
 
 *For detailed workflows and implementation patterns, see [@ROLE_SPECIFIC_GUIDES.md](./ROLE_SPECIFIC_GUIDES.md#aipm-agent-guide).*

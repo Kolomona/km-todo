@@ -98,9 +98,9 @@ Integration Testing → AIPM Summary → Repeat
 *For comprehensive testing strategy and communication protocols, see [Testing Strategy](#testing-strategy) in the main guide.*
 
 ## Git Workflow
-- Feature branches: `feature/backend-[description]` / `feature/frontend-[description]`
+- Work on main branch
 - Conventional commits: `feat(backend): description` / `feat(frontend): description`
-- Pull requests for all changes
+- Update status files with git information
 
 ## Common Issues & Solutions
 1. **Integration Issues**: Check API contract matches exactly
