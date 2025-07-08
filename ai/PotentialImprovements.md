@@ -41,4 +41,66 @@
 
 ---
 
+## Parallel Agent Development Strategies (Advanced)
+
+### **Concept**
+While sequential development is recommended for most projects, advanced teams may need parallel development capabilities. This section documents strategies for minimizing errors when running agents simultaneously.
+
+### **Strategy 1: Contract-First Approach**
+- **Phase 1**: Human + AIPM define complete contract upfront
+- **Phase 2**: Backend and frontend implement exact contract specifications in parallel
+- **Phase 3**: AIPM runs integration tests, any issues are contract issues
+- **Key**: Contract is locked during implementation, no changes allowed
+
+### **Strategy 2: Micro-Contract Approach**
+- Break large contract into smaller, independent micro-contracts
+- Each micro-contract is fully defined before implementation starts
+- Teams can work on different micro-contracts in parallel
+- Example: Authentication micro-contract, User management micro-contract, Data CRUD micro-contract
+
+### **Strategy 3: Feature-Based Teams**
+- Instead of backend/frontend teams, use feature teams
+- Each team owns complete feature (backend + frontend)
+- Teams work on isolated code paths
+- Integrate through well-defined APIs
+
+### **Strategy 4: Contract as Code**
+- Define contract in TypeScript interfaces
+- Generate mock implementations automatically
+- Automated contract validation during development
+- Real-time compliance checking
+
+### **Required Tooling**
+- Automated contract validation
+- Real-time contract compliance checking
+- Automated mock data generation
+- Integration test automation
+- Contract versioning and change management
+
+### **When to Consider**
+- **Large teams** with multiple AI agents
+- **Enterprise projects** requiring faster development
+- **Complex systems** with well-defined interfaces
+- **Experienced teams** with strong contract discipline
+
+### **Trade-offs**
+**Pros:**
+- Faster development (parallel work)
+- Better resource utilization
+- Can scale to larger teams
+
+**Cons:**
+- Requires more upfront planning
+- More complex tooling needed
+- Higher risk of contract mismatches
+- More difficult to iterate quickly
+
+### **Implementation Notes**
+- Start with "Contract Lock" approach for safest parallel development
+- Define everything upfront, lock contract, then implement in parallel
+- Use automated tools to catch contract violations immediately
+- Maintain clear boundaries and independent implementation paths
+
+---
+
 *More potential improvements will be added here as they are identified.*
