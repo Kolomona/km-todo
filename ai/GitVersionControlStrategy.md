@@ -140,11 +140,13 @@ git push origin main
 
 ## Why Simple Git Works for AI Agents
 
-1. **Sequential Workflow**: Backend → Frontend → Integration
+1. **Sequential Workflow**: Backend → Frontend → Integration (run agents one at a time)
 2. **Single Team**: One AI agent team working at a time
 3. **Contract Coordination**: @API_CONTRACT.md ensures coordination
 4. **Status Board**: @ProjectStatusBoard.md handles coordination
 5. **Rapid Iteration**: AI agents can iterate quickly on main branch
+
+**💡 Human Workflow Tip**: Resist the temptation to run frontend and backend agents simultaneously. While it seems more efficient, sequential development (Backend → Frontend → Integration) produces better results with fewer integration issues.
 
 ---
 

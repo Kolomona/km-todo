@@ -33,6 +33,8 @@ Setup Tech Stack → Update Contract → Backend Implementation → Frontend Imp
 Integration Testing → AIPM Summary → Repeat
 ```
 
+**⚠️ Important**: Run agents sequentially, not simultaneously. While parallel development seems efficient, it leads to integration complexity and contract mismatches.
+
 ## Tech Stack Setup (Recommended)
 **Start with a skeleton project for best results:**
 - **Next.js**: `npx create-next-app@latest my-app --typescript --tailwind --eslint`

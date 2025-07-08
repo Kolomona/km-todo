@@ -44,6 +44,8 @@
    Setup Tech Stack → Update Contract → Backend Implementation → Frontend Implementation → 
    Integration Testing → AIPM Summary → Repeat
    ```
+   
+   **⚠️ Important**: Run agents sequentially, not simultaneously. While parallel development seems efficient, it leads to integration complexity and contract mismatches.
 
 ---
 
@@ -60,6 +62,8 @@ Single AI development results in:
 - **🎨 Frontend AI**: UI, styling, user experience  
 - **📋 AIPM Agent**: Coordination, summary, file curation
 - **👤 Human PM**: Strategic decisions & validation
+
+**💡 Key Insight**: Run agents sequentially, not simultaneously. While it's tempting to have frontend and backend work at the same time, this becomes too complicated and leads to integration issues. Sequential workflow (Backend → Frontend → Integration) produces better results.
 
 ### Contract-Driven Method
 **@API_CONTRACT.md** = living blueprint defining:

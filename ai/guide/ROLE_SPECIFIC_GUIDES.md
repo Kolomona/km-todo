@@ -8,6 +8,8 @@
 
 ## Backend AI Agent Guide
 
+**💡 Workflow Note**: This guide assumes sequential development. Run agents one at a time (Backend → Frontend → Integration) for best results. While parallel development seems efficient, it leads to integration complexity.
+
 ### Complete Context Primer
 ```
 # Project Context Primer (Backend)
@@ -136,6 +138,8 @@ export async function createTodo(data: CreateTodoData, userId: string) {
 ---
 
 ## Frontend AI Agent Guide
+
+**💡 Workflow Note**: This guide assumes sequential development. Run agents one at a time (Backend → Frontend → Integration) for best results. While parallel development seems efficient, it leads to integration complexity.
 
 ### Complete Context Primer
 ```
@@ -287,6 +291,8 @@ export async function fetchTodos(): Promise<Todo[]> {
 ---
 
 ## AIPM Agent Guide
+
+**💡 Workflow Note**: This guide assumes sequential development. Run agents one at a time (Backend → Frontend → Integration) for best results. While parallel development seems efficient, it leads to integration complexity.
 
 ### Complete Context Primer
 ```
